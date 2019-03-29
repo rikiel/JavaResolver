@@ -1,0 +1,34 @@
+
+\begin{lstlisting}[caption={Príklad použitia JDBC}, label={code:jdbc}]
+public Category getCategoryById(int categoryId)
+        throws ClassNotFoundException, SQLException {
+  Class.forName("oracle.jdbc.driver.OracleDriver"); /*\label{code:jdbc:forName}*/
+  Connection connection = null;
+  try {
+    String url = "jdbc:oracle:driver:user/password@database";
+    Connection = DriverManager.getConnection(url); /*\label{code:jdbc:getConnection}*/
+    PreparedStatement statement = null;
+    try {
+      String sql = "SELECT ID, DESC, NAME FROM CATEGORY_TABLE WHERE ID = ?";
+      statement = connection.prepareStatement(sql);
+      statement.setInt(1, categoryId);
+
+      final ResultSet rs = statement.executeQuery(); /*\label{code:jdbc:executeQuery}*/
+      final Category category = new Category();
+
+      category.setId(rs.getInt("ID"));
+      category.setDescription(rs.getString("DESC"));
+      category.setName(rs.getString("NAME"));
+
+      return category;
+    } finally {
+      if (statement != null) {
+        statement.close();
+      }
+    }
+  } finally {
+    if (connection != null) {
+      connection.close();
+    }
+}
+\end{lstlisting}

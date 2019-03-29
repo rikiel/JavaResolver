@@ -9,7 +9,7 @@ run: build
 	atril $(TARGET).pdf&
 
 # LaTeX je potreba spustit nekolikrat, aby spravne spocital odkazy
-${TARGET}.pdf: ${TARGET}.tex *.tex *.bib Makefile
+${TARGET}.pdf: ${TARGET}.tex *.tex *.bib */*.tex Makefile
 	${LATEX_CMD}
 	${BIBTEX_CMD}
 	${LATEX_CMD}

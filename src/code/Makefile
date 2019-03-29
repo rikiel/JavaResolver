@@ -1,0 +1,4 @@
+
+%:
+	make --directory=.. --file=Makefile $@
+
