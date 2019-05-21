@@ -1,60 +1,94 @@
 
-\chapter{Prehľad používaných frameworkov na komunikáciu s databázou}
+\chapter{Overview of database frameworks in java}
 
-V tejto kapitole popíšeme techniky a niektoré frameworky, ktoré umožňujú aplikácii prístup k rôznym druhom databáz.
+In this chapter, we will analyse some of database frameworks that are mainly used
+to connect to databases and load data to java applications.
 
-Prácu s frameworkami si budeme ilustrovať na získaní dát pre triedu Category \ref{code:category} z databáze.
+For these frameworks we try tu ilustrate use case, when we try to load
+class $DatabaseValue$ \ref{code:model} from database with structure as in \ref{code:db}.
 
-\input{code/category}
+\input{code/model}
+\input{code/db}
+
+
+
+
 
 \section{JDBC}
 
-Prístup aplikácie k databáze je v Jave štandardne cez Java Database Connectivity (JDBC) API.
-Rozhranie je implementované pre rôzne typy databáz. Dovoľuje pristupovať k dátam priamo s použitím Javy.
-Architektúra pre prístup k databáze je popísaná v článku \citet{JDBC_OVERVIEW}.
+For accessing database in java application, there exists standard Java Database Connectivity (JDBC) API,
+which is described in more detail in \citet{JDBC_OVERVIEW}.
 
-Komunikácia s databázou sa uskutočňuje pomocou rozhraní a tried z balíka \citet{java.sql}.
-Niektoré zo základných štruktúr si dôkladnejšie popíšeme.
+Database vendors ususally provide JDBC API implementation. API is generic, so
+there should be no difference for connecting to different database types.
 
+There are few interfaces in \citet{java.sql} package controlling database calls.
 \begin{itemize}
-  \item Connection - objekt zabezpečujúci pripojenie do databáze
-  \item Statement, PreparedStatement, CallableStatement - objekty obaľujúce jednotlivé volania databáze
-  \item ResultSet - objekt obaľujúci výsledok volaní databáze
+  \item Connection
+  \item Statement, PreparedStatement, CallableStatement
+  \item ResultSet
 \end{itemize}
 
-Na príklade \ref{code:jdbc} si ukážeme načítanie triedy Category z Oracle databáze.
-Riadok \ref{code:jdbc:forName} zaregistruje Oracle ovládač databáze.
-Následne riadok \ref{code:jdbc:getConnection} vytvorí pripojenie k databáze,
-riadok \ref{code:jdbc:executeQuery} vykoná sql príkaz a na ďalších riadkach sa z výsledku získajú
-hodnoty zo stĺpcov ID, DESCRIPTION a NAME.
+$Connection$ object should hold database connection and through this connection
+database queries can be executed using $*Statement$ calls.
+When some data are returned to application from statement, it is done
+through $ResultSet$.
+
+Getting connection to database is through $DriverManager$, or from JDBC 2.0
+it can be done using $DataSource$ and it is now the preferred way of connecting to database.
+
+In the example \ref{code:jdbc}, we will show example of loading data from Oracle database.
 
 \input{code/jdbc}
 
-\textbf{TODO - popisovat na prikladoch?}
+% TODO nejak rozlisovanie pisma pre dane konstanty
+On lines \ref{code:jdbc:dataSource:begin}--\ref{code:jdbc:dataSource:end} we instruct application
+to connect to database that can be found in url jdbc:oracle:thin:@//192.168.0.16:1521/orcl,
+to use User as user and Password as password.
+Then on lines \ref{code:jdbc:prepareStatement:begin}--\ref{code:jdbc:prepareStatement:end}
+database query is created to select just rows matching $id$ argument.
+The query is then executed on line \ref{code:jdbc:executeQuery} and then
+result is mapped from $ResultSet$ to our $DatabaseValue$ model and then it is returned on line \ref{code:jdbc:return}.
 
-V štandardnej edícií javy sa objavuje aj balík \citet{java.sql}, ktorý poskytuje jednoduchšie API pre
-konfiguráciu databáze. Rovnako pridáva funkcie pre distribuované tranzakcie a connection pooling.
+As you can see, there is huge amount of boilerplate code (catch-finally blocks) for closing every JDBC API object,
+as exceptions can be thrown from all calls as we need to free all database resources that we do not need anymore.
+
+From Java 7, try-with-resources can be used with result, that all finally blocks can be removed - resources
+(Connection, PreparedStatement, ResultSet) are automatically closed after finishing block.
+This is ilustrated in example \ref{code:jdbc-try-with-resources}.
+
+\input{code/jdbc-try-with-resources}
+
+
+
 
 \section{Spring JDBC Framework}
+\citet{SpringJDBC} Framework is extension above JDBC API and tries to help users to code only
+parts with application logic and it removes much of the boilerplate code.
+From next list, only italicized lines need to be coded by user:
+\begin{itemize}
+  \item Define connection parameters
+  \item Open the connection
+  \item \textit{Specify the statement}
+  \item Prepare and execute the statement
+  \item Set up the loop to iterate through the results (if any)
+  \item \textit{Do the work for each iteration}
+  \item Process any exception
+  \item Handle transactions
+  \item Close the connection   
+\end{itemize}
+Before Java 7, coding in standard JDBC tend to be errorneus because of forgetting to close
+database resources and boilerplate code does not help in readability of code.
+These problems are removed using Spring JDBC Framework, as can be seen in example \ref{code:jdbcTemplate}.
+Example shows, how can be loaded single row from database.
 
-\citet{SpringJDBC} Framework je istou nadstavbou nad klasickým JDBC API, ktorého cieľom je uľahčiť jeho používanie.
-Uľahčuje ošetrovanie výnimiek pri komunikácií s databázou, zjednodušuje možnosti používania tranzakcií,
-znižuje množstvo opakujúceho sa kódu pri získavaní výsledkov z databázových volaní.
+\input{code/jdbcTemplate}
 
-\textbf{TODO - popisovat na prikladoch?}
+
+
+
 
 \section{MyBatis}
-
-\citet{MyBatis}
-
 \section{Hibernate}
-
-\section{Spark}
-
 \section{Kafka}
-
-
-\chapter{Ďalšie možnosti pre vstup/výstup}
-
-\section{Súbory, sockety, \dots}
 

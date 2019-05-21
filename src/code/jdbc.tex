@@ -1,34 +1,46 @@
 
-\begin{lstlisting}[caption={Príklad použitia JDBC}, label={code:jdbc}]
-public Category getCategoryById(int categoryId)
-        throws ClassNotFoundException, SQLException {
-  Class.forName("oracle.jdbc.driver.OracleDriver"); /*\label{code:jdbc:forName}*/
+\begin{lstlisting}[caption={Example of loading data from Oracle database using JDBC API}, label={code:jdbc}]
+public DatabaseValue getForId(int id) throws SQLException {
+ final OracleDataSource dataSource = new OracleDataSource(); /*\label{code:jdbc:dataSource:begin}*/
+  dataSource.setURL("jdbc:oracle:thin:@//192.168.0.16:1521/orcl");
+  dataSource.setUser("User");
+  dataSource.setPassword("Password"); /*\label{code:jdbc:dataSource:end}*/
+
   Connection connection = null;
   try {
-    String url = "jdbc:oracle:driver:user/password@database";
-    Connection = DriverManager.getConnection(url); /*\label{code:jdbc:getConnection}*/
-    PreparedStatement statement = null;
+    connection = dataSource.getConnection();
+    PreparedStatement preparedStatement = null;
     try {
-      String sql = "SELECT ID, DESC, NAME FROM CATEGORY_TABLE WHERE ID = ?";
-      statement = connection.prepareStatement(sql);
-      statement.setInt(1, categoryId);
-
-      final ResultSet rs = statement.executeQuery(); /*\label{code:jdbc:executeQuery}*/
-      final Category category = new Category();
-
-      category.setId(rs.getInt("ID"));
-      category.setDescription(rs.getString("DESC"));
-      category.setName(rs.getString("NAME"));
-
-      return category;
+      String query = "SELECT ID, VALUE FROM T WHERE ID = ?";
+      preparedStatement = connection.prepareStatement(query); /*\label{code:jdbc:prepareStatement:begin}*/
+      preparedStatement.setInt(1, id); /*\label{code:jdbc:prepareStatement:end}*/
+      ResultSet resultSet = null;
+      try {
+        resultSet = preparedStatement.executeQuery(); /*\label{code:jdbc:executeQuery}*/
+        DatabaseValue databaseValue = new DatabaseValue();
+        databaseValue.setId(resultSet.getInt(1));
+        databaseValue.setValue(resultSet.getString(2));
+        return databaseValue; /*\label{code:jdbc:return}*/
+      } catch (SQLException e) {
+        // handle exception
+      } finally {
+        if (resultSet != null) {
+          resultSet.close();
+        }
+      }
+    } catch (SQLException e) {
+      // handle exception
     } finally {
-      if (statement != null) {
-        statement.close();
+      if (preparedStatement != null) {
+        preparedStatement.close();
       }
     }
+  } catch (SQLException e) {
+    // handle exception
   } finally {
     if (connection != null) {
       connection.close();
     }
+  }
 }
 \end{lstlisting}
