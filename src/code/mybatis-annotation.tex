@@ -1,0 +1,11 @@
+
+\begin{lstlisting}[language=Java, caption={MyBatis Mapper interface using annotations}, label={code:mybatis:annotation}]
+interface Mapper {
+  @@@Results@@(value = { /*\label{code:mybatis:annotation:result:begin}*/
+      @@@Result@@(column = "ID", property = "id"),
+      @@@Result@@(column = "VALUE", property = "value"),
+  }) /*\label{code:mybatis:annotation:result:end}*/
+  @@@Select@@("SELECT ID, VALUE FROM T WHERE ID = #{id}") /*\label{code:mybatis:annotation:query}*/
+  DatabaseValue getForId(int id);
+}
+\end{lstlisting}

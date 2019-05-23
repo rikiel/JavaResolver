@@ -1,14 +1,26 @@
+% Prepinace pre figure:
+% h=approximately here
+% t=top of page
+% b=bottom of page
+% p=on special page
+% H=precisely here
+\newcommand{\InsertCode}[2]{\begin{figure}[#1]\input{#2}\end{figure}}
+
+\newcommand{\Code}[1]{\texttt{#1}}
 
 \chapter{Overview of database frameworks in java}
 
 In this chapter, we will analyse some of database frameworks that are mainly used
-to connect to databases and load data to java applications.
+to connect to databases and load (or store) data to (or from) java applications
+as this is main topic of our work, which is identifying database type
+and all the places places when application communicate with that database.
 
-For these frameworks we try tu ilustrate use case, when we try to load
-class $DatabaseValue$ \ref{code:model} from database with structure as in \ref{code:db}.
+All of the frameworks has many advanced features that does not fit our topic.
+We will try to follow one example of loading class \Code{DatabaseValue} as can be seen in
+example \ref{code:model} from database structured as in \ref{code:db}.
 
-\input{code/model}
-\input{code/db}
+\InsertCode{h}{code/model}
+\InsertCode{h}{code/db}
 
 
 
@@ -24,40 +36,41 @@ there should be no difference for connecting to different database types.
 
 There are few interfaces in \citet{java.sql} package controlling database calls.
 \begin{itemize}
-  \item Connection
-  \item Statement, PreparedStatement, CallableStatement
-  \item ResultSet
+  \item \Code{Connection}
+  \item \Code{Statement}, \Code{PreparedStatement}, \Code{CallableStatement}
+  \item \Code{ResultSet}
 \end{itemize}
 
-$Connection$ object should hold database connection and through this connection
-database queries can be executed using $*Statement$ calls.
-When some data are returned to application from statement, it is done
-through $ResultSet$.
+\Code{Connection} object should hold database connection and through this connection
+database queries can be executed using any of \Code{Statement} calls.
+When data are returned to application from statement, it is done through \Code{ResultSet}.
 
-Getting connection to database is through $DriverManager$, or from JDBC 2.0
-it can be done using $DataSource$ and it is now the preferred way of connecting to database.
+Getting connection to database is through \Code{DriverManager}, or from JDBC 2.0
+it can be done using \Code{DataSource} and it is now the preferred way of connecting to database.
+Example \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database
+that is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
+and \Code{User} user and \Code{Password} password is used when connecting to it.
 
-In the example \ref{code:jdbc}, we will show example of loading data from Oracle database.
+The \Code{createDataSource()} method calls from \ref{code:datasource} would be used in all next examples.
 
-\input{code/jdbc}
+\InsertCode{h}{code/datasource}
+\InsertCode{H}{code/jdbc}
 
-% TODO nejak rozlisovanie pisma pre dane konstanty
-On lines \ref{code:jdbc:dataSource:begin}--\ref{code:jdbc:dataSource:end} we instruct application
-to connect to database that can be found in url jdbc:oracle:thin:@//192.168.0.16:1521/orcl,
-to use User as user and Password as password.
+JDBC example \ref{code:jdbc} shows how can be done loading data from \Code{DataSource} (as in \ref{code:datasource}).
+On line \ref{code:jdbc:connection}, connection to database is created.
 Then on lines \ref{code:jdbc:prepareStatement:begin}--\ref{code:jdbc:prepareStatement:end}
-database query is created to select just rows matching $id$ argument.
+database query is created to select just rows matching \Code{id} argument.
 The query is then executed on line \ref{code:jdbc:executeQuery} and then
-result is mapped from $ResultSet$ to our $DatabaseValue$ model and then it is returned on line \ref{code:jdbc:return}.
+result is mapped from \Code{ResultSet} to our \Code{DatabaseValue} model and then it is returned on line \ref{code:jdbc:return}.
 
 As you can see, there is huge amount of boilerplate code (catch-finally blocks) for closing every JDBC API object,
-as exceptions can be thrown from all calls as we need to free all database resources that we do not need anymore.
+as exceptions can be thrown from almost all calls and we need to free all database resources that we do not need anymore.
 
 From Java 7, try-with-resources can be used with result, that all finally blocks can be removed - resources
 (Connection, PreparedStatement, ResultSet) are automatically closed after finishing block.
 This is ilustrated in example \ref{code:jdbc-try-with-resources}.
 
-\input{code/jdbc-try-with-resources}
+\InsertCode{h}{code/jdbc-try-with-resources}
 
 
 
@@ -78,17 +91,67 @@ From next list, only italicized lines need to be coded by user:
   \item Close the connection   
 \end{itemize}
 Before Java 7, coding in standard JDBC tend to be errorneus because of forgetting to close
-database resources and boilerplate code does not help in readability of code.
-These problems are removed using Spring JDBC Framework, as can be seen in example \ref{code:jdbcTemplate}.
-Example shows, how can be loaded single row from database.
+database resources and boilerplate code does not help in readability of code
+(as can be seen in example \ref{code:jdbc}). These problems are removed using Spring JDBC Framework,
+as can be seen in example \ref{code:jdbcTemplate}. Example shows, how can be loaded single row from database.
+We can see, that mapping in standard JDBC example \ref{code:jdbc} that was done from line \ref{code:jdbc:mapping} is
+equivalent to mapping done in Spring JDBC example \ref{code:jdbcTemplate} that is done in \Code{mapRow} method of \Code{Mapper}.
+Framework handles all boilerplate code around and result is returned after processing single line \ref{code:jdbcTemplate:return}.
 
-\input{code/jdbcTemplate}
+
+\InsertCode{h}{code/jdbcTemplate}
 
 
 
 
 
 \section{MyBatis}
+
+\citet{MyBatis} framework is one of Object-Relational Mapping (ORM) frameworks.
+It uses JDBC API to communicate with database, but in almost all cases, there is no need
+to work with low level JDBC.
+
+Unlike other ORM frameworks, it does not map java objects to database tables, but java methods
+to SQL statements. All communication with database is always through methods in user created interfaces.
+SQL statements are stored in XML files or annotations in these interfaces.
+
+In next two examples we show the same use case of loading \Code{DatabaseValue} from database.
+Both exaxmples define interface \Code{Mapper} that is used in application as in
+example \ref{code:mybatis}. User need only to define interface with method that would be
+called. Than annotations or XML file can be used to define query statement and mapping
+result. By calling the method, MyBatis executes statement and then target object's attributes are
+mapped from result columns.
+
+\InsertCode{h}{code/mybatis}
+\InsertCode{h}{code/mybatis-annotation}
+
+First example uses annotations to store definitions of both query and mapping.
+Query is located on line \ref{code:mybatis:annotation:query} and mapping between lines
+\ref{code:mybatis:annotation:result:begin}--\ref{code:mybatis:annotation:result:end}.
+
+Second example uses XML mapper definitions, so it define plain interface \ref{code:mybatis:xml:interface}
+and then query and mapping are stored in XML mapper file \ref{code:mybatis:xml:mapping}.
+Query is located on line \ref{code:mybatis:xml:mapping:query} in \Code{<select>} tag.
+Tag also contains reference to \Code{resultMap} mapping on lines
+\ref{code:mybatis:xml:mapping:mapping:begin}--\ref{code:mybatis:xml:mapping:mapping:end}
+which should be used to map query output to target object attributes. 
+
+Logic that is made in background by MyBatis is the same as we could see in plain JDBC
+and then in Spring JDBC examples. It connects to database using \Code{DataSource}
+and creates \Code{PreparedStatement}. Next, \Code{id} attribute is set and
+query is executed. After execution, result is mapped using the same logic from \Code{ResultSet}.
+
+\InsertCode{h}{code/mybatis-xml-interface}
+\InsertCode{h}{code/mybatis-xml-mapping}
+
+
+
+
+
+
 \section{Hibernate}
+
+
+
 \section{Kafka}
 
