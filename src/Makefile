@@ -11,12 +11,12 @@ run: build
 # LaTeX je potreba spustit nekolikrat, aby spravne spocital odkazy
 ${TARGET}.pdf: ${TARGET}.tex *.tex *.bib */*.tex Makefile
 	${LATEX_CMD}
-	${BIBTEX_CMD}
-	${LATEX_CMD}
-	${LATEX_CMD}
+	#${BIBTEX_CMD}
+	#${LATEX_CMD}
+	#${LATEX_CMD}
 
 clean: clear
 	rm -f ${TARGET}.pdf
 
 clear:
-	rm -f *.log *.dvi *.aux *.toc *.lof *.lot *.out *.bbl *.blg
+	rm -f *.log *.dvi *.aux *.toc *.lof *.lot *.out *.bbl *.blg *.xmpi *.xmpdata

@@ -14,20 +14,59 @@
 % \openright zařídí, aby následující text začínal na pravé straně knihy
 \let\openright=\clearpage
 
-%% Pokud tiskneme oboustranně:
-% \documentclass[12pt,a4paper,twoside,openright]{report}
-% \setlength\textwidth{145mm}
-% \setlength\textheight{247mm}
-% \setlength\oddsidemargin{14.2mm}
-% \setlength\evensidemargin{0mm}
-% \setlength\topmargin{0mm}
-% \setlength\headsep{0mm}
-% \setlength\headheight{0mm}
-% \let\openright=\cleardoublepage
+
+%%% Údaje o práci
+
+% Název práce v jazyce práce (přesně podle zadání)
+\def\NazevPrace{Analyzing Data Lineage in Database Frameworks}
+% Jméno autora
+\def\AutorPrace{Richard Eliáš}
+% Rok odevzdání
+\def\RokOdevzdani{2019}
+% Název katedry nebo ústavu, kde byla práce oficiálně zadána
+% (dle Organizační struktury MFF UK, případně plný název pracoviště mimo MFF)
+\def\Katedra{Department of Distributed and Dependable Systems}
+% Jedná se o katedru (department) nebo o ústav (institute)?
+\def\TypPracoviste{Department}
+% Vedoucí práce: Jméno a příjmení s~tituly
+\def\Vedouci{RNDr. Pavel Parízek, Ph.D.}
+% Pracoviště vedoucího (opět dle Organizační struktury MFF)
+\def\KatedraVedouciho{Department of Distributed and Dependable Systems}
+% Studijní program a obor
+\def\StudijniProgram{Computer Science}
+\def\StudijniObor{Artificial Inteligence}
+% Nepovinné poděkování (vedoucímu práce, konzultantovi, tomu, kdo
+% zapůjčil software, literaturu apod.)
+\def\Podekovani{%
+  TODO Podakovanie
+}
+% Abstrakt (doporučený rozsah cca 80-200 slov; nejedná se o zadání práce)
+\def\Abstrakt{%
+  TODO Abstrakt
+}
+% 3 až 5 klíčových slov (doporučeno), každé uzavřeno ve složených závorkách
+\def\KlicovaSlova{%
+  TODO Klucove slova
+}
+
+
+\usepackage{filecontents}
+\begin{filecontents*}{\jobname.xmpdata}
+  \Author{\AutorPrace}
+  \Title{\NazevPrace}
+  \Keywords{\KlicovaSlova}
+  \Subject{\Abstrakt}
+  \Publisher{Univerzita Karlova}
+\end{filecontents*}
+
+%% Vytváříme PDF/A-2u
+\usepackage[a-2u]{pdfx}
 
 % Přepneme na českou sazbu
 \usepackage[slovak]{babel}
-\usepackage[IL2]{fontenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
 
 %% Použité kódování znaků: obvykle latin2, cp1250 nebo utf8:
 \usepackage[utf8]{inputenc}
@@ -42,7 +81,7 @@
 \usepackage{graphicx}       % vkládání obrázků
 \usepackage{fancyvrb}       % vylepšené prostředí pro strojové písmo
 \usepackage{indentfirst}    % zavede odsazení 1. odstavce kapitoly
-\usepackage{natbib}         % zajištuje možnost odkazovat na literaturu
+\usepackage[numbers]{natbib}         % zajištuje možnost odkazovat na literaturu
 			    % stylem AUTOR (ROK), resp. AUTOR [ČÍSLO]
 \usepackage[nottoc]{tocbibind} % zajistí přidání seznamu literatury,
                             % obrázků a tabulek do obsahu
@@ -50,7 +89,6 @@
 \usepackage{dcolumn}        % lepší zarovnání sloupců v tabulkách
 \usepackage{booktabs}       % lepší vodorovné linky v tabulkách
 \usepackage{paralist}       % lepší enumerate a itemize
-\usepackage[usenames]{xcolor}  % barevná sazba
 \usepackage{float}
 
 \usepackage{subcaption}
@@ -60,142 +98,17 @@
 \usepackage{tikz}
 \usepackage{amssymb}
 \usepackage{xspace}
-\usetikzlibrary{positioning, shapes, trees, graphs} % RNA trees
-\usetikzlibrary{decorations.pathmorphing} % noisy shapes
-\usetikzlibrary{fit}					% fitting shapes to coordinates
-\usetikzlibrary{backgrounds}	% drawing the background after the foreground
 
 \usepackage[percent]{overpic}
 
 \usepackage{listings}
 \usepackage{color}
-\definecolor{green}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{yellow}{rgb}{0.73,0.71,0.16}
-\definecolor{pink}{rgb}{0.58,0,0.82}
-\definecolor{orange}{rgb}{0.8,0.47,0.19}
 
-\lstdefinelanguage{Java}{
-  morekeywords={
-    return,try,catch,finally,
-    static,default,final,volatile,new,
-    null,void,int,long,boolean,short,double,float,
-    interface,class,extends,implements,
-    if,else,for,while,do,throw,throws,
-    public,protected,private},
-  numbers=left,
-  numbersep=3pt,
-  numberstyle=\tiny\color{gray},
-  frame=tb,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\footnotesize\ttfamily},
-  showlines=false,
-  keywordstyle=\color{blue},
-  commentstyle=\color{green},
-  morecomment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  stringstyle=\color{pink},
-  morestring=[b]",
-  morestring=[d]’,
-  moredelim=[is][\textcolor{yellow}]{@@}{@@},
-  breaklines=true,
-  breakatwhitespace=true,
-  escapeinside={/*}{*/},
-  captionpos=b,
-}
-
-\lstdefinelanguage{XML}{
-  language=HTML,
-  numbers=left,
-  numbersep=3pt,
-  numberstyle=\tiny\color{gray},
-  frame=tb,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\footnotesize\ttfamily},
-  showlines=false,
-  keywordstyle=\color{blue},
-  commentstyle=\color{green},
-  morecomment=[s]{<!--}{-->},
-  stringstyle=\color{pink},
-  moredelim=[is][\textcolor{orange}]{@@}{@@},
-  morestring=[b]",
-  morestring=[d]’,
-  breaklines=true,
-  breakatwhitespace=true,
-  escapeinside={/*}{*/},
-  captionpos=b,
-}
-
-
-%%% Údaje o práci
-
-% Název práce v jazyce práce (přesně podle zadání)
-\def\NazevPrace{Analýza datových toků ve databázových systémech}
-
-% Název práce v angličtině
-\def\NazevPraceEN{Analyzing Data Lineage in Database Frameworks}
-
-% Jméno autora
-\def\AutorPrace{Richard Eliáš}
-
-% Rok odevzdání
-\def\RokOdevzdani{2019}
-
-% Název katedry nebo ústavu, kde byla práce oficiálně zadána
-% (dle Organizační struktury MFF UK, případně plný název pracoviště mimo MFF)
-\def\Katedra{Katedra distribuovaných a spolehlivých systémů}
-\def\KatedraEN{Department of Distributed and Dependable Systems}
-
-% Jedná se o katedru (department) nebo o ústav (institute)?
-\def\TypPracoviste{Katedra}
-\def\TypPracovisteEN{Department}
-
-% Vedoucí práce: Jméno a příjmení s~tituly
-\def\Vedouci{RNDr. Pavel Parízek, Ph.D.}
-
-% Pracoviště vedoucího (opět dle Organizační struktury MFF)
-\def\KatedraVedouciho{Katedra distribuovaných a spolehlivých systémů}
-\def\KatedraVedoucihoEN{Department of Distributed and Dependable Systems}
-
-% Studijní program a obor
-\def\StudijniProgram{Informatika}
-\def\StudijniObor{Umělá inteligence}
-
-% Nepovinné poděkování (vedoucímu práce, konzultantovi, tomu, kdo
-% zapůjčil software, literaturu apod.)
-\def\Podekovani{%
-TODO Podakovanie
-}
-
-% Abstrakt (doporučený rozsah cca 80-200 slov; nejedná se o zadání práce)
-\def\Abstrakt{%
-TODO Abstrakt
-}
-\def\AbstraktEN{%
-TODO Abstrakt
-}
-
-% 3 až 5 klíčových slov (doporučeno), každé uzavřeno ve složených závorkách
-\def\KlicovaSlova{%
-  TODO Klucove slova
-}
-\def\KlicovaSlovaEN{%
-  TODO Klucove slova
-}
 
 %% Balíček hyperref, kterým jdou vyrábět klikací odkazy v PDF,
 %% ale hlavně ho používáme k uložení metadat do PDF (včetně obsahu).
-\usepackage[pdftex,unicode]{hyperref}   % Musí být za všemi ostatními balíčky
+\hypersetup{unicode}
 \hypersetup{breaklinks=true}
-\hypersetup{pdftitle={\NazevPrace}}
-\hypersetup{pdfauthor={\AutorPrace}}
-\hypersetup{pdfkeywords=\KlicovaSlova}
 \hypersetup{urlcolor=blue}
 
 %% Definice různých užitečných maker (viz popis uvnitř souboru)

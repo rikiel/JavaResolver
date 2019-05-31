@@ -91,7 +91,6 @@
 
 \renewcommand{\O}[1]{\sloppy\mbox{\ensuremath{\mathcal{O}}(#1)}}
 
-
 \newcommand{\scale}{0.6}
 \newcommand{\subtree}[1]{\begin{tikzpicture}[
           on grid,
@@ -111,5 +110,70 @@
           every node/.style = {scale = \scale, circle, draw, align = center},
           tree/.style = {draw = none, fill = none}]#1\end{tikzpicture}}
 
+\definecolor{green}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{yellow}{rgb}{0.73,0.71,0.16}
+\definecolor{pink}{rgb}{0.58,0,0.82}
+\definecolor{orange}{rgb}{0.8,0.47,0.19}
 
+\lstdefinelanguage{Java}{
+  morekeywords={
+    return,try,catch,finally,
+    static,default,final,volatile,new,
+    null,void,int,long,boolean,short,double,float,
+    interface,class,extends,implements,
+    if,else,for,while,do,throw,throws,
+    public,protected,private},
+  numbers=left,
+  numbersep=3pt,
+  numberstyle=\tiny\color{gray},
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\footnotesize\ttfamily},
+  showlines=false,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  stringstyle=\color{pink},
+  morestring=[b]",
+  morestring=[d]’,
+  moredelim=[is][\textcolor{yellow}]{@@}{@@},
+  breaklines=true,
+  breakatwhitespace=true,
+  escapeinside={/*}{*/},
+  captionpos=b,
+}
+
+\lstdefinelanguage{XML}{
+  language=HTML,
+  numbers=left,
+  numbersep=3pt,
+  numberstyle=\tiny\color{gray},
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\footnotesize\ttfamily},
+  showlines=false,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  morecomment=[s]{<!--}{-->},
+  stringstyle=\color{pink},
+  moredelim=[is][\textcolor{orange}]{@@}{@@},
+  morestring=[b]",
+  morestring=[d]’,
+  breaklines=true,
+  breakatwhitespace=true,
+  escapeinside={/*}{*/},
+  captionpos=b,
+}
+
+
+\newcommand\TODO[1]{{\color{red}TODO #1}}
+\newcommand{\uvodzovky}[1]{``#1''}
 
