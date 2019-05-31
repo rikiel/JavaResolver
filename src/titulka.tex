@@ -1,18 +1,17 @@
-%%% Titulní strana práce a další povinné informační strany
+%%% Title page of the thesis and other mandatory pages
 
-%%% Titulní strana práce
+%%% Title page of the thesis
 
 \pagestyle{empty}
 \hypersetup{pageanchor=false}
-
 \begin{center}
 
-\centerline{\mbox{\includegraphics[width=166mm]{../img/logo.pdf}}}
+\centerline{\mbox{\includegraphics[width=166mm]{img/logo-en.pdf}}}
 
 \vspace{-8mm}
 \vfill
 
-{\bf\Large DIPLOMOVÁ PRÁCE}
+{\bf\Large MASTER THESIS}
 
 \vfill
 
@@ -29,29 +28,27 @@
 \vfill
 
 \begin{tabular}{rl}
-
-Vedoucí diplomové práce: & \Vedouci \\
+Supervisor of the master thesis: & \Vedouci \\
 \noalign{\vspace{2mm}}
-Studijní program: & \StudijniProgram \\
+Study programme: & \StudijniProgram \\
 \noalign{\vspace{2mm}}
-Studijní obor: & \StudijniObor \\
+Study branch: & \StudijniObor \\
 \end{tabular}
 
 \vfill
 
 % Zde doplňte rok
-Praha \RokOdevzdani
+Prague \RokOdevzdani
 
 \end{center}
 
 \newpage
 
-%%% Následuje vevázaný list -- kopie podepsaného "Zadání bakalářské práce".
-%%% Toto zadání NENÍ součástí elektronické verze práce, nescanovat.
+%%% Here should be a bound sheet included -- a signed copy of the "master
+%%% thesis assignment". This assignment is NOT a part of the electronic
+%%% version of the thesis. DO NOT SCAN.
 
-%%% Strana s čestným prohlášením k bakalářské práci
-
-\def\odsek{\\ \phantom{} \hspace{10pt} \smallskip}
+%%% A page with a solemn declaration to the master thesis
 
 \openright
 \hypersetup{pageanchor=true}
@@ -59,100 +56,74 @@ Praha \RokOdevzdani
 \pagenumbering{roman}
 \vglue 0pt plus 1fill
 
-Prohlašuji, že jsem předloženou práci vypracoval samostatně a že jsem uvedl veškeré použité informační zdroje v souladu s Metodickým pokynem o etické přípravě vysokoškolských závěrečných prací.
+I~hereby declare that I~have authored this thesis independently,
+and that all sources used are declared in accordance with the
+\uvodzovky{Metodický pokyn o~etické přípravě vysokoškolských závěrečných prací}.
 
-Beru na vědomí, že se na moji práci vztahují práva a povinnosti vyplývající ze zákona č. 121/2000 Sb., o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon), ve znění pozdějších předpisů (dále jen ``autorský zákon``), především  § 35 a § 60 autorského zákona upravující školní dílo. V případě počítačových programů, jež jsou součástí mojí práce či její přílohou, a veškeré související dokumentace k počítačovým programům (dále jen ``software``), uděluji tzv. MIT Licenci.
+\vspace{2mm}
+I~acknowledge that my thesis (work) is subject to the rights and obligations
+arising from Act No. 121/2000 Coll., on Copyright and Rights Related to Copyright
+and on Amendments to Certain Laws (the Copyright Act), as amended,
+(hereinafter as the "Copyright Act"), in particular §~35, and §~60 of the Copyright Act
+governing the school work.
 
-Obsahem MIT Licence je oprávnění bezúplatně užít software. Toto oprávnění uděluji každé osobě, která má o užití software zájem.
+\vspace{2mm}
+With respect to the computer programs that are part of my thesis (work)
+and with respect to all documentation related to the computer programs ("software"),
+I~hereby grant the so-called MIT License.
 
-Každá osoba je oprávněna pořídit si kopii software (včetně související dokumentace) bez jakéhokoli omezení a dále je oprávněna bez jakéhokoli omezení software zejména užívat, kopírovat, upravovat, sloučit, publikovat, distribuovat, poskytovat podlicence a / nebo prodávat kopie software a umožnit výkon těchto práv osobám, kterým bude dále software poskytnut. Způsoby užití software ani rozsahu tohoto užití nejsou jakkoli omezeny.
+\vspace{2mm}
+The MIT License represents a~license to use the software free of charge.
+I~grant this license to every person interested in using the software.
+Each person is entitled to obtain a~copy of the software (including
+the related documentation) without any limitation, and may, without limitation,
+use, copy, modify, merge, publish, distribute, sublicense and~/~or sell
+copies of the software, and allow any person to whom the software is further
+provided to exercise the aforementioned rights. Ways of using the software or the extent
+of this use are not limited in any way.
 
-Osoba, která má o užití software zájem je povinna připojit text licenčních podmínek následujícího znění: 
-\odsek Copyright \textsuperscript{\textcopyright} \RokOdevzdani \hspace{1pt} \AutorPrace
-\odsek Permission is hereby granted, free of charge, to any person
-\odsek obtaining a copy of this software and associated documentation
-\odsek files (the ``Software``), to deal in the Software without
-\odsek restriction, including without limitation the rights to use,
-\odsek copy, modify, merge, publish, distribute, sublicense, and/or sell
-\odsek copies of the Software, and to permit persons to whom the
-\odsek Software is furnished to do so, subject to the following
-\odsek conditions:
-\odsek The above copyright notice and this permission notice shall be
-\odsek included in all copies or substantial portions of the Software.
+\vspace{2mm}
+The person interested in using the software is obliged to attach the text of the license terms as follows:
+
+\vspace{3mm}
+\noindent
+Copyright (c) \RokOdevzdani~\AutorPrace \\
+Permission is hereby granted, free of charge, to any person \\
+obtaining a copy of this software and associated documentation \\
+files (the \uvodzovky{Software}), to deal in the Software without \\
+restriction, including without limitation the rights to use, \\
+copy, modify, merge, publish, distribute, sublicense, and/or sell \\
+copies of the Software, and to permit persons to whom the \\
+Software is furnished to do so, subject to the following conditions: \\
+The above copyright notice and this permission notice shall be \\
+included in all copies or substantial portions of the Software.
+
+{
 \footnotesize
-\odsek THE SOFTWARE IS PROVIDED ``AS IS``, WITHOUT WARRANTY OF ANY KIND,
-\odsek EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-\odsek OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-\odsek NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-\odsek HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-\odsek WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-\odsek FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-\odsek OTHER DEALINGS IN THE SOFTWARE.
+\vspace{3mm}
+\noindent
+THE SOFTWARE IS PROVIDED \uvodzovky{AS IS}, WITHOUT WARRANTY OF ANY KIND, \\
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES \\
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND \\
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT \\
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, \\
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING \\
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR \\
+OTHER DEALINGS IN THE SOFTWARE.
+}
 
-\vspace{10mm}
+\vspace{15mm}
 
 \hbox{\hbox to 0.5\hsize{%
-V ........ dne ............
-\hss}\hbox to 0.5\hsize{%
-Podpis autora
+In $\ldots\ldots\ldots$ date $\ldots\ldots\ldots$
 \hss}}
+
+\hspace{10cm}\TODO{"Podpis"?}
 
 \vspace{20mm}
 \newpage
 
-%%% Povinná informační strana bakalářské práce
-
-\openright
-
-\vbox to 0.5\vsize{
-\setlength\parindent{0mm}
-\setlength\parskip{5mm}
-
-Název práce:
-\NazevPrace
-
-Autor:
-\AutorPrace
-
-\TypPracoviste:
-\Katedra
-
-Vedoucí bakalářské práce:
-\Vedouci, \KatedraVedouciho
-
-Abstrakt:
-\Abstrakt
-
-Klíčová slova:
-\KlicovaSlova
-
-\vss}\nobreak\vbox to 0.49\vsize{
-\setlength\parindent{0mm}
-\setlength\parskip{5mm}
-
-Title:
-\NazevPraceEN
-
-Author:
-\AutorPrace
-
-\TypPracovisteEN:
-\KatedraEN
-
-Supervisor:
-\Vedouci, \KatedraVedoucihoEN
-
-Abstract:
-\AbstraktEN
-
-Keywords:
-\KlicovaSlovaEN
-
-\vss}
-
-\newpage
-
-%%% Poděkování
+%%% Podekovani
 
 \openright
 
@@ -161,7 +132,38 @@ Keywords:
 
 \newpage
 
+%%% Mandatory information page of the thesis
+
+\openright
+
+\vbox to 0.5\vsize{
+\setlength\parindent{0mm}
+\setlength\parskip{5mm}
+
+Title:
+\NazevPrace
+
+Author:
+\AutorPrace
+
+\TypPracoviste:
+\Katedra
+
+Supervisor:
+\Vedouci, \KatedraVedouciho
+
+Abstract:
+\Abstrakt
+
+Keywords:
+\KlicovaSlova
+
+\vss}
+
+\newpage
+
 \openright
 \pagestyle{plain}
 \pagenumbering{arabic}
 \setcounter{page}{1}
+
