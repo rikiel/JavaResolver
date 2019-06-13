@@ -20,7 +20,7 @@ We will try to follow one example of loading class \Code{DatabaseValue} as can b
 example \ref{code:model} from database structured as in \ref{code:db}.
 
 \InsertCode{h}{code/model}
-\InsertCode{h}{code/db}
+\input{code/db}
 
 
 
@@ -51,7 +51,7 @@ Example \ref{code:datasource} shows how \Code{DataSource} can be created for Ora
 that is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
 and \Code{User} user and \Code{Password} password is used when connecting to it.
 
-The \Code{createDataSource()} method calls from \ref{code:datasource} would be used in all next examples.
+Calls of \Code{createDataSource()} would be used in next examples.
 
 \InsertCode{h}{code/datasource}
 \InsertCode{H}{code/jdbc}
@@ -90,12 +90,12 @@ From next list, only italicized lines need to be coded by user:
   \item Handle transactions
   \item Close the connection   
 \end{itemize}
+
 Before Java 7, coding in standard JDBC tend to be errorneus because of forgetting to close
 database resources and boilerplate code does not help in readability of code
-(as can be seen in example \ref{code:jdbc}). These problems are removed using Spring JDBC Framework,
-as can be seen in example \ref{code:jdbcTemplate}. Example shows, how can be loaded single row from database.
-We can see, that mapping in standard JDBC example \ref{code:jdbc} that was done from line \ref{code:jdbc:mapping} is
-equivalent to mapping done in Spring JDBC example \ref{code:jdbcTemplate} that is done in \Code{mapRow} method of \Code{Mapper}.
+(as could be seen in example \ref{code:jdbc}). These problems are removed using Spring JDBC Framework,
+as illustrate example \ref{code:jdbcTemplate}. It shows, how can be loaded single row from database.
+We can see, that mappings are the same in standard JDBC and Spring JDBC examples.
 Framework handles all boilerplate code around and result is returned after processing single line \ref{code:jdbcTemplate:return}.
 
 
@@ -115,34 +115,75 @@ Unlike other ORM frameworks, it does not map java objects to database tables, bu
 to SQL statements. All communication with database is always through methods in user created interfaces.
 SQL statements are stored in XML files or annotations in these interfaces.
 
-In next two examples we show the same use case of loading \Code{DatabaseValue} from database.
-Both exaxmples define interface \Code{Mapper} that is used in application as in
-example \ref{code:mybatis}. User need only to define interface with method that would be
-called. Than annotations or XML file can be used to define query statement and mapping
-result. By calling the method, MyBatis executes statement and then target object's attributes are
-mapped from result columns.
+In subsection \ref{mybatis:mapper} we show examples of \Code{Mapper} interface definitions,
+which can be done by annotations or using XML mapper files.
+Logic that is made in background by MyBatis by calling these interfaces
+is same as we could see in previous JDBC or Spring JDBC examples,
+when from some database connection \Code{PreparedStatement} is created.
+Next, method argument \Code{id} is set and query is executed.
+After execution, from \Code{ResultSet} are values of columns
+mapped to object attributes and object is returned.
+
+Subsection \ref{mybatis:configuration} shows how database
+configuration can be made and subsection \ref{mybatis:run}
+shows how data can be loaded from such a database.
+
+
+
+\subsection{MyBatis Mapper definition \label{mybatis:mapper}}
+
+\InsertCode{h}{code/mybatis-interface-annotations}
+
+Example \ref{code:mybatis:interface:annotations} uses annotations to store definitions of both query and mapping.
+Query is defined using \Code{@Select} annotation on line \ref{code:mybatis:interface:annotations:query}
+and mapping is defined using \Code{@Results} and \Code{@Result} annotations.
+
+\InsertCode{h}{code/mybatis-interface-xml}
+\InsertCode{H}{code/mybatis-mapper-xml}
+
+Snippets \ref{code:mybatis:interface:xml} and \ref{code:mybatis:mapper:xml} contains definitions
+of plain interface which has query and mapping stored in XML mapper file.
+Query is located on line \ref{code:mybatis:mapper:xml:query} in \Code{<select>} tag.
+Tag contains reference to correct \Code{resultMap} mapping on lines
+\ref{code:mybatis:mapper:xml:mapping:begin}--\ref{code:mybatis:mapper:xml:mapping:end}.
+
+
+
+\subsection{MyBatis Configuration \label{mybatis:configuration}}
+
+MyBatis framework uses interface \Code{SqlSessionFactory} for creating database connections.
+Factory can be created using both Java and XML files.
+
+\InsertCode{h}{code/mybatis-sessionFactory-java}
+
+Example \ref{code:mybatis:sessionFactory:java} shows how configuration can be done in Java.
+We set \Code{DataSource} reference to \Code{Environment} class on line \ref{code:mybatis:sessionFactory:java:dataSource}.
+\Code{JdbcTransactionFactory} was used to handle database transactions.
+On line \ref{code:mybatis:sessionFactory:java:addMapper} mapper class is registered to be known by MyBatis
+and next \Code{SqlSessionFactory} is created.
+
+\InsertCode{h}{code/mybatis-sessionFactory-xml}
+\InsertCode{H}{code/mybatis-configuration-xml}
+
+The same can be also done using XML configuration file.
+\Code{SqlSessionFactory} is created in snippet \ref{code:mybatis:sessionFactory:xml}
+after loading configuration file on line \ref{code:mybatis:sessionFactory:xml:file}.
+
+XML configuration file \ref{code:mybatis:configuration:xml} configures \Code{DataSource} on lines
+\ref{code:mybatis:configuration:xml:dataSource:begin}--\ref{code:mybatis:configuration:xml:dataSource:end}
+and \Code{Mapper} class is registered on line \ref{code:mybatis:configuration:xml:mapper}.
+
+
+
+\subsection{Loading data from database using MyBatis \label{mybatis:run}}
+
+As we know how to configure database connections and how to define mappers,
+in example \ref{code:mybatis} we show how data can be loaded.
+
+On line \ref{code:mybatis:getMapper}, the implementation of \Code{Mapper} interface
+that was made by MyBatis is returned and on next line \ref{code:mybatis:return} database query is executed.
 
 \InsertCode{h}{code/mybatis}
-\InsertCode{h}{code/mybatis-annotation}
-
-First example uses annotations to store definitions of both query and mapping.
-Query is located on line \ref{code:mybatis:annotation:query} and mapping between lines
-\ref{code:mybatis:annotation:result:begin}--\ref{code:mybatis:annotation:result:end}.
-
-Second example uses XML mapper definitions, so it define plain interface \ref{code:mybatis:xml:interface}
-and then query and mapping are stored in XML mapper file \ref{code:mybatis:xml:mapping}.
-Query is located on line \ref{code:mybatis:xml:mapping:query} in \Code{<select>} tag.
-Tag also contains reference to \Code{resultMap} mapping on lines
-\ref{code:mybatis:xml:mapping:mapping:begin}--\ref{code:mybatis:xml:mapping:mapping:end}
-which should be used to map query output to target object attributes. 
-
-Logic that is made in background by MyBatis is the same as we could see in plain JDBC
-and then in Spring JDBC examples. It connects to database using \Code{DataSource}
-and creates \Code{PreparedStatement}. Next, \Code{id} attribute is set and
-query is executed. After execution, result is mapped using the same logic from \Code{ResultSet}.
-
-\InsertCode{h}{code/mybatis-xml-interface}
-\InsertCode{h}{code/mybatis-xml-mapping}
 
 
 

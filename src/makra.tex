@@ -125,11 +125,11 @@
     if,else,for,while,do,throw,throws,
     public,protected,private},
   numbers=left,
-  numbersep=3pt,
+  numbersep=3mm,
   numberstyle=\tiny\color{gray},
   frame=tb,
-  aboveskip=3mm,
-  belowskip=3mm,
+  %aboveskip=3mm,
+  %belowskip=3mm,
   showstringspaces=false,
   columns=flexible,
   basicstyle={\footnotesize\ttfamily},
@@ -154,8 +154,8 @@
   numbersep=3pt,
   numberstyle=\tiny\color{gray},
   frame=tb,
-  aboveskip=3mm,
-  belowskip=3mm,
+  %aboveskip=3mm,
+  %belowskip=3mm,
   showstringspaces=false,
   columns=flexible,
   basicstyle={\footnotesize\ttfamily},
@@ -173,6 +173,16 @@
   captionpos=b,
 }
 
+\makeatletter
+\AtBeginDocument{%
+  \let\c@table\c@lstlisting
+  \let\thetable\thelstlisting
+
+  \let\c@figure\c@lstlisting
+  \let\thefigure\thelstlisting
+  \let\ftype@lstlisting\ftype@figure
+}
+\makeatother
 
 \newcommand\TODO[1]{{\color{red}TODO #1}}
 \newcommand{\uvodzovky}[1]{``#1''}

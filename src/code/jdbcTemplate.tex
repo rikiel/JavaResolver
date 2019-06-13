@@ -1,21 +1,21 @@
 
 
-\begin{lstlisting}[language=Java, caption={Example of loading data from Oracle database using Spring JDBC Framework}, label={code:jdbcTemplate}]
-class Mapper implements RowMapper<DatabaseValue> {
-  @@@Override@@
-  public DatabaseValue mapRow(ResultSet rs, int rowNum) throws SQLException {
-    DatabaseValue databaseValue = new DatabaseValue();
-    // TODO RE - skontrolovat ci sa nazvy ziskavaju spravne
-    databaseValue.setId(rs.getInt("ID"));
-    databaseValue.setValue(rs.getString("VALUE"));
-    return databaseValue;
-  }
-}
-
+\begin{lstlisting}[language=Java, caption={Example of loading data using Spring JDBC Framework}, label={code:jdbcTemplate}]
 public DatabaseValue getForId(int id) throws SQLException {
-  JdbcTemplate jdbcTemplate = new JdbcTemplate(createDataSource());
+  DataSource dataSource = createDataSource();
+  JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
   String query = "SELECT ID, VALUE FROM T WHERE ID = ?";
   return jdbcTemplate.queryForObject(query, new Mapper(), id); /*\label{code:jdbcTemplate:return}*/
+}
+
+public class Mapper implements RowMapper<DatabaseValue> {
+  @@@Override@@
+  public DatabaseValue mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    DatabaseValue databaseValue = new DatabaseValue();
+    databaseValue.setId(resultSet.getInt("ID"));
+    databaseValue.setValue(resultSet.getString("VALUE"));
+    return databaseValue;
+  }
 }
 \end{lstlisting}
 

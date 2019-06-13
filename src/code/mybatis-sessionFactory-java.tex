@@ -1,0 +1,13 @@
+
+\begin{lstlisting}[language=Java, caption={Example of loading data using Java Configuration class}, label={code:mybatis:sessionFactory:java}]
+public SqlSessionFactory createSqlSessionFactory() throws SQLException {
+  Environment environment = new Environment.Builder("environmentId")
+      .dataSource(createDataSource()) /* \label{code:mybatis:sessionFactory:java:dataSource} */
+      .transactionFactory(new JdbcTransactionFactory())
+      .build();
+  Configuration sessionFactory = new Configuration(environment);
+  sessionFactory.addMapper(Mapper.class); /* \label{code:mybatis:sessionFactory:java:addMapper} */
+  return new SqlSessionFactoryBuilder()
+      .build(sessionFactory);
+}
+\end{lstlisting}

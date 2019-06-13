@@ -1,0 +1,7 @@
+
+\begin{lstlisting}[language=Java, caption={Example of loading data using XML Configuration}, label={code:mybatis:sessionFactory:xml}]
+public SqlSessionFactory createSqlSessionFactory() throws IOException {
+  return new SqlSessionFactoryBuilder()
+      .build(new FileInputStream("sessionFactory.xml")); /* \label{code:mybatis:sessionFactory:xml:file} */
+}
+\end{lstlisting}

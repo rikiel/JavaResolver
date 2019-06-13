@@ -1,6 +1,10 @@
 
-\begin{lstlisting}[language=Java, caption={Example of object loading from database using MyBatis}, label={code:mybatis:annotation}]
-public DatabaseValue getForId(int id) throws SQLException {
-  // TODO RE funkcny minimalisticky priklad pre mybatis
+\begin{lstlisting}[language=Java, caption={Using MyBatis to load data from database}, label={code:mybatis}]
+public DatabaseValue getForId(int id) throws Exception {
+  SqlSessionFactory sqlSessionFactory = createSqlSessionFactory();
+  try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+    Mapper mapper = sqlSession.getMapper(Mapper.class); /* \label{code:mybatis:getMapper} */
+    return mapper.getForId(id); /* \label{code:mybatis:return} */
+  }
 }
 \end{lstlisting}

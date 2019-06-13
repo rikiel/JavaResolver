@@ -1,16 +1,15 @@
 
-\begin{lstlisting}[language=Java, caption={Example of loading data from Oracle database using try-with-resources}, label={code:jdbc-try-with-resources}]
+\begin{lstlisting}[language=Java, caption={Example of loading data using try-with-resources}, label={code:jdbc-try-with-resources}]
 public DatabaseValue getForId(int id) throws SQLException {
   DataSource dataSource = createDataSource();
-
-  try (Connection = dataSource.getConnection()) {
+  try (Connection connection = dataSource.getConnection()) {
     String query = "SELECT ID, VALUE FROM T WHERE ID = ?";
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
       preparedStatement.setInt(1, id);
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         DatabaseValue databaseValue = new DatabaseValue();
-        databaseValue.setId(rs.getInt("ID"));
-        databaseValue.setValue(rs.getString("VALUE"));
+        databaseValue.setId(resultSet.getInt("ID"));
+        databaseValue.setValue(resultSet.getString("VALUE"));
         return databaseValue;
       } catch (SQLException e) {
         // handle exception
