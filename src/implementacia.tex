@@ -1,13 +1,117 @@
 
-\chapter{Implementácia}
+\chapter{Implementation of Data Lineage for Frameworks}
 
-\section{Rozhranie}
+In this chapter, we will present our solution of Data Lineage library for Database Frameworks.
+We will discuss different problems that came with all the frameworks presented in chapter \ref{frameworks}.
 
-\section{Jdbc}
+\section{Interface}
+
+\section{JDBC \label{implementation:jdbc}}
+
+Implementation of Data Lineage for standard JDBC is done using the library.
+
+\TODO{Nieco o JDBC}
+
+\TODO{DataSource implementacia}
+
+
+
+\section{Spring JDBC Framework}
+
+Spring JDBC Framework comes with approach of \Code{Callbacks}. Library handles
+all boilerplate code and calls user defined callback objects to do its job
+and after finishing it, library handles closing all resources that is not needed anymore.
+
+When we looked to implementation of \Code{JdbcTemplate} class, we found out
+that database calls are made only by 4 out of about 50 its methods.
+All other methods call them to execute some queries.
+
+\TODO{Pokracovanie JdbcTemplate}
+
+
 
 \section{MyBatis}
 
-\section{JdbcTemplate}
+In chapter \ref{frameworks:myBatis} we showed classic use case of loading data from database.
+Now, we present solution of creating data lineage for this framework.
+
+
+
+\subsection{Mapper interfaces}
+
+To find all the mappers, we iterate all classes in WALA \Code{IClassHierarchy}.
+We are searching for interfaces with methods annotated with MyBatis annotations,
+or interfaces for which XML mapper definition exists.
+
+
+
+\subsubsection{XML mapper files}
+
+XML mapper file has same name as interface (but .xml extension is used instead of .java),
+and layes in same directory.
+
+We made a parser of such a XML files, that can get information about SQL statements
+and column to property mapping.
+MyBatis provide rich feature set for XML mappers.
+We will describe how mappers are defined and some of the advanced features
+that we are handling.
+
+Basic mapper, which example was showed in \ref{code:mybatis:mapper:xml} contains of SQL statement
+with defined \Code{ResultMap} when needed. MyBatis use tags
+\Code{<select>}, \Code{<insert>}, \Code{<delete>} and \Code{<update>}
+for storing SQLs and \Code{<resultMap>} for mapping which is divided into column-to-property
+mapping pairs.
+
+From more advanced features, MyBatis supports reusable fragmets. It means that
+one can define some fragment of SQL and reuse it in more queries.
+Each fragment has its own ID, so it is easy to find correct one and include it into query.
+
+Another feature is dynamic SQLs, where queries are created dynamically
+as some conditions hold. As we do not know which conditions are valid
+at runtime, we made simplification that we always use first branch
+that we see in code.
+\TODO{Ukazat priklad kodu a jeho vystup}
+
+
+
+\subsubsection{Annotated mapper classes}
+
+When mappers use annotations, it is quite simple to get all data needed
+from WALA. We know, that SQL statement is always stored in annotations
+\Code{@Select}, \Code{@Insert}, \Code{@Delete} or \Code{@Update}
+and queries are stored in plain \Code{String} array.
+Queries can also contain dynamic SQL as in XML definitions.
+
+For mapping result object the \Code{@Results} is used with \Code{@Result}
+for every column to object property mapping definition.
+\TODO{Pripadne pridat aj @ConstructorArgs, kedby to bolo hotove}
+
+\TODO{Co vystupne argumenty metody?}
+
+There also exists more advanced features of MyBatis when using annotations\footnote{
+  Such as using provider classes to create SQL queries (\Code{@SelectProvider}, $\ldots$),
+  generating IDs from sequence (\Code{@SelectKey}) and using them in queries,
+  generating maps from objects (\Code{@MapKey}),
+  associations for attribute classes (\Code{@One} or \Code{@Many}),
+  mixing XML and annotation mappers (e.g. define \Code{<resultMap>} in XML and reference it
+  using \Code{@ResultMap} annotation)}
+but we do not handle them. All of them can be added as new functionality in next development,
+if needed.
+
+
+
+
+\subsection{Database connection configuration}
+
+Configuration of MyBatis can be done in two ways, using XML configuration file
+or in Java using \Code{Configuration} class. Second way needs no more attention,
+as we use \Code{DataSource} classes that are already handled in section \ref{implementation:jdbc}.
+
+To handle XML configuration, we need parse configuration file and find \Code{<dataSource>}
+section and its properties \Code{driver}, \Code{url} and \Code{username}. All this
+information we need for identifying target database.
+
+
 
 \section{Kafka}
 

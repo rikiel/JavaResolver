@@ -8,7 +8,7 @@
 
 \newcommand{\Code}[1]{\texttt{#1}}
 
-\chapter{Overview of database frameworks in java}
+\chapter{Overview of database frameworks in java \label{frameworks}}
 
 In this chapter, we will analyse some of database frameworks that are mainly used
 to connect to databases and load (or store) data to (or from) java applications
@@ -26,7 +26,7 @@ example \ref{code:model} from database structured as in \ref{code:db}.
 
 
 
-\section{JDBC}
+\section{JDBC \label{frameworks:jdbc}}
 
 For accessing database in java application, there exists standard Java Database Connectivity (JDBC) API,
 which is described in more detail in \citet{JDBC_OVERVIEW}.
@@ -75,7 +75,7 @@ This is ilustrated in example \ref{code:jdbc-try-with-resources}.
 
 
 
-\section{Spring JDBC Framework}
+\section{Spring JDBC Framework \label{frameworks:jdbcTemplate}}
 \citet{SpringJDBC} Framework is extension above JDBC API and tries to help users to code only
 parts with application logic and it removes much of the boilerplate code.
 From next list, only italicized lines need to be coded by user:
@@ -105,7 +105,7 @@ Framework handles all boilerplate code around and result is returned after proce
 
 
 
-\section{MyBatis}
+\section{MyBatis \label{frameworks:myBatis}}
 
 \citet{MyBatis} framework is one of Object-Relational Mapping (ORM) frameworks.
 It uses JDBC API to communicate with database, but in almost all cases, there is no need
@@ -195,4 +195,5 @@ that was made by MyBatis is returned and on next line \ref{code:mybatis:return} 
 
 
 \section{Kafka}
+
 
