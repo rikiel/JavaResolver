@@ -9,10 +9,20 @@ We will discuss different problems that came with all the frameworks presented i
 \section{JDBC \label{implementation:jdbc}}
 
 Implementation of Data Lineage for standard JDBC is done using the library.
+\TODO{Popisat plugin}
 
-\TODO{Nieco o JDBC}
 
-\TODO{DataSource implementacia}
+
+
+\subsection{DataSource \label{implementation:dataSource}}
+
+Database vendors usually provide \Code{DataSource} implementation, which still
+need some configuration about database - url, credentials and probably much more.
+
+To identify target database, we need information about url and username. These properties
+are usually set to \Code{DataSource} objects and from these calls, we can get
+their values.
+
 
 
 
@@ -84,9 +94,19 @@ Queries can also contain dynamic SQL as in XML definitions.
 
 For mapping result object the \Code{@Results} is used with \Code{@Result}
 for every column to object property mapping definition.
-\TODO{Pripadne pridat aj @ConstructorArgs, kedby to bolo hotove}
+Mapping can be done using \Code{@ConstructorArgs}, when columns are mapped
+to arguments of a constructor. In that case, we unfortunately do not know
+name of target property, as in constructor arbitrary code can be executed\footnote{
+  Arbitrary code can be executed also in setters, but it is usually used
+  just as setting new reference to property.
+  \TODO{Mozno nejake ine vysvetlenie}
+}.
 
-\TODO{Co vystupne argumenty metody?}
+When calling database procedure with some output arguments,
+framework can fill result values into method arguments.
+It can be \Code{Map<String, TargetClass>} object (where mapper reference to key to that map),
+or any arbitrary object (where mapper reference field, in which result will be stored).
+\TODO{Viac k vystupnym argumentom?}
 
 There also exists more advanced features of MyBatis when using annotations\footnote{
   Such as using provider classes to create SQL queries (\Code{@SelectProvider}, $\ldots$),
@@ -105,7 +125,7 @@ if needed.
 
 Configuration of MyBatis can be done in two ways, using XML configuration file
 or in Java using \Code{Configuration} class. Second way needs no more attention,
-as we use \Code{DataSource} classes that are already handled in section \ref{implementation:jdbc}.
+as we use \Code{DataSource} classes that are already handled in section \ref{implementation:dataSource}.
 
 To handle XML configuration, we need parse configuration file and find \Code{<dataSource>}
 section and its properties \Code{driver}, \Code{url} and \Code{username}. All this
