@@ -94,7 +94,7 @@ or interfaces for which XML mapper definition exists.
 \subsubsection{XML mapper files}
 
 XML mapper file has same name as interface (but .xml extension is used instead of .java),
-and layes in same directory.
+and lays in same directory.
 
 We made a parser of such a XML files, that can get information about SQL statements
 and column to property mapping.
@@ -173,13 +173,14 @@ information we need for identifying target database.
 \section{Kafka}
 
 In section \ref{frameworks:kafka} we demonstrate main use cases
-for manipulating (producing / consuming) with data using Kafka framework.
+for manipulating with data (producing or consuming) using Kafka framework.
 In this section, we show how data lineage for these examples can be done
 using our library. In our work, we concerned only on Consumer and Producer APIs,
 as the other two (Stream and Connector APIs) are much more advanced to use.
 
 \TODO{Co tam blizsie popisat, ked je to viac menej priamociare
 - trebalo iba osetrit par metod ktore manipuluju s datami - send() a poll()
-a par metod ktore nastavovali topic..}
+a par metod ktore nastavovali topic.. Zaujimave moze byt parsovanie
+Properties suboru}
 
 

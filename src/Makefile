@@ -1,7 +1,7 @@
 TARGET		= praca
 BUILDDIR	= output
 LATEX_CMD	= pdflatex -output-directory=${BUILDDIR} ${TARGET}.tex
-BIBTEX_CMD	= bibtex ${TARGET}
+BIBTEX_CMD	= bibtex ${BUILDDIR}/${TARGET}
 
 build: ${BUILDDIR}/${TARGET}.pdf
 

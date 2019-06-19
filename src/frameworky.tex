@@ -8,18 +8,21 @@
 
 \newcommand{\Code}[1]{\texttt{#1}}
 
-\chapter{Overview of database frameworks in java \label{frameworks}}
+\chapter{Overview of Database Frameworks in Java \label{frameworks}}
 
-In this chapter, we will analyse some of database frameworks\footnote{
-  \TODO{Asi nejak inac - neriesime iba databazu, ale napr. aj kafku..}
-}that are mainly used
-to connect to databases and load (or store) data to (or from) java applications
-as this is main topic of our work, which is identifying database type
-and all the places places when application communicate with that database.
+\TODO{Nejaky iny nadpis, nejedna sa iba o DB frameworky - kafka}
 
-All of the frameworks has many advanced features that does not fit our topic.
-We will try to follow one example of loading class \Code{DatabaseValue} as can be seen in
-example \ref{code:model} from database structured as in \ref{code:db}.
+In this chapter, we show basic features of chosen frameworks
+that are used for manipulating data.
+We focus on the basic features relevant for the data lineage
+and ignore most of their advanced features.
+
+We show basic examples of how data can be load or store by Java application
+and how sources and sinks are identified, as this is the main topic of our work.
+
+All frameworks that are using database, would work with example
+of loading class \Code{DatabaseValue} from snippet \ref{code:model}
+from database structured as in \ref{code:db}.
 
 \InsertCode{h}{code/model}
 \input{code/db}
@@ -30,7 +33,7 @@ example \ref{code:model} from database structured as in \ref{code:db}.
 
 \section{JDBC \label{frameworks:jdbc}}
 
-For accessing database in java application, there exists standard Java Database Connectivity (JDBC) API,
+For accessing database in Java application, there exists standard Java Database Connectivity (JDBC) API,
 which is described in more detail in \citet{JDBC_OVERVIEW}.
 
 Database vendors ususally provide JDBC API implementation. API is generic, so
@@ -113,7 +116,7 @@ Framework handles all boilerplate code around and result is returned after proce
 It uses JDBC API to communicate with database, but in almost all cases, there is no need
 to work with low level JDBC.
 
-Unlike other ORM frameworks, it does not map java objects to database tables, but java methods
+Unlike other ORM frameworks, it does not map Java objects to database tables, but Java methods
 to SQL statements. All communication with database is always through methods in user created interfaces.
 SQL statements are stored in XML files or annotations in these interfaces.
 
