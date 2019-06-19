@@ -10,7 +10,9 @@
 
 \chapter{Overview of database frameworks in java \label{frameworks}}
 
-In this chapter, we will analyse some of database frameworks that are mainly used
+In this chapter, we will analyse some of database frameworks\footnote{
+  \TODO{Asi nejak inac - neriesime iba databazu, ale napr. aj kafku..}
+}that are mainly used
 to connect to databases and load (or store) data to (or from) java applications
 as this is main topic of our work, which is identifying database type
 and all the places places when application communicate with that database.
@@ -187,7 +189,7 @@ that was made by MyBatis is returned and on next line \ref{code:mybatis:return} 
 
 
 
-\section{Kafka}
+\section{Kafka \label{frameworks:kafka}}
 
 Apache Kafka \citet{Kafka} is a distributed streaming platform.
 It means, that application can publish or subscribe records and
@@ -195,7 +197,7 @@ process them, as they occurs.
 
 Application that want to publish some records, it sends them to server
 and data are send to all subscribers of the same \textit{topic}
-(for detailed info see \ref{frameworks:kafka:background}).
+(for detailed info see section \ref{frameworks:kafka:background}).
 
 Kafka has four core APIs:
 \begin{itemize}
@@ -248,9 +250,6 @@ to any record published, as can be seen in figure \ref{frameworks:kafka:partitio
   \caption{Producers are appending new records to Kafka partition and Consumers accessing them}
 \end{figure}
 
-In our work, we will be concerned with Producer and Consumer APIs,
-because other two are much more advanced to use.
-
 
 
 \subsection{Kafka Producers and Consumers}
@@ -283,7 +282,47 @@ new records to arrive (in our case 1 second) and then it returns them.
 
 
 
+\subsection{Kafka Streams}
+
+A Kafka Stream represents an unbounded, continuously updating data set.
+A stream is an ordered, replayable, and fault-tolerant sequence of immutable data records,
+where a data record is defined as a key-value pair.
+Application defines its computational logic through processor topologies,
+where processor topology is a graph of stream processors (nodes) that are
+connected by streams (edges).
+Stream processor is a node in the processor topology, that represents
+a processing step to transform data in streams by receiving one
+input record at a time from its upstream processors in topology,
+applying its operation on it and then produce one or more
+output records to its downstream processors.
+
+In topology, there are two special processors:
+\begin{itemize}
+  \item \textbf{Source Processor}: A source processor is a stream processor
+    that does not have any upstream processors. It produces an input stream
+    to its topology from one or multiple Kafka topics by consuming records
+    from these topics and forwarding them to its down-stream processors, and
+  \item \textbf{Sink Processor}: A sink processor is a stream processor
+    that does not have down-stream processors. It sends any received records
+    from its up-stream processors to a specified Kafka topic.
+\end{itemize}
+
+The way, how topology can be defined is using the Kafka Streams DSL (Domain Specific Language).
+It provides the most common data transformation operations, such as
+\Code{map}, \Code{filter}, \Code{join} and \Code{aggregations}.
+There exists also the low level Processor API, that allows developers define
+and connect custom processors and also interact with state stores.
 
 
+
+
+\subsection{Kafka Connector}
+
+Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka
+and other systems. It makes it simple to quickly define connectors that move
+large collections of data into and out of Kafka.
+Kafka Connect can ingest entire databases or collect metrics from all
+your application servers into Kafka topics, making the data available
+for stream processing with low latency.
 
 

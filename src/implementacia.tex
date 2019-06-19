@@ -30,13 +30,49 @@ their values.
 
 Spring JDBC Framework comes with approach of \Code{Callbacks}. Library handles
 all boilerplate code and calls user defined callback objects to do its job
-and after finishing it, library handles closing all resources that is not needed anymore.
+and after finishing it, framework handles closing all resources that are not needed anymore.
 
 When we looked to implementation of \Code{JdbcTemplate} class, we found out
-that database calls are made only by 4 out of about 50 its methods.
-All other methods call them to execute some queries.
+that database calls are actually made only by 4 out of about 50 of its methods.
+All the other methods only use them when executing queries.
 
-\TODO{Pokracovanie JdbcTemplate}
+
+
+\subsection{Callbacks}
+
+\TODO{Funguju?}
+
+As we said, callbacks are used just to wrap application logic and
+separate it from the code for opening/closing connections, etc,
+as was shown by previous example \ref{code:jdbcTemplate}.
+
+We need a way how to say to analysis library, that we want to
+analyse that callback method. For that purpose, we use
+field \Code{callbackMethodsToAnalyze} from interface. \TODO{referencia na interface}
+All callbacks have the method, that is called in execution
+and we just leave analysis library to analyse it and return
+its data flow. After that, we append the resulted flow
+to flow of our handled method.
+
+We will demonstrate it on simple example \ref{code:jdbcTemplate:callbacks}
+where insert statement is executed in callback method.
+
+\InsertCode{h}{code/jdbcTemplate-callbacks}
+
+After data lineage of \Code{insertValue()} method is done,
+we would like to know, that insert statement was executed there.
+However, analysis library does not know, that inside
+\Code{jdbcTemplate.execute()} call
+the \Code{doInStatement} method of \Code{InsertCallback} is called.
+
+The solution for it is, that when we are handling
+\Code{jdbcTemplate.execute()} for the first time, we tell library,
+that we want to analyse that \Code{doInStatement} call.
+The next time we already have all the information
+about data lineage in the \Code{doInStatement}
+and therefore we can propagate it to a result of
+\Code{jdbcTemplate.execute()} call.
+
 
 
 
@@ -133,6 +169,17 @@ information we need for identifying target database.
 
 
 
+
 \section{Kafka}
+
+In section \ref{frameworks:kafka} we demonstrate main use cases
+for manipulating (producing / consuming) with data using Kafka framework.
+In this section, we show how data lineage for these examples can be done
+using our library. In our work, we concerned only on Consumer and Producer APIs,
+as the other two (Stream and Connector APIs) are much more advanced to use.
+
+\TODO{Co tam blizsie popisat, ked je to viac menej priamociare
+- trebalo iba osetrit par metod ktore manipuluju s datami - send() a poll()
+a par metod ktore nastavovali topic..}
 
 
