@@ -189,5 +189,101 @@ that was made by MyBatis is returned and on next line \ref{code:mybatis:return} 
 
 \section{Kafka}
 
+Apache Kafka \citet{Kafka} is a distributed streaming platform.
+It means, that application can publish or subscribe records and
+process them, as they occurs.
+
+Application that want to publish some records, it sends them to server
+and data are send to all subscribers of the same \textit{topic}
+(for detailed info see \ref{frameworks:kafka:background}).
+
+Kafka has four core APIs:
+\begin{itemize}
+  \item The \textbf{Producer API} allows an application to publish
+    a stream of records to Kafka topics
+  \item The \textbf{Consumer API} allows an application to subscribe
+    to topics and process the stream of records produced to them
+  \item The \textbf{Streams API} allows an application to act as a stream processor,
+    consuming an input stream from topics and producing an output stream to output topics,
+    effectively transforming the input streams to output streams
+  \item The \textbf{Connector API} allows building and running reusable producers or consumers
+    that connect Kafka topics to existing applications or data systems.
+    For example, a connector to a relational database might capture every change to a table. 
+\end{itemize}
+
+Figure \ref{frameworks:kafka:api} shows, how client applications can communicate with Kafka server
+using Kafka APIs.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[width=100mm]{img/kafka-apis.png}
+  \label{frameworks:kafka:api}
+  \caption{Applications using differend kinds of Kafka APIs}
+\end{figure}
+
+
+
+\subsection{Kafka background \label{frameworks:kafka:background}}
+
+Kafka can be run as a cluster on one or more servers.
+Each cluster stores stream of records in categories that are called topics
+and each record consist of a key, value and timestamp.
+
+Topics can be compared to the database tables. Application that is publishing topic
+writes to that table and the one that subscribe topic reads that data.
+
+Kafka topics can be also partitioned, so distributed computations can be made
+on them - each partition can be handled by different server/producer/consumer.
+Each partition is an ordered, immutable sequence of records that is
+continually appended to.
+
+The Kafka cluster durably persists all published records (whether or not they have been consumed)
+using a configurable retention period. For that period, any consumer can access
+to any record published, as can be seen in figure \ref{frameworks:kafka:partitions}.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[width=100mm]{img/kafka-partitions.png}
+  \label{frameworks:kafka:partitions}
+  \caption{Producers are appending new records to Kafka partition and Consumers accessing them}
+\end{figure}
+
+In our work, we will be concerned with Producer and Consumer APIs,
+because other two are much more advanced to use.
+
+
+
+\subsection{Kafka Producers and Consumers}
+
+\InsertCode{h}{code/kafka-producer}
+\InsertCode{h}{code/kafka-consumer}
+
+Structure of data in records can be arbitrary. Application just need to handle
+correct transformation of used Java object to (or from) byte array using
+\Code{Serializer<T>} (or \Code{Deserializer<T>}) objects.
+However, for our data lineage problem, feature of serializing
+and deserializing objects is unimportant. There is always one
+source/target - the byte array. There, we cannot distinguish values
+that belong to same attribute that was written to and then read from that array\footnote{
+  As could be done in case of databases, where rows were divided into columns.
+}.
+
+Using Producer API, application can create new records and send them to topic of Kafka server.
+After creating \Code{KafkaProducer} with some configuration as in \ref{code:kafka:producer},
+records can be send to server by calling \Code{send()} method.
+
+With Consumer API, application can handle new records that are arriving from server.
+One has to create configured \Code{KafkaConsumer}, subscribe to some topics
+and wait for new records. This is illustrated in snippet \ref{code:kafka:consumer}.
+On line \ref{code:kafka:consumer:properties}, kafka server url is configured.
+Then consumer registers itself to receive records in topic \Code{Topic}
+on line \ref{code:kafka:consumer:subscribe} and on line \ref{code:kafka:consumer:poll}
+kafka is queried for data. There is some maximal time limit, for which kafka waits for
+new records to arrive (in our case 1 second) and then it returns them.
+
+
+
+
+
 
 
