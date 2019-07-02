@@ -1,16 +1,110 @@
 
-\chapter*{Introduction}
-\addcontentsline{toc}{chapter}{Introduction}
+\chapter{Introduction}
 
-- motivacia \\
-- kontext manty \\
-- DB frameworky v aplikaciach \\
 
-- co chceme \\
--- funkcna analyza datovych tokov \\
--- presnost, rychlost \\
--- podpora analyzy pre db frameworky \\
--- vytvorenie pluginov do analyzy pre niekolko frameworkov
+
+\section{Motivation}
+
+Data lineage, or provenance, describes where data came from,
+how it was derived and where the results are stored.
+
+Lineage can be useful in a variety of settings. For example,
+molecular biology databases, which mostly store copied data,
+can use lineage to verify the copied data by tracking
+the original sources [1]. Data warehouses can use the lineage
+of anomalous view data to identify faulty base data [4],
+and probabilistic databases can exploit lineage for
+confidence computation [10, 12].
+\TODO{Citacia - Data Lineage: A Survey}
+
+In our work we focus on Java applications that access and/or transform data.
+For these operations, often other frameworks are used to simplify
+the application logic and communication with other systems.
+
+In these frameworks, we need to get a graph, where nodes
+contains sources and sinks of data and directed edges
+are flows between them.
+
+For example, when using database frameworks, in addition to
+know how data flow from sources to sinks, we want to know
+also what queries are executed to load and store the data.
+
+
+
+
+
+\section{Goals}
+
+We would like to create a library that meets the requirements of:
+
+\begin{itemize}
+  \item Correctness
+  \item Accuracy
+  \item Efficiency
+  \item Support for few frameworks
+  \item Easy to add support for new frameworks
+\end{itemize}
+
+Correctness and accuracy are the essential requirements of algorithms used
+in our library. We have also efficiency in mind, so we precompute as much
+as we could.
+
+We implement \textit{plugins} for handling few frameworks, that can be used
+in applications to show our approach works well. We chose different types
+of frameworks, each with different access to data, so adding support
+for new frameworks should be easy to implement - one should identify
+the places where application works with data (load, store or just modify)
+and algorithm symbolic analysis algorithm takes care of creating
+data lineage part.
+
+
+
+%Data can be accessed using databases, files, standard input and output,
+%using network or many other ways.
+%Many frameworks were created to manipulate with the data and
+%we would like to develop library, which can identify places
+%in these frameworks where data are accessed.
+
+
+\section{Manta Flow}
+
+Manta Flow is a tool that helps enterprises to get end-to-end
+data lineage including custom SQL code. That allows customers to fulfill
+compliance regulations or improve data governance.
+
+It extracts and analyses metadata from report definitions,
+custom SQL code, and ETL workflows, to create data flows
+which span multiple systems and a range of technologies.
+Lineages are analyzed based on actual code, and flows can be visualized.
+Data paths between files, report fields, database tables,
+and individual columns are revealed to users,
+and this information can be utilized in a range of roles.
+
+All entities detected by Manta Flow, such as columns or procedures,
+are presented to users in a structure designed to simplify navigation.
+Users can search for any object in the repository,
+or within the visualization itself.
+\TODO{Citacie: \\
+https://www.capterra.com/p/145178/Manta-Flow/ \\
+https://www.getapp.com/business-intelligence-analytics-software/a/manta-flow/ \\
+https://reviews.financesonline.com/p/manta-flow/
+}
+
+As Manta flow does not work with Java code, data lineage
+stops when reaching it. The support for Java can bind
+previously separated data lineage parts done in databases
+and user can get full data lineage when using Java and database
+in application.
+
+%- motivacia \\
+%- kontext manty \\
+%- DB frameworky v aplikaciach \\
+
+%- co chceme \\
+%-- funkcna analyza datovych tokov \\
+%-- presnost, rychlost \\
+%-- podpora analyzy pre db frameworky \\
+%-- vytvorenie pluginov do analyzy pre niekolko frameworkov
 
 
 
