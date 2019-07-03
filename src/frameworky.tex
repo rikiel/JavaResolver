@@ -8,20 +8,18 @@
 
 \newcommand{\Code}[1]{\texttt{#1}}
 
-\chapter{Overview of Database Frameworks in Java \label{frameworks}}
-
-\TODO{Nejaky iny nadpis, nejedna sa iba o DB frameworky - kafka}
+\chapter{Popular Data Processing Frameworks for Java \label{frameworks}}
 
 In this chapter, we show basic features of chosen frameworks
 that are used for manipulating data.
 We focus on the basic features relevant for the data lineage
 and ignore most of their advanced features.
 
-We show basic examples of how data can be load or store by Java application
+We show basic examples of how data can be loaded or stored by Java application
 and how sources and sinks are identified, as this is the main topic of our work.
 
-All frameworks that are using database, would work with example
-of loading class \Code{DatabaseValue} from snippet \ref{code:model}
+All frameworks that are using database, would work with the example
+of loading objects of the class \Code{DatabaseValue} in the Listing \ref{code:model}
 from database structured as in \ref{code:db}.
 
 \InsertCode{h}{code/model}
@@ -33,13 +31,14 @@ from database structured as in \ref{code:db}.
 
 \section{JDBC \label{frameworks:jdbc}}
 
-For accessing database in Java application, there exists standard Java Database Connectivity (JDBC) API,
-which is described in more detail in \citet{JDBC_OVERVIEW}.
+For accessing database in Java applications, there exists the standard
+Java Database Connectivity (JDBC) API, which is described
+in more detail in \citet{JDBC_OVERVIEW}.
 
-Database vendors ususally provide JDBC API implementation. API is generic, so
+Database vendors ususally provide JDBC API implementation. This API is generic, so
 there should be no difference for connecting to different database types.
 
-There are few interfaces in \citet{java.sql} package controlling database calls.
+There are few interfaces in \citet{java.sql} package controlling database calls:
 \begin{itemize}
   \item \Code{Connection}
   \item \Code{Statement}, \Code{PreparedStatement}, \Code{CallableStatement}
@@ -50,7 +49,7 @@ There are few interfaces in \citet{java.sql} package controlling database calls.
 database queries can be executed using any of \Code{Statement} calls.
 When data are returned to application from statement, it is done through \Code{ResultSet}.
 
-Getting connection to database is through \Code{DriverManager}, or from JDBC 2.0
+Getting connection to database is through \Code{DriverManager}, or since JDBC 2.0
 it can be done using \Code{DataSource} and it is now the preferred way of connecting to database.
 Example \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database
 that is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
@@ -59,31 +58,26 @@ and \Code{User} user and \Code{Password} password is used when connecting to it.
 Calls of \Code{createDataSource()} would be used in next examples.
 
 \InsertCode{h}{code/datasource}
-\InsertCode{H}{code/jdbc}
 
-JDBC example \ref{code:jdbc} shows how can be done loading data from \Code{DataSource} (as in \ref{code:datasource}).
+Code in Listing \ref{code:jdbc} shows how loading data from \Code{DataSource}
+(as in \ref{code:datasource}) can be done using JDBC API.
 On line \ref{code:jdbc:connection}, connection to database is created.
 Then on lines \ref{code:jdbc:prepareStatement:begin}--\ref{code:jdbc:prepareStatement:end}
 database query is created to select just rows matching \Code{id} argument.
 The query is then executed on line \ref{code:jdbc:executeQuery} and then
 result is mapped from \Code{ResultSet} to our \Code{DatabaseValue} model and then it is returned on line \ref{code:jdbc:return}.
 
-As you can see, there is huge amount of boilerplate code (catch-finally blocks) for closing every JDBC API object,
-as exceptions can be thrown from almost all calls and we need to free all database resources that we do not need anymore.
-
-From Java 7, try-with-resources can be used with result, that all finally blocks can be removed - resources
-(Connection, PreparedStatement, ResultSet) are automatically closed after finishing block.
-This is ilustrated in example \ref{code:jdbc-try-with-resources}.
-
-\InsertCode{h}{code/jdbc-try-with-resources}
+\InsertCode{h}{code/jdbc}
 
 
 
 
 \section{Spring JDBC Framework \label{frameworks:jdbcTemplate}}
-\citet{SpringJDBC} Framework is extension above JDBC API and tries to help users to code only
+\citet{SpringJDBC} is extension above JDBC API that tries to help developers to code only
 parts with application logic and it removes much of the boilerplate code.
-From next list, only italicized lines need to be coded by user:
+It is illustrated by next list from \citet{SpringJDBC}, from which only
+italicized items need to be coded by user, and all low level details
+are handled by framework:
 \begin{itemize}
   \item Define connection parameters
   \item Open the connection
@@ -97,11 +91,18 @@ From next list, only italicized lines need to be coded by user:
 \end{itemize}
 
 Before Java 7, coding in standard JDBC tend to be errorneus because of forgetting to close
-database resources and boilerplate code does not help in readability of code
-(as could be seen in example \ref{code:jdbc}). These problems are removed using Spring JDBC Framework,
-as illustrate example \ref{code:jdbcTemplate}. It shows, how can be loaded single row from database.
-We can see, that mappings are the same in standard JDBC and Spring JDBC examples.
-Framework handles all boilerplate code around and result is returned after processing single line \ref{code:jdbcTemplate:return}.
+database resources (user needs to close resources in finally block as try-with-resources did not exist yet)
+and the boilerplate code does not help in readability of code.
+
+Listing \ref{code:jdbcTemplate} illustrate loading single row from database.
+Framework uses \Code{RowMapper} objects, that define transformation of
+each row in query result to user defined object.
+On the line \ref{code:jdbcTemplate:mapper}, we define \Code{Mapper} class
+for transforming rows to resulting \Code{DatabaseValue}.
+We can notice, that transformation done by \Code{Mapper} is the same as it was in JDBC example
+in Listing \ref{code:jdbc} on lines \ref{code:jdbc:mapping:begin}--\ref{code:jdbc:mapping:end}.
+Framework handles all boilerplate code around and result is returned
+after processing single line \ref{code:jdbcTemplate:return}.
 
 
 \InsertCode{h}{code/jdbcTemplate}
@@ -110,189 +111,195 @@ Framework handles all boilerplate code around and result is returned after proce
 
 
 
-\section{MyBatis \label{frameworks:myBatis}}
+\section{MyBatis Framework \label{frameworks:myBatis}}
 
-\citet{MyBatis} framework is one of Object-Relational Mapping (ORM) frameworks.
-It uses JDBC API to communicate with database, but in almost all cases, there is no need
-to work with low level JDBC.
+\citet{MyBatis} is one of Object-Relational Mapping (ORM) frameworks.
+It internally uses JDBC API to communicate with the database, but in almost all cases,
+there is no need to work with the low level JDBC.
 
 Unlike other ORM frameworks, it does not map Java objects to database tables, but Java methods
-to SQL statements. All communication with database is always through methods in user created interfaces.
-SQL statements are stored in XML files or annotations in these interfaces.
+to SQL statements. Framework uses concept of \Code{Mapper} interfaces (but differently as Spring JDBC Framework).
+Developer define interface with some methods (details are in section \ref{frameworks:myBatis:mapper}),
+and all communication with database is always happening through these methods.
 
-In subsection \ref{mybatis:mapper} we show examples of \Code{Mapper} interface definitions,
-which can be done by annotations or using XML mapper files.
-Logic that is made in background by MyBatis by calling these interfaces
-is same as we could see in previous JDBC or Spring JDBC examples,
-when from some database connection \Code{PreparedStatement} is created.
-Next, method argument \Code{id} is set and query is executed.
-After execution, from \Code{ResultSet} are values of columns
-mapped to object attributes and object is returned.
+For each method SQL query is defined and when some output is expected,
+mapping of rows to Java objects should be provided.
+Definition of queries and mappings could be done by
+external XML files or by annotations in these interfaces.
 
-Subsection \ref{mybatis:configuration} shows how database
-configuration can be made and subsection \ref{mybatis:run}
-shows how data can be loaded from such a database.
+In section \ref{frameworks:myBatis:mapper} we show examples of \Code{Mapper} interface,
+in section \ref{frameworks:myBatis:configuration} we show how database configuration
+can be created and in section \ref{frameworks:myBatis:run} we finally show how to
+use these parts to load data from database.
 
 
 
-\subsection{MyBatis Mapper definition \label{mybatis:mapper}}
+
+\subsection{Mapper definition \label{frameworks:myBatis:mapper}}
+
+In this section, we show examples of \Code{Mapper} interface definition
+for MyBatis Framework done by XML and also by annotations.
+
+When using \Code{Mapper} interface, framework internally create implementation
+of it and by calling its methods, the same logic is done as
+in previous JDBC example, when connection to database is open
+and \Code{PreparedStatement} is created with defined query and provided arguments,
+and after execution is done, resulting object values are mapped from \Code{ResultSet}.
+
+Listing \ref{code:mybatis:interface:annotations} uses annotations to store definitions
+of both query and mapping for method \Code{getForId} defined on line
+\ref{code:mybatis:interface:annotations:method}. Line \ref{code:mybatis:interface:annotations:query}
+contains query definition using the \Code{@Select} annotation and lines
+\ref{code:mybatis:interface:annotations:result:begin}--\ref{code:mybatis:interface:annotations:result:end}
+contains mapping of result columns to \Code{DatabaseValue} attributes
+using the \Code{@Results} and \Code{@Result} annotations.
 
 \InsertCode{h}{code/mybatis-interface-annotations}
 
-Example \ref{code:mybatis:interface:annotations} uses annotations to store definitions of both query and mapping.
-Query is defined using \Code{@Select} annotation on line \ref{code:mybatis:interface:annotations:query}
-and mapping is defined using \Code{@Results} and \Code{@Result} annotations.
+Listing \ref{code:mybatis:interface:xml} shows the same functionality but using XML.
+First, method \Code{getForId} is defined in interface and the rest,
+query and mapping, is stored in XML mapper file.
+Query is located on line \ref{code:mybatis:mapper:xml:query} in \Code{<select>} tag.
+Tag contains a reference to the correct \Code{resultMap} mapping on lines
+\ref{code:mybatis:mapper:xml:mapping:begin}--\ref{code:mybatis:mapper:xml:mapping:end},
+which contains mapping of result columns to \Code{DatabaseValue} object attributes.
 
 \InsertCode{h}{code/mybatis-interface-xml}
-\InsertCode{H}{code/mybatis-mapper-xml}
-
-Snippets \ref{code:mybatis:interface:xml} and \ref{code:mybatis:mapper:xml} contains definitions
-of plain interface which has query and mapping stored in XML mapper file.
-Query is located on line \ref{code:mybatis:mapper:xml:query} in \Code{<select>} tag.
-Tag contains reference to correct \Code{resultMap} mapping on lines
-\ref{code:mybatis:mapper:xml:mapping:begin}--\ref{code:mybatis:mapper:xml:mapping:end}.
 
 
 
-\subsection{MyBatis Configuration \label{mybatis:configuration}}
+\subsection{Configuration \label{frameworks:myBatis:configuration}}
 
-MyBatis framework uses interface \Code{SqlSessionFactory} for creating database connections.
-Factory can be created using both Java and XML files.
+The main MyBatis component responsible for creating database connections
+is \Code{SqlSessionFactory}. It needs to be configured to successfully connect
+to database. Configuration can be done in Java or using external XML configuration file.
+
+In Listing \ref{code:mybatis:sessionFactory:java} we show, how configuration can be
+done in Java. On line \ref{code:mybatis:sessionFactory:java:dataSource} we use \Code{DataSource},
+that we previously define in Listing \ref{code:datasource}.
+\Code{JdbcTransactionFactory} was used to handle database transactions.
+On line \ref{code:mybatis:sessionFactory:java:addMapper} \Code{Mapper} interface is registered
+to be known by MyBatis and finally \Code{SqlSessionFactory} is created.
 
 \InsertCode{h}{code/mybatis-sessionFactory-java}
 
-Example \ref{code:mybatis:sessionFactory:java} shows how configuration can be done in Java.
-We set \Code{DataSource} reference to \Code{Environment} class on line \ref{code:mybatis:sessionFactory:java:dataSource}.
-\Code{JdbcTransactionFactory} was used to handle database transactions.
-On line \ref{code:mybatis:sessionFactory:java:addMapper} mapper class is registered to be known by MyBatis
-and next \Code{SqlSessionFactory} is created.
-
-\InsertCode{h}{code/mybatis-sessionFactory-xml}
-\InsertCode{H}{code/mybatis-configuration-xml}
-
-The same can be also done using XML configuration file.
-\Code{SqlSessionFactory} is created in snippet \ref{code:mybatis:sessionFactory:xml}
-after loading configuration file on line \ref{code:mybatis:sessionFactory:xml:file}.
-
-XML configuration file \ref{code:mybatis:configuration:xml} configures \Code{DataSource} on lines
+In Listing \ref{code:mybatis:sessionFactory:xml} we show, how configuration can be
+done using external XML file. \Code{SqlSessionFactory} is created
+on line \ref{code:mybatis:sessionFactory:xml:file}. Configuration file
+configures \Code{DataSource} on lines
 \ref{code:mybatis:configuration:xml:dataSource:begin}--\ref{code:mybatis:configuration:xml:dataSource:end}
-and \Code{Mapper} class is registered on line \ref{code:mybatis:configuration:xml:mapper}.
+and \Code{Mapper} interface is registered on line \ref{code:mybatis:configuration:xml:mapper}.
+
+\InsertCode{H}{code/mybatis-sessionFactory-xml}
 
 
 
-\subsection{Loading data from database using MyBatis \label{mybatis:run}}
 
-As we know how to configure database connections and how to define mappers,
-in example \ref{code:mybatis} we show how data can be loaded.
+\subsection{Loading Data from Database \label{frameworks:myBatis:run}}
 
-On line \ref{code:mybatis:getMapper}, the implementation of \Code{Mapper} interface
-that was made by MyBatis is returned and on next line \ref{code:mybatis:return} database query is executed.
+Since we know how to configure database connections and how to define mappers,
+we are ready to show how data can be loaded from database.
+Listing \ref{code:mybatis} show all pieces together. First, on line
+\ref{code:mybatis:sqlSessionFactory} we create previously configured
+\Code{SqlSessionFactory} from which we open \Code{SqlSession} to
+access database. On line \ref{code:mybatis:getMapper} implementation
+of \Code{Mapper} interface is retrieved and on line \ref{code:mybatis:return}
+database query is executed and its result is returned. 
 
-\InsertCode{h}{code/mybatis}
+\InsertCode{H}{code/mybatis}
 
 
 
 \section{Kafka \label{frameworks:kafka}}
 
-Apache Kafka \citet{Kafka} is a distributed streaming platform.
-It means, that application can publish or subscribe records and
-process them, as they occurs.
+Apache \citet{Kafka} is a distributed streaming platform.
+It means that application can publish or subscribe records and
+process them, as they occur.
 
-Application that want to publish some records, it sends them to server
-and data are send to all subscribers of the same \textit{topic}
-(for detailed info see section \ref{frameworks:kafka:background}).
+Kafka can run as a cluster on one or more servers.
+Each cluster stores stream of records in categories that are called \textit{topics}.
+Topics can be viewed as database tables. Producers write to a topic's table
+and consumers read new data from that table.
+When application wants to publish some records (producer) in the topic,
+it sends them to server from which data are forwarded to all its subscribers (consumers).
 
-Kafka has four core APIs:
+Topics can be also partitioned, so distributed computations can be made
+on them - each partition can be handled by different server (or producer or consumer).
+Partitions are ordered, immutable sequences of records that are continually appended to.
+
+Structure of data in records can be arbitrary. Application just need to handle
+correct transformation of used Java object to (or from) byte array using
+\Code{Serializer} (or \Code{Deserializer}) objects.
+However, this feature is not very important considering data lineage problem\footnote{
+  We cannot distinguish values that belong to same attribute, as it was in case
+  of databases, where rows were divided into columns and we could make
+  lineage on attribute/column level.
+}.
+
+The Kafka cluster durably persists all published records (whether or not they have been consumed)
+using a configurable retention period. For that period, any consumer can access
+to any published record.
+
+Figure \ref{frameworks:kafka:api} and next list from \citet{Kafka}
+illustrates usage of four Kafka core client APIs:
 \begin{itemize}
-  \item The \textbf{Producer API} allows an application to publish
+  \item The \textbf{Producer API} (see section \ref{frameworks:kafka:producer}) allows an application to publish
     a stream of records to Kafka topics
-  \item The \textbf{Consumer API} allows an application to subscribe
+  \item The \textbf{Consumer API} (see section \ref{frameworks:kafka:consumer}) allows an application to subscribe
     to topics and process the stream of records produced to them
-  \item The \textbf{Streams API} allows an application to act as a stream processor,
+  \item The \textbf{Streams API} (see section \ref{frameworks:kafka:streams}) allows an application to act as a stream processor,
     consuming an input stream from topics and producing an output stream to output topics,
     effectively transforming the input streams to output streams
-  \item The \textbf{Connector API} allows building and running reusable producers or consumers
+  \item The \textbf{Connector API} (see section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
     that connect Kafka topics to existing applications or data systems.
     For example, a connector to a relational database might capture every change to a table. 
 \end{itemize}
 
-Figure \ref{frameworks:kafka:api} shows, how client applications can communicate with Kafka server
-using Kafka APIs.
-
 \begin{figure}[h]
   \center
   \includegraphics[width=100mm]{img/kafka-apis.png}
-  \label{frameworks:kafka:api}
   \caption{Applications using differend kinds of Kafka APIs}
+  \label{frameworks:kafka:api}
 \end{figure}
 
 
 
-\subsection{Kafka background \label{frameworks:kafka:background}}
 
-Kafka can be run as a cluster on one or more servers.
-Each cluster stores stream of records in categories that are called topics
-and each record consist of a key, value and timestamp.
+\subsection{Producer API \label{frameworks:kafka:producer}}
 
-Topics can be compared to the database tables. Application that is publishing topic
-writes to that table and the one that subscribe topic reads that data.
-
-Kafka topics can be also partitioned, so distributed computations can be made
-on them - each partition can be handled by different server/producer/consumer.
-Each partition is an ordered, immutable sequence of records that is
-continually appended to.
-
-The Kafka cluster durably persists all published records (whether or not they have been consumed)
-using a configurable retention period. For that period, any consumer can access
-to any record published, as can be seen in figure \ref{frameworks:kafka:partitions}.
-
-\begin{figure}[h]
-  \center
-  \includegraphics[width=100mm]{img/kafka-partitions.png}
-  \label{frameworks:kafka:partitions}
-  \caption{Producers are appending new records to Kafka partition and Consumers accessing them}
-\end{figure}
-
-
-
-\subsection{Kafka Producers and Consumers}
+Using Kafka Producer API, application can create new records and send them to topic of Kafka server.
+It illustrates example in Listing \ref{code:kafka:producer}.
+We first configure \Code{KafkaProducer} and then we just send records to topic \Code{Topic}
+to Kafka server by calling \Code{send} method. We do not need to deal with the \Code{Serializer}s,
+as they are provided for some basic Java classes (like \Code{String}) by framework itself.
 
 \InsertCode{h}{code/kafka-producer}
+
+
+
+\subsection{Consumer API \label{frameworks:kafka:consumer}}
+
+Using Kafka Consumer API, application can handle new records that are arriving from server.
+Receiving such data shows Listing \ref{code:kafka:producer}.
+We also configure \Code{KafkaConsumer} as in previous section.
+On line \ref{code:kafka:consumer:subscribe} we call \Code{subscribe}
+to register consumer to receive records in topic \Code{Topic}.
+On line \ref{code:kafka:consumer:poll} server is queried for new data.
+We use 1 second as maximal time limit, for which Kafka waits for new records to
+arrive and then such records are returned and we can handle them.
+
 \InsertCode{h}{code/kafka-consumer}
 
-Structure of data in records can be arbitrary. Application just need to handle
-correct transformation of used Java object to (or from) byte array using
-\Code{Serializer<T>} (or \Code{Deserializer<T>}) objects.
-However, for our data lineage problem, feature of serializing
-and deserializing objects is unimportant. There is always one
-source/target - the byte array. There, we cannot distinguish values
-that belong to same attribute that was written to and then read from that array\footnote{
-  As could be done in case of databases, where rows were divided into columns.
-}.
-
-Using Producer API, application can create new records and send them to topic of Kafka server.
-After creating \Code{KafkaProducer} with some configuration as in \ref{code:kafka:producer},
-records can be send to server by calling \Code{send()} method.
-
-With Consumer API, application can handle new records that are arriving from server.
-One has to create configured \Code{KafkaConsumer}, subscribe to some topics
-and wait for new records. This is illustrated in snippet \ref{code:kafka:consumer}.
-On line \ref{code:kafka:consumer:properties}, kafka server url is configured.
-Then consumer registers itself to receive records in topic \Code{Topic}
-on line \ref{code:kafka:consumer:subscribe} and on line \ref{code:kafka:consumer:poll}
-kafka is queried for data. There is some maximal time limit, for which kafka waits for
-new records to arrive (in our case 1 second) and then it returns them.
 
 
-
-\subsection{Kafka Streams}
+\subsection{Stream API \label{frameworks:kafka:streams}}
 
 A Kafka Stream represents an unbounded, continuously updating data set.
-A stream is an ordered, replayable, and fault-tolerant sequence of immutable data records,
-where a data record is defined as a key-value pair.
+It is an ordered, replayable, and fault-tolerant sequence of immutable data records.
 Application defines its computational logic through processor topologies,
 where processor topology is a graph of stream processors (nodes) that are
 connected by streams (edges).
+
 Stream processor is a node in the processor topology, that represents
 a processing step to transform data in streams by receiving one
 input record at a time from its upstream processors in topology,
@@ -300,12 +307,14 @@ applying its operation on it and then produce one or more
 output records to its downstream processors.
 
 In topology, there are two special processors:
+
+\TODO{Zacinat velkym The? Pripadne to davat ako vety? .. rovnako aj v bodoch v kafka api}
 \begin{itemize}
-  \item \textbf{Source Processor}: A source processor is a stream processor
+  \item The \textbf{Source Processor} is a stream processor
     that does not have any upstream processors. It produces an input stream
     to its topology from one or multiple Kafka topics by consuming records
-    from these topics and forwarding them to its down-stream processors, and
-  \item \textbf{Sink Processor}: A sink processor is a stream processor
+    from these topics and forwarding them to its down-stream processors
+  \item The \textbf{Sink Processor} is a stream processor
     that does not have down-stream processors. It sends any received records
     from its up-stream processors to a specified Kafka topic.
 \end{itemize}
@@ -319,13 +328,13 @@ and connect custom processors and also interact with state stores.
 
 
 
-\subsection{Kafka Connector}
+\subsection{Connector API \label{frameworks:kafka:connector}}
 
-Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka
+A Kafka Connector is a tool for scalably and reliably streaming data between Kafka
 and other systems. It makes it simple to quickly define connectors that move
 large collections of data into and out of Kafka.
-Kafka Connect can ingest entire databases or collect metrics from all
-your application servers into Kafka topics, making the data available
+Kafka Connector can ingest entire databases or collect metrics from all
+application servers into Kafka topics, making the data available
 for stream processing with low latency.
 
 

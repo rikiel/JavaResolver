@@ -1,7 +1,30 @@
 
-\begin{lstlisting}[language=Java, caption={Example of loading data using XML Configuration}, label={code:mybatis:sessionFactory:xml}]
+\begin{lstlisting}[language=Java, belowskip=-2mm]
 public SqlSessionFactory createSqlSessionFactory() throws IOException {
   return new SqlSessionFactoryBuilder()
-      .build(new FileInputStream("sessionFactory.xml")); /* \label{code:mybatis:sessionFactory:xml:file} */
+      .build(new FileInputStream("configuration.xml")); /* \label{code:mybatis:sessionFactory:xml:file} */
 }
+\end{lstlisting}
+
+\begin{lstlisting}[language=XML, caption={Configuration of \Code{SqlSessionFactory} using external XML configuration file}, label={code:mybatis:sessionFactory:xml}]
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<@configuration@>
+  <@environments@ default="environmentId">
+    <@environment@ id="environmentId">
+      <@transactionManager@ type="JDBC"/>
+      <@dataSource@ type="POOLED"> /* \label{code:mybatis:configuration:xml:dataSource:begin} */
+        <@property@ name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+        <@property@ name="url" value="jdbc:oracle:thin:@//192.168.0.16:1521/orcl"/>
+        <@property@ name="username" value="User"/>
+        <@property@ name="password" value="Password"/>
+      </@dataSource@> /* \label{code:mybatis:configuration:xml:dataSource:end} */
+    </@environment@>
+  </@environments@>
+  <@mappers@>
+    <@mapper@ class="Mapper"/> /* \label{code:mybatis:configuration:xml:mapper} */
+  </@mappers@>
+</@configuration@>
 \end{lstlisting}

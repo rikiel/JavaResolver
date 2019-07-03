@@ -1,10 +1,10 @@
 
 \begin{lstlisting}[language=Java, caption={Using MyBatis to load data from database}, label={code:mybatis}]
 public DatabaseValue getForId(int id) throws Exception {
-  SqlSessionFactory sqlSessionFactory = createSqlSessionFactory();
+  SqlSessionFactory sqlSessionFactory = createSqlSessionFactory(); /*\label{code:mybatis:sqlSessionFactory}*/
   try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-    Mapper mapper = sqlSession.getMapper(Mapper.class); /* \label{code:mybatis:getMapper} */
-    return mapper.getForId(id); /* \label{code:mybatis:return} */
+    Mapper mapper = sqlSession.getMapper(Mapper.class); /*\label{code:mybatis:getMapper}*/
+    return mapper.getForId(id); /*\label{code:mybatis:return}*/
   }
 }
 \end{lstlisting}

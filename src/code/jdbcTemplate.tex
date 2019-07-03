@@ -1,6 +1,6 @@
 
 
-\begin{lstlisting}[language=Java, caption={Example of loading data using Spring JDBC Framework}, label={code:jdbcTemplate}]
+\begin{lstlisting}[language=Java, caption={Example of loading data using \citet{SpringJDBC}}, label={code:jdbcTemplate}]
 public DatabaseValue getForId(int id) throws SQLException {
   DataSource dataSource = createDataSource();
   JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -8,9 +8,9 @@ public DatabaseValue getForId(int id) throws SQLException {
   return jdbcTemplate.queryForObject(query, new Mapper(), id); /*\label{code:jdbcTemplate:return}*/
 }
 
-public class Mapper implements RowMapper<DatabaseValue> {
+public class Mapper implements RowMapper<DatabaseValue> { /*\label{code:jdbcTemplate:mapper}*/
   @@@Override@@
-  public DatabaseValue mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+  public DatabaseValue mapRow(ResultSet resultSet, int rowNumber) throws SQLException {
     DatabaseValue databaseValue = new DatabaseValue();
     databaseValue.setId(resultSet.getInt("ID"));
     databaseValue.setValue(resultSet.getString("VALUE"));

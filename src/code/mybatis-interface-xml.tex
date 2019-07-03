@@ -1,6 +1,23 @@
 
-\begin{lstlisting}[language=Java, caption={MyBatis Mapper interface using XML mapper file}, label={code:mybatis:interface:xml}]
+\begin{lstlisting}[language=Java, belowskip=-2mm]
 public interface Mapper {
   DatabaseValue getForId(int id);
 }
+\end{lstlisting}
+
+\begin{lstlisting}[language=XML, caption={Definition of XML Mapper interface}, label={code:mybatis:interface:xml}]
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<@mapper@ namespace="Mapper">
+  <@resultMap@ id="resultMap" type="DatabaseValue"> /*\label{code:mybatis:mapper:xml:mapping:begin}*/
+    <@result@ property="id" column="ID"/>
+    <@result@ property="value" column="VALUE"/>
+  </@resultMap@> /*\label{code:mybatis:mapper:xml:mapping:end}*/
+
+  <@select@ id="getForId" resultMap="resultMap" parameterType="int">
+    @@SELECT ID, VALUE FROM T WHERE ID = #{id}@@ /*\label{code:mybatis:mapper:xml:query}*/
+  </@select@>
+</@mapper@>
 \end{lstlisting}

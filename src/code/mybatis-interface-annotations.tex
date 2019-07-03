@@ -1,11 +1,11 @@
 
-\begin{lstlisting}[language=Java, caption={MyBatis Mapper interface using annotations}, label={code:mybatis:interface:annotations}]
+\begin{lstlisting}[language=Java, caption={Definition of Mapper interface using annotations}, label={code:mybatis:interface:annotations}]
 public interface Mapper {
   @@@Results@@(value = { /*\label{code:mybatis:interface:annotations:result:begin}*/
     @@@Result@@(column = "ID", property = "id"),
     @@@Result@@(column = "VALUE", property = "value")
   }) /*\label{code:mybatis:interface:annotations:result:end}*/
   @@@Select@@("SELECT ID, VALUE FROM T WHERE ID = #{id}") /*\label{code:mybatis:interface:annotations:query}*/
-  DatabaseValue getForId(int id);
+  DatabaseValue getForId(int id); /*\label{code:mybatis:interface:annotations:method}*/
 }
 \end{lstlisting}
