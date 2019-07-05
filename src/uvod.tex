@@ -8,104 +8,96 @@
 Data lineage, or provenance, describes where data came from,
 how it was derived and where the results are stored.
 
-Lineage can be useful in a variety of settings. For example,
-molecular biology databases, which mostly store copied data,
-can use lineage to verify the copied data by tracking
-the original sources [1]. Data warehouses can use the lineage
-of anomalous view data to identify faulty base data [4],
-and probabilistic databases can exploit lineage for
-confidence computation [10, 12].
-\TODO{Citacia - Data Lineage: A Survey}
+Lineage can be useful in many domains.
+Molecular biology databases, which mostly store copied data,
+can use lineage to verify the copied data by tracking the original
+sources as was demonstrated by \citet{DataLineageInBioInformatics}.
+Probabilistic databases can exploit lineage for confidence
+computation as was stated by \citet{DataLineageInProbabilisticDatabases}.
+Data lineage is also important in BI when achieving full regulatory compliance
+and improving data governance.
 
-In our work we focus on Java applications that access and/or transform data.
-For these operations, often other frameworks are used to simplify
-the application logic and communication with other systems.
+In all these areas, Java applications are often used to work
+with such a data.
+Until now, there exist no tool for creating data lineage of
+Java applications and the fact, that there exist many frameworks
+to simplify and abstract access to that data,
+makes the task of creating data lineage even harder.
 
-In these frameworks, we need to get a graph, where nodes
+When talking about databases, useful information can be the 
+name of a database that application access or SQL statement that application execute.
+Application can also use external files as data storage, where their names
+are very valuable information for data lineage.
+Data can be also accessed through network using messaging system
+where server name or message identification can be also useful.
+
+Resulted data lineage can be viewed as a graph, where nodes
 contains sources and sinks of data and directed edges
-are flows between them.
-
-For example, when using database frameworks, in addition to
-know how data flow from sources to sinks, we want to know
-also what queries are executed to load and store the data.
+between them are corresponding data flows.
 
 
 
 
+\section{MANTA Flow}
 
-\section{Goals}
-
-We would like to create a library that meets the requirements of:
-
-\begin{itemize}
-  \item Correctness
-  \item Accuracy
-  \item Efficiency
-  \item Support for few frameworks
-  \item Easy to add support for new frameworks
-\end{itemize}
-
-Correctness and accuracy are the essential requirements of algorithms used
-in our library. We have also efficiency in mind, so we precompute as much
-as we could.
-
-We implement \textit{plugins} for handling few frameworks, that can be used
-in applications to show our approach works well. We chose different types
-of frameworks, each with different access to data, so adding support
-for new frameworks should be easy to implement - one should identify
-the places where application works with data (load, store or just modify)
-and algorithm symbolic analysis algorithm takes care of creating
-data lineage part.
-
-
-
-%Data can be accessed using databases, files, standard input and output,
-%using network or many other ways.
-%Many frameworks were created to manipulate with the data and
-%we would like to develop library, which can identify places
-%in these frameworks where data are accessed.
-
-
-\section{Manta Flow}
-
-Manta Flow is a tool that helps enterprises to get end-to-end
+\citet{MantaFlow} is a tool that helps enterprises to get end-to-end
 data lineage including custom SQL code. That allows customers to fulfill
 compliance regulations or improve data governance.
 
 It extracts and analyses metadata from report definitions,
 custom SQL code, and ETL workflows, to create data flows
 which span multiple systems and a range of technologies.
-Lineages are analyzed based on actual code, and flows can be visualized.
-Data paths between files, report fields, database tables,
-and individual columns are revealed to users,
-and this information can be utilized in a range of roles.
+Lineages are analyzed based on actual code.
+All entities detected by MANTA Flow, such as columns or procedures,
+are visualized to help users utilize this information.
 
-All entities detected by Manta Flow, such as columns or procedures,
-are presented to users in a structure designed to simplify navigation.
-Users can search for any object in the repository,
-or within the visualization itself.
-\TODO{Citacie: \\
-https://www.capterra.com/p/145178/Manta-Flow/ \\
-https://www.getapp.com/business-intelligence-analytics-software/a/manta-flow/ \\
-https://reviews.financesonline.com/p/manta-flow/
-}
+Systems, for which MANTA Flow is used to analyse their data lineage,
+often use Java applications to work with data. Adding support
+for data lineage of such programs would be valuable,
+as presented data lineage result can cover whole system,
+not only its database parts.
 
-As Manta flow does not work with Java code, data lineage
-stops when reaching it. The support for Java can bind
-previously separated data lineage parts done in databases
-and user can get full data lineage when using Java and database
-in application.
 
-%- motivacia \\
-%- kontext manty \\
-%- DB frameworky v aplikaciach \\
 
-%- co chceme \\
-%-- funkcna analyza datovych tokov \\
-%-- presnost, rychlost \\
-%-- podpora analyzy pre db frameworky \\
-%-- vytvorenie pluginov do analyzy pre niekolko frameworkov
 
+\section{Goals}
+
+Many Java applications use other frameworks to access data
+in databases, files or in network storages.
+For such applications, we would like to create a \textbf{library
+able to create their data lineage}.
+
+The main requirements of such library is its
+\textbf{correctness}, \textbf{accurary} and \textbf{efficiency}.
+They are the essential requirements of all algorithms.
+\TODO{Nieco v zmysle, ze chceme aby vysledky boli spocitane
+v nejakom rozumnom case}
+
+We provide \textbf{implementation for few frameworks}.
+We focus on few selected frameworks (\citet{MyBatis}, \citet{SpringJDBC} and \citet{Kafka}),
+each with different approach for accessing the data, to demonstrate the library usage.
+
+Library should be also \textbf{extendible to support new frameworks}.
+New and new frameworks are being developed today, so it is very important
+to be able to easily extend library to support such frameworks.
+
+
+
+\section{Structure of the Work}
+
+In chapter \ref{chapter:frameworks} we give examples of popular Java frameworks
+for data processing.
+
+In chapter \ref{chapter:analysis} we introduce libraries that are used
+for static analysis to create data lineage.
+
+In chapter \ref{chapter:implementation} we present design of the library for
+data lineage of frameworks.
+
+Chapter \ref{chapter:program} contains user documentation for the library.
+
+Chapter \ref{chapter:results} present our results for selected frameworks,
+constrains and future work.
 
 
 

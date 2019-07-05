@@ -8,14 +8,14 @@
 
 \newcommand{\Code}[1]{\texttt{#1}}
 
-\chapter{Popular Data Processing Frameworks for Java \label{frameworks}}
+\chapter{Popular Data Processing Frameworks for Java \label{chapter:frameworks}}
 
 In this chapter, we show basic features of chosen frameworks
 that are used for manipulating data.
 We focus on the basic features relevant for the data lineage
 and ignore most of their advanced features.
 
-We show basic examples of how data can be loaded or stored by Java application
+We show data lineage basic examples of how data can be loaded or stored by Java application
 and how sources and sinks are identified, as this is the main topic of our work.
 
 All frameworks that are using database, would work with the example
@@ -29,16 +29,18 @@ from database structured as in \ref{code:db}.
 
 
 
-\section{JDBC \label{frameworks:jdbc}}
+\section{JDBC API \label{frameworks:jdbc}}
 
 For accessing database in Java applications, there exists the standard
-Java Database Connectivity (JDBC) API, which is described
-in more detail in \citet{JDBC_OVERVIEW}.
+Java Database Connectivity (JDBC) API.
+The API is described in more detail in \citet{JDBC_OVERVIEW}
+and here we show just the features that are relevant for this work.
 
-Database vendors ususally provide JDBC API implementation. This API is generic, so
+Database vendors usually provide JDBC API implementation. This API is generic, so
 there should be no difference for connecting to different database types.
 
-There are few interfaces in \citet{java.sql} package controlling database calls:
+The main component of the API is the \Code{java.sql} \citep{java.sql} package.
+We present main interfaces controlling database calls:
 \begin{itemize}
   \item \Code{Connection}
   \item \Code{Statement}, \Code{PreparedStatement}, \Code{CallableStatement}
@@ -51,11 +53,11 @@ When data are returned to application from statement, it is done through \Code{R
 
 Getting connection to database is through \Code{DriverManager}, or since JDBC 2.0
 it can be done using \Code{DataSource} and it is now the preferred way of connecting to database.
-Example \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database
+Listing \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database
 that is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
 and \Code{User} user and \Code{Password} password is used when connecting to it.
 
-Calls of \Code{createDataSource()} would be used in next examples.
+The \Code{createDataSource()} calls would be also used in next database examples.
 
 \InsertCode{h}{code/datasource}
 
@@ -119,11 +121,13 @@ there is no need to work with the low level JDBC.
 
 Unlike other ORM frameworks, it does not map Java objects to database tables, but Java methods
 to SQL statements. Framework uses concept of \Code{Mapper} interfaces (but differently as Spring JDBC Framework).
-Developer define interface with some methods (details are in section \ref{frameworks:myBatis:mapper}),
+Developer define \Code{Mapper} interface with some methods, that executes SQL queries,
 and all communication with database is always happening through these methods.
 
 For each method SQL query is defined and when some output is expected,
 mapping of rows to Java objects should be provided.
+Name \Code{Mapper} is derived from the feature of mapping database query result
+to Java objects.
 Definition of queries and mappings could be done by
 external XML files or by annotations in these interfaces.
 
@@ -336,5 +340,49 @@ large collections of data into and out of Kafka.
 Kafka Connector can ingest entire databases or collect metrics from all
 application servers into Kafka topics, making the data available
 for stream processing with low latency.
+
+
+
+
+\section{Requirements for Data Lineage Library \label{frameworks:requirements}}
+
+In previous sections we demonstrated usage of different Java frameworks
+that are usually used in Java applications to manipulate data.
+We ignored their advanced features and showed some examples of reading
+and writing data.
+
+We described three types of data processing frameworks:
+\begin{itemize}
+  \item \textbf{Spring JDBC Framework}, that just simplify the standard JDBC API,
+  \item \textbf{MyBatis Framework}, which is the ORM framework,
+  \item \textbf{Kafka Framework}, which is the distributed streaming platform.
+\end{itemize}
+
+In the rest of this section, we point out requirements of library, that
+would be needed to successfully create data lineage of such applications.
+
+The library should \textbf{analyse} whole \textbf{Java application} with all
+its dependencies to know what calls are executed from some
+entrypoint method (like \Code{main} method in Java, but in
+our analysis it can be arbitrary method).
+
+It is also important to \textbf{know concrete values} of some elementary Java
+objects, such as \Code{String}s or number types, to know
+what database is application connecting to, what SQL statement
+it executes etc.
+
+The library should be able to work with \textbf{external files}
+as many frameworks store configuration outside the code.
+
+The \textbf{callback}s are also important to handle by library
+as many frameworks use them to asynchronously notify application about
+some task result (failed, done), or even to simplify the usage of other API.
+
+The last, but not least library requirement is to be able to easily
+\textbf{extend to support new frameworks}. It is very important,
+as new and new frameworks are developed and library should be ready
+to add support for creating their data lineage.
+
+
 
 
