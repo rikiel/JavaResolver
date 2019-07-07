@@ -5,8 +5,8 @@ public SqlSessionFactory createSqlSessionFactory() throws SQLException {
       .dataSource(createDataSource()) /*\label{code:mybatis:sessionFactory:java:dataSource}*/
       .transactionFactory(new JdbcTransactionFactory())
       .build();
-  Configuration sessionFactory = new Configuration(environment);
-  sessionFactory.addMapper(Mapper.class); /*\label{code:mybatis:sessionFactory:java:addMapper}*/
+  Configuration configuration = new Configuration(environment);
+  configuration.addMapper(Mapper.class); /*\label{code:mybatis:sessionFactory:java:addMapper}*/
   return new SqlSessionFactoryBuilder()
       .build(sessionFactory); /*\label{code:mybatis:sessionFactory:java:sessionFactory}*/
 }

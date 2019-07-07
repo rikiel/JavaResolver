@@ -6,6 +6,9 @@ public interface Mapper {
     @@@Result@@(column = "VALUE", property = "value")
   }) /*\label{code:mybatis:interface:annotations:result:end}*/
   @@@Select@@("SELECT ID, VALUE FROM T WHERE ID = #{id}") /*\label{code:mybatis:interface:annotations:query}*/
-  DatabaseValue getForId(int id); /*\label{code:mybatis:interface:annotations:method}*/
+  DatabaseValue getForId(int id);
+
+  @@@Insert@@("INSERT INTO T (ID, VALUE) VALUES (#{id}, #{value})") /*\label{code:mybatis:interface:annotations:insert}*/
+  void insert(DatabaseValue value);
 }
 \end{lstlisting}

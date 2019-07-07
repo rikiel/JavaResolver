@@ -1,21 +1,34 @@
 
-
-\begin{lstlisting}[language=Java, caption={Example of loading data using \citet{SpringJDBC}}, label={code:jdbcTemplate}]
+\begin{lstlisting}[language=Java, caption={Example of query and insert operations using \citet{SpringJDBC}}, label={code:jdbcTemplate}]
 public DatabaseValue getForId(int id) throws SQLException {
   DataSource dataSource = createDataSource();
   JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-  String query = "SELECT ID, VALUE FROM T WHERE ID = ?";
-  return jdbcTemplate.queryForObject(query, new Mapper(), id); /*\label{code:jdbcTemplate:return}*/
+  return jdbcTemplate.queryForObject(
+      "SELECT ID, VALUE FROM T WHERE ID = ?",
+      new RowMapper<DatabaseValue>() { /*\label{code:jdbcTemplate:mapper}*/
+        @@@Override@@
+        public DatabaseValue mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+          DatabaseValue databaseValue = new DatabaseValue();
+          databaseValue.setId(resultSet.getInt("ID"));
+          databaseValue.setValue(resultSet.getString("VALUE"));
+          return databaseValue;
+        }
+      },
+      id);
 }
 
-public class Mapper implements RowMapper<DatabaseValue> { /*\label{code:jdbcTemplate:mapper}*/
-  @@@Override@@
-  public DatabaseValue mapRow(ResultSet resultSet, int rowNumber) throws SQLException {
-    DatabaseValue databaseValue = new DatabaseValue();
-    databaseValue.setId(resultSet.getInt("ID"));
-    databaseValue.setValue(resultSet.getString("VALUE"));
-    return databaseValue;
-  }
+public void insert(DatabaseValue value) throws SQLException {
+  DataSource dataSource = createDataSource();
+  JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+  jdbcTemplate.update(
+      "INSERT INTO T (ID, VALUE) VALUES (?, ?)",
+      new PreparedStatementSetter() { /*\label{code:jdbcTemplate:preparedStatementSetter}*/
+        @@@Override@@
+        public void setValues(PreparedStatement preparedStatement) throws SQLException {
+          preparedStatement.setInt(1, value.getId());
+          preparedStatement.setString(2, value.getValue());
+        }
+      });
 }
 \end{lstlisting}
 

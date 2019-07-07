@@ -64,22 +64,23 @@ not only its database parts.
 
 Many Java applications use other frameworks to access data
 in databases, files or in network storages.
-For such applications, we would like to create a \textbf{library
-able to create their data lineage}.
 
-The main requirements of such library is its
-\textbf{correctness}, \textbf{accurary} and \textbf{efficiency}.
-They are the essential requirements of all algorithms.
-\TODO{Nieco v zmysle, ze chceme aby vysledky boli spocitane
-v nejakom rozumnom case}
+Up to now, there exists the Symbolic Analysis library
+that can create data lineage of an analysed application
+when only Java IO and JDBC APIs are used.
 
-We provide \textbf{implementation for few frameworks}.
-We focus on few selected frameworks (\citet{MyBatis}, \citet{SpringJDBC} and \citet{Kafka}),
-each with different approach for accessing the data, to demonstrate the library usage.
+In our work, we \textbf{propose architecture changes} in Symbolic Analysis library
+to be easily extensible by plugins, that can add support for new frameworks
+to identify its data sources and sinks.
 
-Library should be also \textbf{extendible to support new frameworks}.
-New and new frameworks are being developed today, so it is very important
-to be able to easily extend library to support such frameworks.
+We also \textbf{implement plugins for few selected frameworks}
+(\citet{MyBatis}, \citet{SpringJDBC} and \citet{Kafka}).
+Each framework has different approach for accessing the data.
+Thereby we want to demonstrate that such plugins can be used to
+add support for data flow analysis of other Java frameworks.
+The feature to easily extend the library to add support for a new frameworks
+is very important, as new and new frameworks are being developed today.
+
 
 
 

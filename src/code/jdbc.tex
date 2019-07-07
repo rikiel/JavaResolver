@@ -1,5 +1,5 @@
 
-\begin{lstlisting}[language=Java, caption={Example of loading data using JDBC API \citep{JDBC_OVERVIEW}}, label={code:jdbc}]
+\begin{lstlisting}[language=Java, caption={Example of query and insert operations using JDBC API \citep{JDBC_OVERVIEW}}, label={code:jdbc}]
 public DatabaseValue getForId(int id) throws SQLException {
   DataSource dataSource = createDataSource();
   try (Connection connection = dataSource.getConnection()) { /*\label{code:jdbc:connection}*/
@@ -7,6 +7,7 @@ public DatabaseValue getForId(int id) throws SQLException {
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) { /*\label{code:jdbc:prepareStatement:begin}*/
       preparedStatement.setInt(1, id); /*\label{code:jdbc:prepareStatement:end}*/
       try (ResultSet resultSet = preparedStatement.executeQuery()) { /*\label{code:jdbc:executeQuery}*/
+        resultSet.next();
         DatabaseValue databaseValue = new DatabaseValue(); /*\label{code:jdbc:mapping:begin}*/
         databaseValue.setId(resultSet.getInt("ID"));
         databaseValue.setValue(resultSet.getString("VALUE")); /*\label{code:jdbc:mapping:end}*/
@@ -21,5 +22,21 @@ public DatabaseValue getForId(int id) throws SQLException {
     // handle exception
   }
   return null;
+}
+
+public void insert(DatabaseValue value) throws SQLException {
+  DataSource dataSource = createDataSource();
+  try (Connection connection = dataSource.getConnection()) { 
+    String query = "INSERT INTO T (ID, VALUE) VALUES (?, ?)";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+      preparedStatement.setInt(1, value.getId());
+      preparedStatement.setString(2, value.getValue());
+      preparedStatement.executeUpdate(); /*\label{code:jdbc:executeUpdate}*/
+    } catch (SQLException e) {
+      // handle exception
+    }
+  } catch (SQLException e) {
+    // handle exception
+  }
 }
 \end{lstlisting}

@@ -52,29 +52,41 @@ database queries can be executed using any of \Code{Statement} calls.
 When data are returned to application from statement, it is done through \Code{ResultSet}.
 
 Getting connection to database is through \Code{DriverManager}, or since JDBC 2.0
-it can be done using \Code{DataSource} and it is now the preferred way of connecting to database.
-Listing \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database
-that is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
+it can be done using \Code{DataSource} in \Code{javax.sql} package.
+Using \Code{DataSource} is now the preferred way of connecting to database,
+but many applications continue to use old-fashioned \Code{DriverManager}.
+
+Listing \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database.
+Database is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
 and \Code{User} user and \Code{Password} password is used when connecting to it.
 
-The \Code{createDataSource()} calls would be also used in next database examples.
+The \Code{createDataSource()} method would be also used in next database examples.
 
 \InsertCode{h}{code/datasource}
 
-Code in Listing \ref{code:jdbc} shows how loading data from \Code{DataSource}
-(as in \ref{code:datasource}) can be done using JDBC API.
+Listing \ref{code:jdbc} illustrates the two basic use cases - loading and storing the data.
+
+Firstly, we will describe the loading part - the \Code{getForId} method.
 On line \ref{code:jdbc:connection}, connection to database is created.
 Then on lines \ref{code:jdbc:prepareStatement:begin}--\ref{code:jdbc:prepareStatement:end}
 database query is created to select just rows matching \Code{id} argument.
-The query is then executed on line \ref{code:jdbc:executeQuery} and then
-result is mapped from \Code{ResultSet} to our \Code{DatabaseValue} model and then it is returned on line \ref{code:jdbc:return}.
+The query is then executed on line \ref{code:jdbc:executeQuery} and its results are stored
+in \Code{ResultSet} object. Then the \Code{DatabaseValue} is created and its properties are
+set to values of \Code{ID} and \Code{VALUE} columns on lines
+\ref{code:jdbc:mapping:begin}--\ref{code:jdbc:mapping:end} and the result is returned on line \ref{code:jdbc:return}.
 
-\InsertCode{h}{code/jdbc}
+Secondly, we will describe storing part - the \Code{insert} method.
+Apart from different SQL statement and setting two arguments to \Code{PreparedStatement} instead of just one,
+the only difference  from previous query is the usage of \Code{executeUpdate} method
+on line \ref{code:jdbc:executeUpdate} for executing insert statement, as no output is expected.
+
+\InsertCode{p}{code/jdbc}
 
 
 
 
 \section{Spring JDBC Framework \label{frameworks:jdbcTemplate}}
+
 \citet{SpringJDBC} is extension above JDBC API that tries to help developers to code only
 parts with application logic and it removes much of the boilerplate code.
 It is illustrated by next list from \citet{SpringJDBC}, from which only
@@ -96,15 +108,18 @@ Before Java 7, coding in standard JDBC tend to be errorneus because of forgettin
 database resources (user needs to close resources in finally block as try-with-resources did not exist yet)
 and the boilerplate code does not help in readability of code.
 
-Listing \ref{code:jdbcTemplate} illustrate loading single row from database.
-Framework uses \Code{RowMapper} objects, that define transformation of
-each row in query result to user defined object.
-On the line \ref{code:jdbcTemplate:mapper}, we define \Code{Mapper} class
-for transforming rows to resulting \Code{DatabaseValue}.
-We can notice, that transformation done by \Code{Mapper} is the same as it was in JDBC example
-in Listing \ref{code:jdbc} on lines \ref{code:jdbc:mapping:begin}--\ref{code:jdbc:mapping:end}.
-Framework handles all boilerplate code around and result is returned
-after processing single line \ref{code:jdbcTemplate:return}.
+Because of this, Spring JDBC Framework starts to use other objects,
+to wrap application logic, that can be used by framework in later execution.
+
+The Listing \ref{code:jdbcTemplate} illustrates that principe.
+The \Code{RowMapper} defined on line \ref{code:jdbcTemplate:mapper} defines transformation
+logic (how result row should be transformed to \Code{DatabaseValue} object)
+and the \Code{PreparedStatementSetter} on line \ref{code:jdbcTemplate:preparedStatementSetter},
+which is used to set up parameters for database call.
+
+We can notice the similarity between code in that wrapper objects and the Listing
+\ref{code:jdbc} when plain JDBC API was used. We can also notice, that all the boilerplate code vanished,
+and when we use named classes instead of inline anonymous ones, the database call would fit just one line of code.
 
 
 \InsertCode{h}{code/jdbcTemplate}
@@ -126,12 +141,11 @@ and all communication with database is always happening through these methods.
 
 For each method SQL query is defined and when some output is expected,
 mapping of rows to Java objects should be provided.
-Name \Code{Mapper} is derived from the feature of mapping database query result
+The name \uvodzovky{Mapper} is derived from the feature of mapping database query result
 to Java objects.
-Definition of queries and mappings could be done by
-external XML files or by annotations in these interfaces.
+Definition of queries and mappings could be done by external XML files or by annotations in these interfaces.
 
-In section \ref{frameworks:myBatis:mapper} we show examples of \Code{Mapper} interface,
+In section \ref{frameworks:myBatis:mapper} we show examples of \Code{Mapper} interfaces,
 in section \ref{frameworks:myBatis:configuration} we show how database configuration
 can be created and in section \ref{frameworks:myBatis:run} we finally show how to
 use these parts to load data from database.
@@ -150,23 +164,37 @@ in previous JDBC example, when connection to database is open
 and \Code{PreparedStatement} is created with defined query and provided arguments,
 and after execution is done, resulting object values are mapped from \Code{ResultSet}.
 
-Listing \ref{code:mybatis:interface:annotations} uses annotations to store definitions
-of both query and mapping for method \Code{getForId} defined on line
-\ref{code:mybatis:interface:annotations:method}. Line \ref{code:mybatis:interface:annotations:query}
+Listing \ref{code:mybatis:interface:annotations} shows the use of annotations
+to store defitions of queries. In case of \Code{getForId} method, also mapping is defined.
+
+Firstly, we describe loading of \Code{DatabaseValues} objects from database.
+Line \ref{code:mybatis:interface:annotations:query}
 contains query definition using the \Code{@Select} annotation and lines
 \ref{code:mybatis:interface:annotations:result:begin}--\ref{code:mybatis:interface:annotations:result:end}
 contains mapping of result columns to \Code{DatabaseValue} attributes
 using the \Code{@Results} and \Code{@Result} annotations.
 
+The storing of \Code{DatabaseValue} is done using \Code{insert} method,
+for which the insert statement is located on line \ref{code:mybatis:interface:annotations:insert}
+using \Code{@Insert} annotation.
+
+The framework substitutes tags \Code{\#\string{id\string}} and \Code{\#\string{value\string}}
+in statements by values from method arguments (in case of \Code{DatabaseValue} argument,
+objects properties are used).
+
 \InsertCode{h}{code/mybatis-interface-annotations}
 
+
 Listing \ref{code:mybatis:interface:xml} shows the same functionality but using XML.
-First, method \Code{getForId} is defined in interface and the rest,
-query and mapping, is stored in XML mapper file.
-Query is located on line \ref{code:mybatis:mapper:xml:query} in \Code{<select>} tag.
+First, methods \Code{getForId} and \Code{insert} are defined in \Code{Mapper} interface and the rest,
+SQL statements and result mapping, are stored in XML mapper file.
+
+Query for \Code{getForId} is located on line \ref{code:mybatis:mapper:xml:query} in \Code{<select>} tag.
 Tag contains a reference to the correct \Code{resultMap} mapping on lines
 \ref{code:mybatis:mapper:xml:mapping:begin}--\ref{code:mybatis:mapper:xml:mapping:end},
 which contains mapping of result columns to \Code{DatabaseValue} object attributes.
+The \Code{insert} SQL statement is defined on line \ref{code:mybatis:mapper:xml:insert}
+using \Code{<insert>} tag.
 
 \InsertCode{h}{code/mybatis-interface-xml}
 
@@ -176,7 +204,7 @@ which contains mapping of result columns to \Code{DatabaseValue} object attribut
 
 The main MyBatis component responsible for creating database connections
 is \Code{SqlSessionFactory}. It needs to be configured to successfully connect
-to database. Configuration can be done in Java or using external XML configuration file.
+to database. Configuration can be done in Java and also using external XML configuration file.
 
 In Listing \ref{code:mybatis:sessionFactory:java} we show, how configuration can be
 done in Java. On line \ref{code:mybatis:sessionFactory:java:dataSource} we use \Code{DataSource},
@@ -185,7 +213,7 @@ that we previously define in Listing \ref{code:datasource}.
 On line \ref{code:mybatis:sessionFactory:java:addMapper} \Code{Mapper} interface is registered
 to be known by MyBatis and finally \Code{SqlSessionFactory} is created.
 
-\InsertCode{h}{code/mybatis-sessionFactory-java}
+\InsertCode{H}{code/mybatis-sessionFactory-java}
 
 In Listing \ref{code:mybatis:sessionFactory:xml} we show, how configuration can be
 done using external XML file. \Code{SqlSessionFactory} is created
@@ -194,7 +222,7 @@ configures \Code{DataSource} on lines
 \ref{code:mybatis:configuration:xml:dataSource:begin}--\ref{code:mybatis:configuration:xml:dataSource:end}
 and \Code{Mapper} interface is registered on line \ref{code:mybatis:configuration:xml:mapper}.
 
-\InsertCode{H}{code/mybatis-sessionFactory-xml}
+\InsertCode{h}{code/mybatis-sessionFactory-xml}
 
 
 
@@ -202,15 +230,19 @@ and \Code{Mapper} interface is registered on line \ref{code:mybatis:configuratio
 \subsection{Loading Data from Database \label{frameworks:myBatis:run}}
 
 Since we know how to configure database connections and how to define mappers,
-we are ready to show how data can be loaded from database.
-Listing \ref{code:mybatis} show all pieces together. First, on line
-\ref{code:mybatis:sqlSessionFactory} we create previously configured
-\Code{SqlSessionFactory} from which we open \Code{SqlSession} to
+we are ready to show how data can be loaded (and stored) from (to) database.
+Listing \ref{code:mybatis} show all pieces together.
+
+The \Code{getForId} method creates on line \ref{code:mybatis:sqlSessionFactory}
+previously configured \Code{SqlSessionFactory} from which \Code{SqlSession} is opened to
 access database. On line \ref{code:mybatis:getMapper} implementation
 of \Code{Mapper} interface is retrieved and on line \ref{code:mybatis:return}
-database query is executed and its result is returned. 
+database query is executed and its result is returned.
 
-\InsertCode{H}{code/mybatis}
+The \Code{insert} method just executes different mapper method (\Code{insert})
+and all remaining code is the same.
+
+\InsertCode{h}{code/mybatis}
 
 
 
@@ -222,7 +254,7 @@ process them, as they occur.
 
 Kafka can run as a cluster on one or more servers.
 Each cluster stores stream of records in categories that are called \textit{topics}.
-Topics can be viewed as database tables. Producers write to a topic's table
+Topic can be viewed as a database table. Producers write to a topic's table
 and consumers read new data from that table.
 When application wants to publish some records (producer) in the topic,
 it sends them to server from which data are forwarded to all its subscribers (consumers).
@@ -242,18 +274,25 @@ However, this feature is not very important considering data lineage problem\foo
 
 The Kafka cluster durably persists all published records (whether or not they have been consumed)
 using a configurable retention period. For that period, any consumer can access
-to any published record.
+to any published record. This feature is illustrated by Figure \ref{frameworks:kafka:topic}.
+
+\begin{figure}[h]
+  \center
+  \includegraphics[width=80mm]{img/kafka-topic-structure.png}
+  \caption{Structure of records in a topic. Many producers can write to such topic and consumers can work with the records in arbitrary order.}
+  \label{frameworks:kafka:topic}
+\end{figure}
 
 Figure \ref{frameworks:kafka:api} and next list from \citet{Kafka}
 illustrates usage of four Kafka core client APIs:
 \begin{itemize}
   \item The \textbf{Producer API} (see section \ref{frameworks:kafka:producer}) allows an application to publish
-    a stream of records to Kafka topics
+    a stream of records to Kafka topics.
   \item The \textbf{Consumer API} (see section \ref{frameworks:kafka:consumer}) allows an application to subscribe
-    to topics and process the stream of records produced to them
+    to topics and process the stream of records produced to them.
   \item The \textbf{Streams API} (see section \ref{frameworks:kafka:streams}) allows an application to act as a stream processor,
     consuming an input stream from topics and producing an output stream to output topics,
-    effectively transforming the input streams to output streams
+    effectively transforming the input streams to output streams.
   \item The \textbf{Connector API} (see section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
     that connect Kafka topics to existing applications or data systems.
     For example, a connector to a relational database might capture every change to a table. 
@@ -312,7 +351,6 @@ output records to its downstream processors.
 
 In topology, there are two special processors:
 
-\TODO{Zacinat velkym The? Pripadne to davat ako vety? .. rovnako aj v bodoch v kafka api}
 \begin{itemize}
   \item The \textbf{Source Processor} is a stream processor
     that does not have any upstream processors. It produces an input stream
@@ -323,7 +361,7 @@ In topology, there are two special processors:
     from its up-stream processors to a specified Kafka topic.
 \end{itemize}
 
-The way, how topology can be defined is using the Kafka Streams DSL (Domain Specific Language).
+The way, how topology can be defined is using the Kafka Streams Domain Specific Language (DSL).
 It provides the most common data transformation operations, such as
 \Code{map}, \Code{filter}, \Code{join} and \Code{aggregations}.
 There exists also the low level Processor API, that allows developers define
@@ -351,38 +389,44 @@ that are usually used in Java applications to manipulate data.
 We ignored their advanced features and showed some examples of reading
 and writing data.
 
-We described three types of data processing frameworks:
+We described four types of data processing APIs / frameworks:
 \begin{itemize}
-  \item \textbf{Spring JDBC Framework}, that just simplify the standard JDBC API,
-  \item \textbf{MyBatis Framework}, which is the ORM framework,
-  \item \textbf{Kafka Framework}, which is the distributed streaming platform.
+  \item The \textbf{JDBC API}, which is the Java API for working with databases.
+  \item The \textbf{Spring JDBC Framework}, which simplify the JDBC API.
+  \item The \textbf{MyBatis Framework}, which is the ORM framework.
+  \item The \textbf{Kafka Framework}, which is the distributed streaming platform.
 \end{itemize}
 
 In the rest of this section, we point out requirements of library, that
-would be needed to successfully create data lineage of such applications.
+would be needed to successfully create data lineage of applications,
+where such frameworks are used for accessing the data.
 
-The library should \textbf{analyse} whole \textbf{Java application} with all
-its dependencies to know what calls are executed from some
-entrypoint method (like \Code{main} method in Java, but in
-our analysis it can be arbitrary method).
-
-It is also important to \textbf{know concrete values} of some elementary Java
-objects, such as \Code{String}s or number types, to know
-what database is application connecting to, what SQL statement
-it executes etc.
-
-The library should be able to work with \textbf{external files}
-as many frameworks store configuration outside the code.
-
-The \textbf{callback}s are also important to handle by library
-as many frameworks use them to asynchronously notify application about
-some task result (failed, done), or even to simplify the usage of other API.
-
-The last, but not least library requirement is to be able to easily
-\textbf{extend to support new frameworks}. It is very important,
-as new and new frameworks are developed and library should be ready
-to add support for creating their data lineage.
-
+\begin{enumerate}
+  \item \textbf{Analysis of whole Java application.} \\
+    The analysis should process whole application with all its dependencies.
+  \item \textbf{Identifying the sources and sinks.} \\
+    The analysis should identify the places in application, where the data
+    are read or write.
+  \item \textbf{Correctness, accuracy and efficiency of created data lineage.} \\
+    The analysis should create correct and accurate data lineage in a reasonable time.
+  \item \textbf{Use concrete values.} \\
+    The analysis should know the concrete values of Java primitives and \Code{String}s.
+    This is necessary for identifying sources and sinks of data,
+    such as files, database tables, etc.
+  \item \textbf{Work with external files.} \\
+    The analysis should be able to handle not only Java classes,
+    but also external files as may frameworks store their configuration
+    outside of the code.
+  \item \textbf{Handle callbacks.} \\
+    The analysis should work well with callbacks, as they are often
+    used by frameworks to asynchronously notify application
+    about some results of performed operation, or even
+    to simplify the usage of other API.
+  \item \textbf{Easy extendability.} \\
+    The analysis need to be easily extended to support new frameworks,
+    as new and new frameworks are developed and the library need to be
+    prepared to add support for creating their data lineage.
+\end{enumerate}
 
 
 

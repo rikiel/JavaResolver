@@ -2,6 +2,8 @@
 \begin{lstlisting}[language=Java, belowskip=-2mm]
 public interface Mapper {
   DatabaseValue getForId(int id);
+
+  void insert(DatabaseValue value);
 }
 \end{lstlisting}
 
@@ -19,5 +21,8 @@ public interface Mapper {
   <@select@ id="getForId" resultMap="resultMap" parameterType="int">
     @@SELECT ID, VALUE FROM T WHERE ID = #{id}@@ /*\label{code:mybatis:mapper:xml:query}*/
   </@select@>
+  <@insert@ id="insert">
+    @@INSERT INTO T (ID, VALUE) VALUES (#{id}, #{value})@@ /*\label{code:mybatis:mapper:xml:insert}*/
+  </@insert@>
 </@mapper@>
 \end{lstlisting}
