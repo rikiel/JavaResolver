@@ -10,29 +10,32 @@
 }
 
 In this chapter, we will introduce concept of static analysis,
-its possible applications and its limitations.
+its possible applications and its limitations,
+focusing especially on aspects relevant for computing data lineage.
+
+
 
 \section{Program Analysis}
 
 \textbf{Program analysis} is the process of automatically analyzing the behavior
-of computer programs. There are two approaches of such analysis:
+of computer programs. There are two principal approaches to such analysis:
 \begin{itemize}
   \item \textbf{Dynamic program analysis} is performed during program runtime.
-    To perform dynamic program analysis, both executable program
+    To perform dynamic analysis, both executable program
     and its inputs are required. To be effective, the target program
     must be executed with sufficient test inputs, as its results
     are limited only to observed executions of the analyzed program.
   \item \textbf{Static program analysis} is the program analysis that is actually
-    performed without executing program. The analysis is usually
+    performed without executing the input program. The analysis is usually
     performed on the program source code, or bytecode.
-    Results of static program analysis include all execution branches of
+    Results of static program analysis cover all execution paths of
     analysed program.
 
     Static program analysis technique is very popular. It is thanks
     to its speed, reliability and sometimes it is the only possible
     way for complex systems in reasonable time.
-    It is is often used to detect program errors, such as
-    security vulnerabilities or performance optimizations.
+    It is often used to detect program errors, such as
+    security vulnerabilities or performance issues.
 \end{itemize}
 
 \textbf{Data flow analysis} is a technique for gathering information about
@@ -43,7 +46,7 @@ all possible values of variables during program execution.
 \section{WALA Framework \label{chapter:analysis:wala}}
 
 The T. J. Watson Libraries for Analysis, the \citet{WalaFramework},
-is a framework for static and dynamic analysis capabilities for Java
+is a framework for static analysis capabilities for Java
 bytecode and related languages.
 
 The main goals of WALA Framework are:
@@ -62,7 +65,7 @@ The key features WALA Framework provides are:
   \item Context-sensitive slicing
 \end{itemize}
 
-We describe some of the features in next sections.
+We describe some of the features in the following subsections.
 
 
 
@@ -94,24 +97,16 @@ such an analysis is called \textbf{context-insensitive}.
 
 
 
-\subsubsection{Andersen's algorithms}
-
-\TODO{Popisat, ak ho pouzivame aj v nasej analyze: \\
-http://wala.sourceforge.net/wiki/index.php/UserGuide:PointerAnalysis}
-
-
-
-
 \subsection{Class hierarchy}
 
 A \textbf{class hierarchy} is a structure for set of classes
-of the analyzed program. There is also information about the used
+of the analyzed program. It includes also information about the used
 programming language and the relationships between such classes.
 
-Such relations in programs written in Java language are \Code{implements} and \Code{extends}
+Such relations in programs written in Java language are the \Code{implements} and \Code{extends}
 relations.
 
-For each class, there is also collection of methods. Methods can be declared in the
+Each class also includes collection of its methods. Methods can be declared in the
 class, or inherited from parent.
 
 
@@ -122,19 +117,20 @@ A \textbf{call graph} represents calling relationships between subroutines
 in an analysed computer program. The nodes represents procedures and each
 directed edge represents procedure calls.
 
-When used in context-sensitive manner, which means that for each procedure 
+When used in context-sensitive manner, it means that for each procedure 
 the graph contains a separate node for each call stack that procedure can be
 activated with.
 
 
 
 
-\section{Symbolic Analysis Library}
+\section{Symbolic Analysis Library \label{chapter:analysis:symbolicAnalysisLibrary}}
 
 \textbf{Symbolic analysis library} is a library for computing flow of information
 in Java program - the data lineage.
-Symbolic analysis library was introduced in \citet{ParizekHybridAnalysis}
-and in the research in that field continues and its results will be published
+The Symbolic analysis library is based on symbolic Java bytecode interpreter
+that was introduced in \citet{ParizekHybridAnalysis}
+and used in the ongoing whose results will be published
 in a short time in \citet{ParizekBUBEN}.
 
 The library uses static analysis techniques to construct call graph and
@@ -189,6 +185,9 @@ The algorithm terminates when the summary of each method captures all its result
 In the previous section we described general algorithm for symbolic analysis.
 However, we did not specify, how the flow information is used in practice.
 
+Now we describe selected important aspects and features of the Symbolic analysis library
+that are relevant for data lineage information.
+
 
 
 
@@ -196,7 +195,7 @@ However, we did not specify, how the flow information is used in practice.
 
 As optimizations, library does not process all reachable methods.
 It analyses just methods of application code and procedures with special
-meaning, that are described in next sections.
+meaning that are described in next sections.
 
 For ignored methods, the \textbf{identity} is returned.
 The identity function with respect to flow data propagation is defined as
@@ -209,15 +208,16 @@ as flow data of returned value and receiver.
 
 \subsubsection{Strings}
 
-Know the concrete values of the \Code{String} used in application is valuable
+Knowing the concrete values of the \Code{String} used in application is valuable
 when it comes to data lineage of application.
 \Code{String}s identify file names that are accessed in application,
-or it can be query to database, etc.
+or it can be SQL query to database, etc.
 
 However, concrete values are known only when using as literal in the application.
 Sometimes, the symbolic analysis cannot determine the precise concrete string value.
 It is often when it is loaded from file or database, or after some operations
-like \Code{trim}, \Code{substring}, or even concatenation of \Code{String}s.
+like \Code{trim}, \Code{substring}, or even concatenation of \Code{String}s
+(which works only for \Code{String} literals).
 Then the actual value is in general unknown, but the flow information must be preserved.
 
 
@@ -225,7 +225,7 @@ Then the actual value is in general unknown, but the flow information must be pr
 
 \subsubsection{Numeric types}
 
-The idea of concrete values for numeric Java types works as in case
+Handling concrete values for numeric Java types works as in case
 of \Code{String} literals. It is useful to know them, but often
 they cannot be determined. Flow information must be preserved after
 the operations with the numbers in any case.
@@ -244,11 +244,13 @@ of a given array or collection are considered.
 Complete flow information is also used when creating \Code{java.util.Iterator}
 from a collection.
 
-Also, when using \Code{java.util.Map} and \Code{java.util.Properties} classes,
+Also, when using \Code{java.util.Map} and \Code{java.util.Properties} instances,
+analysis does distinguish the keys and corresponding values.
+and 
 analysis does not distinguish between used keys and corresponding values
 and maintains just a single set of flow for the whole class.
 
-When collections of \Code{String}s or numeric values library provides
+In case of collections of \Code{String}s or numeric values, library provides
 the information about concrete values stored in collections whenever possible.
 
 
@@ -257,7 +259,7 @@ the information about concrete values stored in collections whenever possible.
 
 \subsection{Identifying the Sources and Sinks of a Data}
 
-Symbolic analysis algorithm, that we describe in previous section is
+Symbolic analysis algorithm that we describe in previous section is
 used to compute data flow in application.
 When such sources or sinks are identified, the algorithm would
 propagate such data flow.
@@ -276,10 +278,10 @@ It can be done through standard application
 where they are identified by the name \uvodzovky{System.in}, etc.
 or using external files, where its file name identifies the source (or sink respectively).
 
-The library handle both cases and correctly identify
+The library handles both cases and correctly identifies
 all the read and write operations of such inputs and outputs.
 
-The library focus only to inputs and outpus made by classes in \Code{java.io} package
+The library focuses only to inputs and outpus made by classes in \Code{java.io} package
 but also the \Code{java.nio} package would be supported soon.
 
 
@@ -289,12 +291,37 @@ but also the \Code{java.nio} package would be supported soon.
 
 The library also contains implementation for identification of
 database reads and writes using plain JDBC API.
-The related usage of the JDBC API was already described in section \ref{frameworks:jdbc}.
+The related usage of the JDBC API was already described in Section \ref{frameworks:jdbc}.
 
 The library can identify the connection url for the database
-that application is connecting to, SQL queries and the columns,
+that application is connecting to, SQL queries and the columns
 that are read from results in \Code{ResultSet}.
 
 The library focus only to classes in package \Code{java.sql}
 therefore \Code{javax.sql} API is not supported.
+
+\TODO{Popisat trochu viac do detailov, pripadne prilozit prikladovy program aj s vysledkom}
+
+
+
+\subsubsection{Extendability}
+
+The symbolic analysis library can be extended to support other types
+of data sources and sinks. We will describe this feature in the section \ref{chapter:implementation:interface}.
+
+
+
+\subsection{Data Lineage Visualization}
+
+The data flow graph is created based on the results of symbolic analysis - based on
+the computed method summaries.
+
+The graph nodes consist of a set of identified sources and sinks for the data
+and its oriented edges are between pair of nodes between which the data flows.
+
+The graph visualization is then created using \citet{Graphviz} tool in resulted PDF file.
+The structure of the graph is described in more detail in section \ref{chapter:program:graphs}.
+
+\TODO{Alebo popisat uz tu?}
+
 

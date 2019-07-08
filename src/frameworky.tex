@@ -108,8 +108,8 @@ Before Java 7, coding in standard JDBC tend to be errorneus because of forgettin
 database resources (user needs to close resources in finally block as try-with-resources did not exist yet)
 and the boilerplate code does not help in readability of code.
 
-Because of this, Spring JDBC Framework starts to use other objects,
-to wrap application logic, that can be used by framework in later execution.
+Because of this, Spring JDBC Framework starts to use other objects
+to wrap application logic that can be used by framework in later execution.
 
 The Listing \ref{code:jdbcTemplate} illustrates that principe.
 The \Code{RowMapper} defined on line \ref{code:jdbcTemplate:mapper} defines transformation
@@ -118,7 +118,7 @@ and the \Code{PreparedStatementSetter} on line \ref{code:jdbcTemplate:preparedSt
 which is used to set up parameters for database call.
 
 We can notice the similarity between code in that wrapper objects and the Listing
-\ref{code:jdbc} when plain JDBC API was used. We can also notice, that all the boilerplate code vanished,
+\ref{code:jdbc} when plain JDBC API was used. We can also notice that all the boilerplate code vanished,
 and when we use named classes instead of inline anonymous ones, the database call would fit just one line of code.
 
 
@@ -136,7 +136,7 @@ there is no need to work with the low level JDBC.
 
 Unlike other ORM frameworks, it does not map Java objects to database tables, but Java methods
 to SQL statements. Framework uses concept of \Code{Mapper} interfaces (but differently as Spring JDBC Framework).
-Developer define \Code{Mapper} interface with some methods, that executes SQL queries,
+Developer define \Code{Mapper} interface with some methods that executes SQL queries,
 and all communication with database is always happening through these methods.
 
 For each method SQL query is defined and when some output is expected,
@@ -207,7 +207,7 @@ is \Code{SqlSessionFactory}. It needs to be configured to successfully connect
 to database. Configuration can be done in Java and also using external XML configuration file.
 
 In Listing \ref{code:mybatis:sessionFactory:java} we show, how configuration can be
-done in Java. On line \ref{code:mybatis:sessionFactory:java:dataSource} we use \Code{DataSource},
+done in Java. On line \ref{code:mybatis:sessionFactory:java:dataSource} we use \Code{DataSource}
 that we previously define in Listing \ref{code:datasource}.
 \Code{JdbcTransactionFactory} was used to handle database transactions.
 On line \ref{code:mybatis:sessionFactory:java:addMapper} \Code{Mapper} interface is registered
@@ -267,9 +267,9 @@ Structure of data in records can be arbitrary. Application just need to handle
 correct transformation of used Java object to (or from) byte array using
 \Code{Serializer} (or \Code{Deserializer}) objects.
 However, this feature is not very important considering data lineage problem\footnote{
-  We cannot distinguish values that belong to same attribute, as it was in case
-  of databases, where rows were divided into columns and we could make
-  lineage on attribute/column level.
+  We cannot distinguish values that belong to the same attribute, as in the case
+  of databases, where rows are divided into columns and we could make
+  lineage on the attribute/column level.
 }.
 
 The Kafka cluster durably persists all published records (whether or not they have been consumed)
@@ -283,17 +283,17 @@ to any published record. This feature is illustrated by Figure \ref{frameworks:k
   \label{frameworks:kafka:topic}
 \end{figure}
 
-Figure \ref{frameworks:kafka:api} and next list from \citet{Kafka}
+Figure \ref{frameworks:kafka:api} and next list taken from Kafka Framework documentation \citep{Kafka}
 illustrates usage of four Kafka core client APIs:
 \begin{itemize}
-  \item The \textbf{Producer API} (see section \ref{frameworks:kafka:producer}) allows an application to publish
+  \item The \textbf{Producer API} (see Section \ref{frameworks:kafka:producer}) allows an application to publish
     a stream of records to Kafka topics.
-  \item The \textbf{Consumer API} (see section \ref{frameworks:kafka:consumer}) allows an application to subscribe
+  \item The \textbf{Consumer API} (see Section \ref{frameworks:kafka:consumer}) allows an application to subscribe
     to topics and process the stream of records produced to them.
-  \item The \textbf{Streams API} (see section \ref{frameworks:kafka:streams}) allows an application to act as a stream processor,
+  \item The \textbf{Streams API} (see Section \ref{frameworks:kafka:streams}) allows an application to act as a stream processor,
     consuming an input stream from topics and producing an output stream to output topics,
     effectively transforming the input streams to output streams.
-  \item The \textbf{Connector API} (see section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
+  \item The \textbf{Connector API} (See section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
     that connect Kafka topics to existing applications or data systems.
     For example, a connector to a relational database might capture every change to a table. 
 \end{itemize}
@@ -311,9 +311,9 @@ illustrates usage of four Kafka core client APIs:
 \subsection{Producer API \label{frameworks:kafka:producer}}
 
 Using Kafka Producer API, application can create new records and send them to topic of Kafka server.
-It illustrates example in Listing \ref{code:kafka:producer}.
+It is illustrated by the example in Listing \ref{code:kafka:producer}.
 We first configure \Code{KafkaProducer} and then we just send records to topic \Code{Topic}
-to Kafka server by calling \Code{send} method. We do not need to deal with the \Code{Serializer}s,
+to Kafka server by calling the \Code{send} method. Here we do not need to deal with the \Code{Serializer}s,
 as they are provided for some basic Java classes (like \Code{String}) by framework itself.
 
 \InsertCode{h}{code/kafka-producer}
@@ -323,9 +323,9 @@ as they are provided for some basic Java classes (like \Code{String}) by framewo
 \subsection{Consumer API \label{frameworks:kafka:consumer}}
 
 Using Kafka Consumer API, application can handle new records that are arriving from server.
-Receiving such data shows Listing \ref{code:kafka:producer}.
+Listing \ref{code:kafka:producer} shows receiving such data.
 We also configure \Code{KafkaConsumer} as in previous section.
-On line \ref{code:kafka:consumer:subscribe} we call \Code{subscribe}
+On line \ref{code:kafka:consumer:subscribe} the program calls \Code{subscribe}
 to register consumer to receive records in topic \Code{Topic}.
 On line \ref{code:kafka:consumer:poll} server is queried for new data.
 We use 1 second as maximal time limit, for which Kafka waits for new records to
@@ -343,7 +343,7 @@ Application defines its computational logic through processor topologies,
 where processor topology is a graph of stream processors (nodes) that are
 connected by streams (edges).
 
-Stream processor is a node in the processor topology, that represents
+Stream processor is a node in the processor topology that represents
 a processing step to transform data in streams by receiving one
 input record at a time from its upstream processors in topology,
 applying its operation on it and then produce one or more
@@ -352,19 +352,19 @@ output records to its downstream processors.
 In topology, there are two special processors:
 
 \begin{itemize}
-  \item The \textbf{Source Processor} is a stream processor
+  \item \textbf{Source Processor} is a stream processor
     that does not have any upstream processors. It produces an input stream
     to its topology from one or multiple Kafka topics by consuming records
-    from these topics and forwarding them to its down-stream processors
-  \item The \textbf{Sink Processor} is a stream processor
+    from these topics and forwarding them to its down-stream processors.
+  \item \textbf{Sink Processor} is a stream processor
     that does not have down-stream processors. It sends any received records
     from its up-stream processors to a specified Kafka topic.
 \end{itemize}
 
-The way, how topology can be defined is using the Kafka Streams Domain Specific Language (DSL).
+The way how topology can be defined is using the Kafka Streams Domain Specific Language (DSL).
 It provides the most common data transformation operations, such as
 \Code{map}, \Code{filter}, \Code{join} and \Code{aggregations}.
-There exists also the low level Processor API, that allows developers define
+There exists also the low level Processor API that allows developers define
 and connect custom processors and also interact with state stores.
 
 
@@ -384,21 +384,21 @@ for stream processing with low latency.
 
 \section{Requirements for Data Lineage Library \label{frameworks:requirements}}
 
-In previous sections we demonstrated usage of different Java frameworks
+In previous sections we demonstrated usage of different frameworks
 that are usually used in Java applications to manipulate data.
 We ignored their advanced features and showed some examples of reading
 and writing data.
 
 We described four types of data processing APIs / frameworks:
 \begin{itemize}
-  \item The \textbf{JDBC API}, which is the Java API for working with databases.
-  \item The \textbf{Spring JDBC Framework}, which simplify the JDBC API.
-  \item The \textbf{MyBatis Framework}, which is the ORM framework.
-  \item The \textbf{Kafka Framework}, which is the distributed streaming platform.
+  \item \textbf{JDBC API}, which is the Java API for working with SQL databases.
+  \item \textbf{Spring JDBC Framework}, which simplifies the JDBC API.
+  \item \textbf{MyBatis Framework}, which is the ORM framework.
+  \item \textbf{Kafka Framework}, which is the distributed streaming platform.
 \end{itemize}
 
-In the rest of this section, we point out requirements of library, that
-would be needed to successfully create data lineage of applications,
+In the rest of this section, we point out requirements on the library that
+have to be fulfilled to successfully compute data lineage of applications,
 where such frameworks are used for accessing the data.
 
 \begin{enumerate}
@@ -406,16 +406,16 @@ where such frameworks are used for accessing the data.
     The analysis should process whole application with all its dependencies.
   \item \textbf{Identifying the sources and sinks.} \\
     The analysis should identify the places in application, where the data
-    are read or write.
-  \item \textbf{Correctness, accuracy and efficiency of created data lineage.} \\
-    The analysis should create correct and accurate data lineage in a reasonable time.
+    are read or written.
+  \item \textbf{Correctness, accuracy and efficiency of computing data lineage.} \\
+    The analysis should compute correct and accurate data lineage graphs in a reasonable time.
   \item \textbf{Use concrete values.} \\
     The analysis should know the concrete values of Java primitives and \Code{String}s.
     This is necessary for identifying sources and sinks of data,
     such as files, database tables, etc.
   \item \textbf{Work with external files.} \\
     The analysis should be able to handle not only Java classes,
-    but also external files as may frameworks store their configuration
+    but also external files as many frameworks store their configuration
     outside of the code.
   \item \textbf{Handle callbacks.} \\
     The analysis should work well with callbacks, as they are often
@@ -423,9 +423,8 @@ where such frameworks are used for accessing the data.
     about some results of performed operation, or even
     to simplify the usage of other API.
   \item \textbf{Easy extendability.} \\
-    The analysis need to be easily extended to support new frameworks,
-    as new and new frameworks are developed and the library need to be
-    prepared to add support for creating their data lineage.
+    The analysis need to be easily extended as new frameworks are developed
+    and the core library needs to be prepared to add support for computing their data lineage.
 \end{enumerate}
 
 
