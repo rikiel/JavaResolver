@@ -1,0 +1,225 @@
+digraph "DirectedGraph" {
+graph [concentrate = true,label = "Graph title", labelloc=t];center=true;fontsize=6;node [ color=blue,shape="box"fontsize=6,fontcolor=black,fontname=Arial];edge [ color=black,fontsize=6,fontcolor=black,fontname=Arial]; 
+   "StreamAction:Open:outputFile.txt::diplomka.Examples2.writeValueForIdToFile(I)V:[idx=23,pos=50]
+java_class_desc ::: Examples2
+java_instruction_desc ::: 23
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1
+stream_location_desc ::: outputFile.txt" [ ]
+   "ResultColumn:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:VALUE:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=18,pos=37]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_column_desc ::: VALUE
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 18
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" [ ]
+   "SQLCommand:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=14,pos=28]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 14
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" [ ]
+   "ParamIndex:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:1:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=12,pos=22]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+db_statement_param_desc ::: 1
+java_class_desc ::: Examples2
+java_instruction_desc ::: 12
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" [ ]
+   "EntryArgumentData0:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=-1,pos=-1]
+entrypoint_data_desc ::: I
+entrypoint_desc ::: __ENTRYPOINT_ARGUMENT__~diplomka.Examples2.writeValueForIdToFile(I)V~param0
+java_class_desc ::: Examples2
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_2" [ ]
+   "StreamAction:Write:outputFile.txt::diplomka.Examples2.writeValueForIdToFile(I)V:[idx=27,pos=59]
+java_class_desc ::: Examples2
+java_instruction_desc ::: 27
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1
+stream_location_desc ::: outputFile.txt
+stream_output_desc ::: undefined" [ ]
+   "EntryArgument0:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_ARGUMENT__~diplomka.Examples2.writeValueForIdToFile(I)V~param0
+java_class_desc ::: Examples2
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" [ ]
+   "Connection:(jdbc:oracle:thin:@192.168.0.16:1521:orcl):(User):diplomka.Examples2.writeValueForIdToFile(I)V:[idx=3,pos=6]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+java_class_desc ::: Examples2
+java_instruction_desc ::: 3
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" [ ]
+ "ResultColumn:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:VALUE:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=18,pos=37]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_column_desc ::: VALUE
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 18
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" -> "StreamAction:Write:outputFile.txt::diplomka.Examples2.writeValueForIdToFile(I)V:[idx=27,pos=59]
+java_class_desc ::: Examples2
+java_instruction_desc ::: 27
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1
+stream_location_desc ::: outputFile.txt
+stream_output_desc ::: undefined"[style=solid] 
+ "SQLCommand:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=14,pos=28]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 14
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" -> "ResultColumn:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:VALUE:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=18,pos=37]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_column_desc ::: VALUE
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 18
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1"[style=solid] 
+ "ParamIndex:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:1:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=12,pos=22]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+db_statement_param_desc ::: 1
+java_class_desc ::: Examples2
+java_instruction_desc ::: 12
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" -> "SQLCommand:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=14,pos=28]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 14
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1"[style=solid] 
+ "EntryArgumentData0:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=-1,pos=-1]
+entrypoint_data_desc ::: I
+entrypoint_desc ::: __ENTRYPOINT_ARGUMENT__~diplomka.Examples2.writeValueForIdToFile(I)V~param0
+java_class_desc ::: Examples2
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_2" -> "ParamIndex:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:1:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=12,pos=22]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+db_statement_param_desc ::: 1
+java_class_desc ::: Examples2
+java_instruction_desc ::: 12
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1"[style=solid] 
+ "StreamAction:Write:outputFile.txt::diplomka.Examples2.writeValueForIdToFile(I)V:[idx=27,pos=59]
+java_class_desc ::: Examples2
+java_instruction_desc ::: 27
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1
+stream_location_desc ::: outputFile.txt
+stream_output_desc ::: undefined" -> "StreamAction:Open:outputFile.txt::diplomka.Examples2.writeValueForIdToFile(I)V:[idx=23,pos=50]
+java_class_desc ::: Examples2
+java_instruction_desc ::: 23
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1
+stream_location_desc ::: outputFile.txt"[style=solid] 
+ "EntryArgument0:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_ARGUMENT__~diplomka.Examples2.writeValueForIdToFile(I)V~param0
+java_class_desc ::: Examples2
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" -> "ParamIndex:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:1:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=12,pos=22]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+db_statement_param_desc ::: 1
+java_class_desc ::: Examples2
+java_instruction_desc ::: 12
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1"[style=solid] 
+ "EntryArgument0:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_ARGUMENT__~diplomka.Examples2.writeValueForIdToFile(I)V~param0
+java_class_desc ::: Examples2
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" -> "EntryArgumentData0:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=-1,pos=-1]
+entrypoint_data_desc ::: I
+entrypoint_desc ::: __ENTRYPOINT_ARGUMENT__~diplomka.Examples2.writeValueForIdToFile(I)V~param0
+java_class_desc ::: Examples2
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_2"[style=solid] 
+ "Connection:(jdbc:oracle:thin:@192.168.0.16:1521:orcl):(User):diplomka.Examples2.writeValueForIdToFile(I)V:[idx=3,pos=6]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+java_class_desc ::: Examples2
+java_instruction_desc ::: 3
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1" -> "SQLCommand:SELECT_ID,_VALUE_FROM_TABLE_NAME_WHERE_ID_=_?:diplomka.Examples2.writeValueForIdToFile(I)V:[idx=14,pos=28]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?
+java_class_desc ::: Examples2
+java_instruction_desc ::: 14
+java_method_call_id_desc ::: 1136714542
+java_method_desc ::: writeValueForIdToFile(I)V
+java_package_desc ::: diplomka
+java_var_id_desc ::: node_1"[style=solid] 
+
+}
