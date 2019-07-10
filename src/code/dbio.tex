@@ -1,0 +1,17 @@
+
+\begin{lstlisting}[language=Java, caption={Example of code with both database reading and file writing operations}, label={code:dbio}]
+public static void writeValueForIdToFile(int id) throws Exception {
+  Connection connection = DriverManager.getConnection(/*
+    \smallskip \newline */ "jdbc:oracle:thin:@192.168.0.16:1521:orcl", /*
+    \smallskip \newline */ "User", /*
+    \smallskip \newline */ "Password"); /*\label{code:dbio:connection}*/
+  PreparedStatement queryStatement = connection.prepareStatement(/*
+    \smallskip \newline */ "SELECT ID, VALUE FROM TABLE_NAME WHERE ID = ?"); /*\label{code:dbio:statement:begin}*/
+  queryStatement.setInt(1, id);
+  ResultSet resultSet = queryStatement.executeQuery(); /*\label{code:dbio:execute}*/
+  String value = resultSet.getString("VALUE"); /*\label{code:dbio:getString}*/
+  FileWriter output = new FileWriter("outputFile" + ".txt"); /*\label{code:dbio:outputFile}*/
+  output.write(value); /*\label{code:dbio:writeFile}*/
+}
+\end{lstlisting}
+

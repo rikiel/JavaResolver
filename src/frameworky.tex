@@ -1,12 +1,3 @@
-% Prepinace pre figure:
-% h=approximately here
-% t=top of page
-% b=bottom of page
-% p=on special page
-% H=precisely here
-\newcommand{\InsertCode}[2]{\begin{figure}[#1]\input{#2}\end{figure}}
-
-\newcommand{\Code}[1]{\texttt{#1}}
 
 \chapter{Popular Data Processing Frameworks for Java \label{chapter:frameworks}}
 
@@ -184,8 +175,19 @@ objects properties are used).
 
 \InsertCode{h}{code/mybatis-interface-annotations}
 
+MyBatis provide rich feature set for XML mappers. Basic mapper contains an SQL statements
+definition in XML tags \Code{<select>}, \Code{<insert>}, \Code{<delete>} and \Code{<update>}
+and \Code{<resultMap>} for mapping of columns to object properties.
 
-Listing \ref{code:mybatis:interface:xml} shows the same functionality but using XML.
+From more advanced features, MyBatis supports reusable fragments. It means that
+one can define a SQL fragment and reuse it in more queries.
+
+Another advanced feature is dynamic SQLs, where queries are created dynamically
+as some conditions hold.
+
+All of its features are described in more detail in \citet{MyBatis}.
+
+Listing \ref{code:mybatis:interface:xml} shows the basic mapper definition using XML.
 First, methods \Code{getForId} and \Code{insert} are defined in \Code{Mapper} interface and the rest,
 SQL statements and result mapping, are stored in XML mapper file.
 
@@ -397,7 +399,8 @@ We described four types of data processing APIs / frameworks:
   \item \textbf{Kafka Framework}, which is the distributed streaming platform.
 \end{itemize}
 
-In the rest of this section, we point out requirements on the library that
+Based on the overview of data-processing frameworks,
+in the rest of this section, we point out requirements on the library that
 have to be fulfilled to successfully compute data lineage of applications,
 where such frameworks are used for accessing the data.
 
@@ -424,7 +427,7 @@ where such frameworks are used for accessing the data.
     to simplify the usage of other API.
   \item \textbf{Easy extendability.} \\
     The analysis need to be easily extended as new frameworks are developed
-    and the core library needs to be prepared to add support for computing their data lineage.
+    and the core of symbolic analysis library needs to be prepared to add support for computing their data lineage.
 \end{enumerate}
 
 

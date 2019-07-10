@@ -116,6 +116,7 @@
 \definecolor{pink}{rgb}{0.58,0,0.82}
 \definecolor{orange}{rgb}{0.8,0.47,0.19}
 
+
 \lstdefinelanguage{Java}{
   morekeywords={
     return,try,catch,finally,
@@ -137,7 +138,6 @@
   keywordstyle=\color{blue},
   commentstyle=\color{green},
   morecomment=[l]{//},
-  morecomment=[s]{/*}{*/},
   stringstyle=\color{pink},
   morestring=[b]",
   morestring=[d]’,
@@ -174,6 +174,37 @@
   captionpos=b,
 }
 
+\lstdefinelanguage{JavaSnippet}{
+  morekeywords={
+    return,try,catch,finally,
+    static,default,final,volatile,new,
+    null,void,int,long,boolean,short,double,float,
+    interface,class,extends,implements,
+    if,else,for,while,do,throw,throws,
+    public,protected,private},
+  numbers=none,
+  numbersep=3mm,
+  numberstyle=\tiny\color{gray},
+  frame=none,
+  aboveskip=5mm,
+  belowskip=5mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\normalsize\ttfamily},
+  showlines=false,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  morecomment=[l]{//},
+  stringstyle=\color{pink},
+  morestring=[b]",
+  morestring=[d]’,
+  moredelim=[is][\textcolor{yellow}]{@@}{@@},
+  breaklines=true,
+  breakatwhitespace=true,
+  escapeinside={/*}{*/},
+  captionpos=b,
+}
+
 \lstdefinelanguage{shell}{
   numbers=none,
   numberstyle=\tiny\color{gray},
@@ -197,6 +228,16 @@
   escapeinside={/*}{*/},
   captionpos=b,
 }
+
+% Prepinace pre figure:
+% h=approximately here
+% t=top of page
+% b=bottom of page
+% p=on special page
+% H=precisely here
+\newcommand{\InsertCode}[2]{\begin{figure}[#1]\input{#2}\end{figure}}
+
+\newcommand{\Code}[1]{\texttt{#1}}
 
 \makeatletter
 \AtBeginDocument{%

@@ -1,0 +1,17 @@
+
+\begin{lstlisting}[language=XML, caption={Using \Code{Map} as argument for input and output}, label={code:mybatis:advanced:map}]
+<@select@ id="selectForMap" parameterType="java.util.Map" statementType="CALLABLE">
+  {
+    @@CALL DB_PROCEDURE@@
+    (
+      <!-- id is stored in map with key="id" -->
+      @@#{id,     mode=IN,  jdbcType=INTEGER, javaType=Integer},@@
+      <!-- output will be stored in map with key="result" -->
+      @@#{result, mode=OUT, jdbcType=CURSOR,  javaType=ResultSet, resultMap=resultMap}@@
+    )
+  }
+</@select@>
+<@resultMap@ id="resultMap">
+  ...
+</@resultMap@>
+\end{lstlisting}

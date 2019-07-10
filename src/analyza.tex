@@ -19,7 +19,8 @@ of computer programs. There are two principal approaches to such analysis:
     are limited only to observed executions of the analyzed program.
   \item \textbf{Static program analysis} is the program analysis that is actually
     performed without executing the input program. The analysis is usually
-    performed on the program source code, or bytecode.
+    performed on the intermediate representation (IR) of the program source code
+    (used e.g. in compilers), or bytecode.
     Results of static program analysis cover all execution paths of
     analysed program.
 
@@ -289,7 +290,7 @@ of data sources and sinks. We will describe this feature in the section \ref{cha
 
 
 
-\subsection{Data Lineage Visualization}
+\subsection{Data Lineage Visualization \label{chapter:analysis:visualization}}
 
 The data flow graph is created based on the results of symbolic analysis - based on
 the computed method summaries.
@@ -332,7 +333,7 @@ column is loaded and on line \ref{code:dbio:writeFile} its value is written to t
 \InsertCode{h}{code/dbio.tex}
 
 Figure \ref{frameworks:dbio:graph} contains visualization of the data flow graph
-of the method \Code{writeValueForIdToFile} from Listing \ref{code:dbio}.
+of the \Code{writeValue\-ForIdToFile} method from Listing \ref{code:dbio}.
 We just omit some unessential information from nodes.
 
 The visualization contains following nodes:
@@ -345,7 +346,8 @@ The visualization contains following nodes:
 \end{enumerate}
 
 Besides the main flow in the graph from database query to output file, we can
-notice also flow from \Code{id} argument into SQL statement as its parameter.
+notice that correct file name (\Code{outputFile.txt}) is computed by the library.
+Notice also flow from \Code{id} argument into SQL statement as its parameter.
 
 In the visualization we can also notice two \Code{StreamAction} nodes but with different
 tags - \textit{Open} and \textit{Write}.

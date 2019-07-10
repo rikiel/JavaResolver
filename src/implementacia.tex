@@ -1,35 +1,76 @@
 
-\chapter{Implementation of Data Lineage for Frameworks}
+\chapter{Data Lineage Analysis for Frameworks \label{chapter:implementation}}
 
-In this chapter, we will present our solution of Data Lineage library for Database Frameworks.
-We will discuss different problems that came with all the frameworks presented in chapter \ref{frameworks}.
+In Chapter \ref{chapter:frameworks} we described Java frameworks
+that are often used in applications to manipulate with data.
 
-\section{Interface}
+In Section \ref{frameworks:requirements} we described the key requirements
+on the library to analyse data lineage of such applications.
+The analysis library should:
+\begin{itemize}
+  \item Identify the data sources and sinks.
+  \item Create correct and accurate data lineage in reasonable time.
+  \item Work with the concrete values for Java primitives and \Code{String}s.
+  \item Work with external files.
+  \item Support for the callback objects.
+  \item Be easily extendible to support new frameworks.
+\end{itemize}
 
-\section{JDBC \label{implementation:jdbc}}
+In Section \ref{chapter:analysis:symbolicAnalysisLibrary} we described the
+static program analysis approach on existing library for creating data lineage of plain Java programs.
+Using that library, data lineage can be created for Java IO and JDBC API.
 
-Implementation of Data Lineage for standard JDBC is done using the library.
-\TODO{Popisat plugin}
+In this chapter, we will present our solution of data lineage analysis
+for database frameworks - the Java Resolver tool.
+We use the Symbolic Analysis library and implement
+features for identifying the sources and sinks of data inside frameworks.
+The Symbolic Analysis library takes care of the data flow propagation between
+these sources and sinks.
 
+\TODO{Pokracovanie...}
+We will discuss the design of the library, some technical details
+for ...
+
+
+
+
+\section{Interface to Symbolic Analysis \label{chapter:implementation:interface}}
+
+\TODO{Popisat interface}
+
+
+
+
+
+\section{JDBC API \label{implementation:jdbc}}
+
+Implementation of Data Lineage for standard JDBC API in \Code{java.sql} package
+is done using the Symbolic analysis library, as we show in the Section \ref{chapter:analysis:symbolicAnalysisLibrary}.
+
+In this section we will describe our solution for \Code{DataSource} interfaces in \Code{javax.sql} package.
+It is nowadays the preferred way of creating connections to database and the Symbolic Analysis
+library do not handle such information.
 
 
 
 \subsection{DataSource \label{implementation:dataSource}}
 
 Database vendors usually provide \Code{DataSource} implementation, which still
-need some configuration about database - url, credentials and probably much more.
+needs some configuration about database - connection url, credentials and probably much more.
 
-To identify target database, we need information about url and username. These properties
+To identify target database, we need information about connection url and credentials. These properties
 are usually set to \Code{DataSource} objects and from these calls, we can get
 their values.
 
+The plugins identify the methods where such information is set and return
+the concrete values of used \Code{String}s for propagation by Symbolic analysis library.
 
 
 
 \section{Spring JDBC Framework}
 
-Spring JDBC Framework comes with approach of \Code{Callbacks}. Library handles
-all boilerplate code and calls user defined callback objects to do its job
+Spring JDBC Framework comes with approach of callbacks. It handles
+all boilerplate code and calls user defined callback objects to do their job
 and after finishing it, framework handles closing all resources that are not needed anymore.
 
 When we looked to implementation of \Code{JdbcTemplate} class, we found out
@@ -40,118 +81,126 @@ All the other methods only use them when executing queries.
 
 \subsection{Callbacks}
 
-\TODO{Funguju?}
-
 As we said, callbacks are used just to wrap application logic and
 separate it from the code for opening/closing connections, etc,
 as was shown by previous example \ref{code:jdbcTemplate}.
 
-We need a way how to say to analysis library, that we want to
+When handling a particular method of the framework (e.g. the \Code{update}
+method of \Code{JdbcTemplate} class in Listing \Code{code:jdbcTemplate}),
+we needed to find a way how to say to the Symbolic analysis library that a plugin wants to
 analyse that callback method. For that purpose, we use
 field \Code{callbackMethodsToAnalyze} from interface. \TODO{referencia na interface}
-All callbacks have the method, that is called in execution
+All callbacks have the method that is called in execution
 and we just leave analysis library to analyse it and return
-its data flow. After that, we append the resulted flow
+its data flow. After that, we append the resulting flow of the callback
 to flow of our handled method.
 
-We will demonstrate it on simple example \ref{code:jdbcTemplate:callbacks}
-where insert statement is executed in callback method.
+We will demonstrate it on simple example of the \Code{insert} method from Listing \ref{code:jdbcTemplate}.
+In the method, there is the call of the \Code{jdbcTemplate.update()} method
+with two arguments - the SQL statement and the instance of \Code{PreparedStatementSetter}.
 
-\InsertCode{h}{code/jdbcTemplate-callbacks}
+After data lineage analysis of the \Code{insert} method is done, we would like to know
+that the \Code{id} and \Code{value} attributes of the \Code{DatabaseValue} instance
+were arguments of the executed SQL statement.
+However, Symbolic analysis library does not know that, inside of \Code{jdbcTemplate.update()},
+the \Code{setValues} method of the \Code{PreparedStatementSetter} is called.
 
-After data lineage of \Code{insertValue()} method is done,
-we would like to know, that insert statement was executed there.
-However, analysis library does not know, that inside
-\Code{jdbcTemplate.execute()} call
-the \Code{doInStatement} method of \Code{InsertCallback} is called.
-
-The solution for it is, that when we are handling
-\Code{jdbcTemplate.execute()} for the first time, we tell library,
-that we want to analyse that \Code{doInStatement} call.
-The next time we already have all the information
-about data lineage in the \Code{doInStatement}
-and therefore we can propagate it to a result of
-\Code{jdbcTemplate.execute()} call.
+Our solution is that when the plugin is handling
+\Code{jdbcTemplate.execute()} for the first time, it tells library
+that it wants to analyse that \Code{setValues} call.
+The next time the plugin already has all the information
+about data lineage in the \Code{setValues}
+and therefore it can propagate it to the result of the \Code{jdbcTemplate.update()} call.
 
 
 
 
 \section{MyBatis}
 
-In chapter \ref{frameworks:myBatis} we showed classic use case of loading data from database.
-Now, we present solution of creating data lineage for this framework.
+In chapter \ref{frameworks:myBatis} we showed classic use case of loading data from database
+using the MyBatis framework. Now, we present solution of computing data lineage for this framework.
 
 
 
 \subsection{Mapper interfaces}
 
-To find all the mappers, we iterate all classes in WALA \Code{IClassHierarchy}.
-We are searching for interfaces with methods annotated with MyBatis annotations,
+First, it is necessary to find all the mapper interfaces.
+To do this, we iterate all classes in class hierarchy and search 
+for interfaces with methods annotated with MyBatis annotations,
 or interfaces for which XML mapper definition exists.
 
 
 
 \subsubsection{XML mapper files}
 
-XML mapper file has same name as interface (but .xml extension is used instead of .java),
-and lays in same directory.
+XML mapper file definition has same name as the corresponding interface
+(but .xml extension is used instead of .java), and lays in same directory.
 
-We made a parser of such a XML files, that can get information about SQL statements
-and column to property mapping.
-MyBatis provide rich feature set for XML mappers.
-We will describe how mappers are defined and some of the advanced features
-that we are handling.
+We made a parser of such XML files that can get information about SQL statements
+and mapping of columns to object fields.
 
-Basic mapper, which example was showed in \ref{code:mybatis:mapper:xml} contains of SQL statement
-with defined \Code{ResultMap} when needed. MyBatis use tags
-\Code{<select>}, \Code{<insert>}, \Code{<delete>} and \Code{<update>}
-for storing SQLs and \Code{<resultMap>} for mapping which is divided into column-to-property
-mapping pairs.
+Parser supports reusable SQL fragments. Each fragment has its own ID,
+so it is easy to find correct one and include it into query.
 
-From more advanced features, MyBatis supports reusable fragmets. It means that
-one can define some fragment of SQL and reuse it in more queries.
-Each fragment has its own ID, so it is easy to find correct one and include it into query.
-
-Another feature is dynamic SQLs, where queries are created dynamically
-as some conditions hold. As we do not know which conditions are valid
-at runtime, we made simplification that we always use first branch
-that we see in code.
-\TODO{Ukazat priklad kodu a jeho vystup}
+Parser also supports dynamic SQLs. As we do not know which conditions are valid
+at runtime, we made a simplification that we always use just first branch that
+was seen in code.
+We also cannot determine the size of an input collection, so the parser provides no expansion.
 
 
 
 \subsubsection{Annotated mapper classes}
 
 When mappers use annotations, it is quite simple to get all data needed
-from WALA. We know, that SQL statement is always stored in annotations
+from WALA. We know that an SQL statement is always stored in annotations
 \Code{@Select}, \Code{@Insert}, \Code{@Delete} or \Code{@Update}
 and queries are stored in plain \Code{String} array.
 Queries can also contain dynamic SQL as in XML definitions.
 
-For mapping result object the \Code{@Results} is used with \Code{@Result}
+For mapping result object the \Code{@Results} annotation is used with \Code{@Result}
 for every column to object property mapping definition.
 Mapping can be done using \Code{@ConstructorArgs}, when columns are mapped
-to arguments of a constructor. In that case, we unfortunately do not know
-name of target property, as in constructor arbitrary code can be executed\footnote{
+to arguments of a constructor. In that case, the plugin unfortunately does not know
+the name of target property, as arbitrary code can be executed in constructor\footnote{
   Arbitrary code can be executed also in setters, but it is usually used
-  just as setting new reference to property.
-  \TODO{Mozno nejake ine vysvetlenie}
+  just as setting new reference of a property.
 }.
 
-When calling database procedure with some output arguments,
-framework can fill result values into method arguments.
-It can be \Code{Map<String, TargetClass>} object (where mapper reference to key to that map),
-or any arbitrary object (where mapper reference field, in which result will be stored).
-\TODO{Viac k vystupnym argumentom?}
+Framework can provide result of a SQL query in two ways:
+\begin{enumerate}
+  \item As a return statement of a mapper method.
+  \item As a method argument property.
+\end{enumerate}
 
-There also exists more advanced features of MyBatis when using annotations\footnote{
+In all previous mapper examples, we use the first approach, where result
+is returned from method in return statement.
+
+However, when calling database procedure, we can define its output arguments
+and framework fill result values into that method argument.
+It can be \Code{Map<String, Object>} object (where mapper references to key in that map),
+or any arbitrary object (where mapper references field, in which result will be stored).
+
+Listing \ref{code:mybatis:advanced:map} illustrates the use of such \Code{Map} as
+input and also output method argument.
+The database call of \Code{DB\_PROCEDURE} has two arguments.
+
+First, the input integer argument, takes value of the \Code{id} key from the map.
+Second, the output cursor argument, is created by MyBatis and perform database procedure call.
+The cursor is then transformed to list of target object
+with result map \Code{resultMap} and stored to the same map under the key \Code{result}.
+
+\TODO{The resulting data flow than goes into }
+
+\InsertCode{h}{code/mybatis-output-arguments.tex}
+
+There also exist more advanced features of MyBatis when using annotations\footnote{
   Such as using provider classes to create SQL queries (\Code{@SelectProvider}, $\ldots$),
   generating IDs from sequence (\Code{@SelectKey}) and using them in queries,
   generating maps from objects (\Code{@MapKey}),
   associations for attribute classes (\Code{@One} or \Code{@Many}),
   mixing XML and annotation mappers (e.g. define \Code{<resultMap>} in XML and reference it
   using \Code{@ResultMap} annotation)}
-but we do not handle them. All of them can be added as new functionality in next development,
+but we do not handle them. All of them can be added as new functionality in future development,
 if needed.
 
 
@@ -163,8 +212,8 @@ Configuration of MyBatis can be done in two ways, using XML configuration file
 or in Java using \Code{Configuration} class. Second way needs no more attention,
 as we use \Code{DataSource} classes that are already handled in section \ref{implementation:dataSource}.
 
-To handle XML configuration, we need parse configuration file and find \Code{<dataSource>}
-section and its properties \Code{driver}, \Code{url} and \Code{username}. All this
+To handle XML configuration, our plugin needs to parse configuration file and find \Code{<dataSource>}
+section and its \Code{driver}, \Code{url} and \Code{username} properties. All this
 information we need for identifying target database.
 
 
@@ -172,15 +221,54 @@ information we need for identifying target database.
 
 \section{Kafka}
 
-In section \ref{frameworks:kafka} we demonstrate main use cases
-for manipulating with data (producing or consuming) using Kafka framework.
-In this section, we show how data lineage for these examples can be done
-using our library. In our work, we concerned only on Consumer and Producer APIs,
+In section \ref{frameworks:kafka} we demonstrated the main use cases
+for data manipulation (producing or consuming) using Kafka framework.
+In this section, we show how data lineage for these examples can be computed
+using our plugin. In our work, we focused only on Consumer and Producer APIs,
 as the other two (Stream and Connector APIs) are much more advanced to use.
 
-\TODO{Co tam blizsie popisat, ked je to viac menej priamociare
-- trebalo iba osetrit par metod ktore manipuluju s datami - send() a poll()
-a par metod ktore nastavovali topic.. Zaujimave moze byt parsovanie
-Properties suboru}
+The plugin identifies the used Kafka server which is used in application to communicate with.
+It also identifies the methods that are used to set Kafka topics
+and the methods that are used to send and receive a data.
+
+Together, the used server, topic and the place where data are produced and consumed,
+are the main data lineage information about the sources and sinks of a data.
+
+
+
+
+\subsection{Callbacks}
+
+Kafka Framework uses callbacks to asynchronously notify application.
+It can be callbacks to notify about performed operation result (like in case of sending data),
+or to notify about some state changes.
+
+As in case of callbacks in Spring JDBC Framework, the plugin tells
+the Symbolic Analysis library to analyse the data flow in such callback method
+and then plugin propagate computed data flow information 
+to the result of handled method.
+
+
+
+
+\subsection{Properties}
+
+Kafka Framework uses Java \Code{Properties} to its configuration.
+
+\Code{Properties} can be set in Java code (like it was done in
+Listing \ref{code:kafka:consumer} and Listing \ref{frameworks:kafka:producer}).
+They can be also loaded from external file like in next code:
+\begin{lstlisting}[language=JavaSnippet]
+        new Properties().load(new FileReader("file.txt"));
+\end{lstlisting}
+
+When the \Code{Properties} values are set only using Java, the concrete
+values are resolved by Symbolic analysis library.
+
+However, the library does not support the external files for loading properties.
+It provides only the stream identification (file name, \uvodzovky{System.in}, etc.).
+
+If there exists a file with such identification, plugin loads its properties and
+tries to resolve what Kafka server was used in application.
 
 
