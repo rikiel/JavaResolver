@@ -18,26 +18,118 @@ The analysis library should:
 
 In Section \ref{chapter:analysis:symbolicAnalysisLibrary} we described the
 static program analysis approach on existing library for creating data lineage of plain Java programs.
-Using that library, data lineage can be created for Java IO and JDBC API.
+Using that library, data lineage can be created for Java I/O and JDBC API.
 
 In this chapter, we will present our solution of data lineage analysis
-for database frameworks - the Java Resolver tool.
-We use the Symbolic Analysis library and implement
-features for identifying the sources and sinks of data inside frameworks.
-The Symbolic Analysis library takes care of the data flow propagation between
-these sources and sinks.
+for database frameworks - the \ToolName tool.
+The \ToolName tool use the Symbolic analysis library, which takes
+care of the data flow propagation between sources and sinks.
+The \ToolName tool implements features for identifying the sources
+and sinks of data inside frameworks as plugins to Symbolic analysis library.
 
-\TODO{Pokracovanie...}
-We will discuss the design of the library, some technical details
-for ...
+We will discuss the design of the \ToolName tool and some technical details
+of implemented Symbolic analysis library plugins.
+
+
+
+
+\section{Symbolic Analysis Library Plugins}
+
+In this section we describe the main ideas about plugin approach of our \ToolName tool.
+
+When the Symbolic analysis library performs the program analysis,
+the plugin handles the selected method calls and provides
+information about the data sources and data sinks to the library.
+
+An input of a plugin is computed data flow information
+about the receiver (\Code{this} object) and the method arguments.
+The Section \ref{chapter:analysis:algorithm} describes the Symbolic analysis algorithm
+as iterative updating method summaries until a fixpoint is reached.
+
+The same approach applies for the plugins. At each iteration, the flow information
+about the plugin inputs are computed by the library and based on their values,
+plugin provide an information about the data sources and sinks of a framework.
 
 
 
 
 \section{Interface to Symbolic Analysis \label{chapter:implementation:interface}}
 
-\TODO{Popisat interface}
+We proposed the general interface between Symbolic analysis library and its plugins.
+Communication between the library and plugins is described in the
+Figure \ref{implementation:analysis-plugins-communication}.
 
+\begin{figure}[p]
+  % trim - left lower right upper
+  \includegraphics[trim={0cm 0.75cm 0cm 1.4cm},clip,width=\textwidth,height=\textheight]{img/analysis-plugins-communication.png}
+  \caption{Communication between Symbolic analysis and plugins}
+  \label{implementation:analysis-plugins-communication}
+\end{figure}
+
+In next sections we will describe all the interfaces used between the library and the plugins.
+
+
+
+\subsection{FrameworkAnalysisPlugin}
+
+The key interface for plugin to Symbolic analysis library is the \Code{Framework\-AnalysisPlugin}.
+The interface defines few methods that are used for communication between the library and plugins.
+Here we describe their usage:
+\begin{itemize}
+  \item \Code{initialize} and \Code{analyzeProgram} initialize plugins
+    and precompute some information from the provided call graph and class hierarchy
+    of an analysed program.
+  \item \Code{getAdditionalMethodsRequiredForAnalysis} specify framework methods that should
+    be also analysed by Symbolic analysis library.
+  \item \Code{canHandleMethod} and \Code{processMethodCall} query plugin whether method can be
+    handled by the plugin and to compute flow information for such method.
+  \item \Code{canProvideArgument} and \Code{getArgumentFlowInformation} provide flow information for
+    an argument of a callback method.
+  \item \Code{destroy} closes all plugin resources. The method is used at the end of analysis,
+    when fixpoint is reached.
+\end{itemize}
+
+
+
+
+\subsection{MethodCallDescription}
+
+Class \Code{MethodCallDescription} serves as a data flow information input for a plugin
+(the \Code{processMethodCall} method).
+It holds the attributes for all method inputs
+(for receiver (\Code{this} object) and all the method arguments)
+and also flow information about the previously computed callbacks.
+
+
+
+
+\subsection{MethodEffectsDescription}
+
+Class \Code{MethodEffectsDescription} serves as an output of a
+\Code{processMethodCall} method. It holds the output data flow information
+and also callbacks to be computed by the Symbolic analysis library.
+
+Flow information are stored in the \Code{DataEndpointFlowInfo} that
+is described in the next section.
+
+
+
+\subsection{DataEndpointFlowInfo}
+
+Class \Code{DataEndpointFlowInfo} holds data flow information results
+for an analysed method, such as:
+\begin{itemize}
+  \item Identification of the data source or sink.
+  \item Mapping of the resulted objects. \\
+    The results can be returned by a method and also stored into a method attribute.
+  \item Attributes for:
+    \begin{itemize}
+      \item Data source or sink
+      \item Returned object
+      \item Receiver (\Code{this})
+      \item Arguments
+    \end{itemize}
+\end{itemize}
 
 
 
@@ -166,7 +258,7 @@ the name of target property, as arbitrary code can be executed in constructor\fo
   just as setting new reference of a property.
 }.
 
-Framework can provide result of a SQL query in two ways:
+Framework can provide result of an SQL query in two ways:
 \begin{enumerate}
   \item As a return statement of a mapper method.
   \item As a method argument property.

@@ -55,6 +55,8 @@ The \Code{createDataSource()} method would be also used in next database example
 
 \InsertCode{h}{code/datasource}
 
+\InsertCode{p}{code/jdbc}
+
 Listing \ref{code:jdbc} illustrates the two basic use cases - loading and storing the data.
 
 Firstly, we will describe the loading part - the \Code{getForId} method.
@@ -70,8 +72,6 @@ Secondly, we will describe storing part - the \Code{insert} method.
 Apart from different SQL statement and setting two arguments to \Code{PreparedStatement} instead of just one,
 the only difference  from previous query is the usage of \Code{executeUpdate} method
 on line \ref{code:jdbc:executeUpdate} for executing insert statement, as no output is expected.
-
-\InsertCode{p}{code/jdbc}
 
 
 
@@ -180,7 +180,7 @@ definition in XML tags \Code{<select>}, \Code{<insert>}, \Code{<delete>} and \Co
 and \Code{<resultMap>} for mapping of columns to object properties.
 
 From more advanced features, MyBatis supports reusable fragments. It means that
-one can define a SQL fragment and reuse it in more queries.
+one can define an SQL fragment and reuse it in more queries.
 
 Another advanced feature is dynamic SQLs, where queries are created dynamically
 as some conditions hold.
@@ -215,8 +215,6 @@ that we previously define in Listing \ref{code:datasource}.
 On line \ref{code:mybatis:sessionFactory:java:addMapper} \Code{Mapper} interface is registered
 to be known by MyBatis and finally \Code{SqlSessionFactory} is created.
 
-\InsertCode{H}{code/mybatis-sessionFactory-java}
-
 In Listing \ref{code:mybatis:sessionFactory:xml} we show, how configuration can be
 done using external XML file. \Code{SqlSessionFactory} is created
 on line \ref{code:mybatis:sessionFactory:xml:file}. Configuration file
@@ -224,7 +222,11 @@ configures \Code{DataSource} on lines
 \ref{code:mybatis:configuration:xml:dataSource:begin}--\ref{code:mybatis:configuration:xml:dataSource:end}
 and \Code{Mapper} interface is registered on line \ref{code:mybatis:configuration:xml:mapper}.
 
-\InsertCode{h}{code/mybatis-sessionFactory-xml}
+\begin{figure}[p]
+  \input{code/mybatis-sessionFactory-java}
+  \vspace{1cm}
+  \input{code/mybatis-sessionFactory-xml}
+\end{figure}
 
 
 

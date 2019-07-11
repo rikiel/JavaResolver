@@ -1,6 +1,7 @@
 
 \begin{lstlisting}[language=Java, caption={Configuration of \Code{SqlSessionFactory} in Java}, label={code:mybatis:sessionFactory:java}]
-public SqlSessionFactory createSqlSessionFactory() throws SQLException {
+public SqlSessionFactory createSqlSessionFactory() /*
+    \smallskip \newline */ throws SQLException {
   Environment environment = new Environment.Builder("environmentId")
       .dataSource(createDataSource()) /*\label{code:mybatis:sessionFactory:java:dataSource}*/
       .transactionFactory(new JdbcTransactionFactory())

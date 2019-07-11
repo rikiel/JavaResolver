@@ -1,6 +1,7 @@
 
 \begin{lstlisting}[language=Java, belowskip=-2mm]
-public SqlSessionFactory createSqlSessionFactory() throws IOException {
+public SqlSessionFactory createSqlSessionFactory() /*
+    \smallskip \newline */ throws IOException {
   return new SqlSessionFactoryBuilder()
       .build(new FileInputStream("configuration.xml")); /* \label{code:mybatis:sessionFactory:xml:file} */
 }
