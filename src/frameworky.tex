@@ -78,7 +78,7 @@ on line \ref{code:jdbc:executeUpdate} for executing insert statement, as no outp
 
 \section{Spring JDBC Framework \label{frameworks:jdbcTemplate}}
 
-\citet{SpringJDBC} is extension above JDBC API that tries to help developers to code only
+\citet{SpringJDBC} is an extension above JDBC API that tries to help developers to code only
 parts with application logic and it removes much of the boilerplate code.
 It is illustrated by next list from \citet{SpringJDBC}, from which only
 italicized items need to be coded by user, and all low level details
@@ -282,7 +282,7 @@ to any published record. This feature is illustrated by Figure \ref{frameworks:k
 
 \begin{figure}[h]
   \center
-  \includegraphics[width=80mm]{img/kafka-topic-structure.png}
+  \includegraphics{img/kafka-topic-structure.png}
   \caption{Structure of records in a topic. Many producers can write to such topic and consumers can work with the records in arbitrary order.}
   \label{frameworks:kafka:topic}
 \end{figure}
@@ -297,7 +297,7 @@ illustrates usage of four Kafka core client APIs:
   \item The \textbf{Streams API} (see Section \ref{frameworks:kafka:streams}) allows an application to act as a stream processor,
     consuming an input stream from topics and producing an output stream to output topics,
     effectively transforming the input streams to output streams.
-  \item The \textbf{Connector API} (See section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
+  \item The \textbf{Connector API} (see Section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
     that connect Kafka topics to existing applications or data systems.
     For example, a connector to a relational database might capture every change to a table. 
 \end{itemize}
@@ -414,14 +414,14 @@ where such frameworks are used for accessing the data.
     are read or written.
   \item \textbf{Correctness, accuracy and efficiency of computing data lineage.} \\
     The analysis should compute correct and accurate data lineage graphs in a reasonable time.
-  \item \textbf{Use concrete values.} \\
-    The analysis should know the concrete values of Java primitives and \Code{String}s.
-    This is necessary for identifying sources and sinks of data,
-    such as files, database tables, etc.
   \item \textbf{Work with external files.} \\
     The analysis should be able to handle not only Java classes,
     but also external files as many frameworks store their configuration
     outside of the code.
+  \item \textbf{Use concrete values.} \\
+    The analysis should know the concrete values of Java primitives and \Code{String}s.
+    This is necessary for identifying sources and sinks of data,
+    such as files, database tables, etc.
   \item \textbf{Handle callbacks.} \\
     The analysis should work well with callbacks, as they are often
     used by frameworks to asynchronously notify application

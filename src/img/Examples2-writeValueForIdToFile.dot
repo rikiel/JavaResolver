@@ -1,5 +1,5 @@
 digraph "DirectedGraph" {
-graph [concentrate = true,label = "Data Lineage Graph", labelloc=t];center=true;fontsize=6;node [ color=blue,shape="box"fontsize=6,fontcolor=black,fontname=Arial];edge [ color=black,fontsize=6,fontcolor=black,fontname=Arial]; 
+graph [concentrate = true,label = "Data Lineage Graph", labelloc=t];center=true;fontsize=6;node [ color=black,shape="box"fontsize=6,fontcolor=black,fontname=Arial];edge [ color=black,fontsize=6,fontcolor=black,fontname=Arial];
    "StreamAction:Open:outputFile.txt:
 java_class_desc ::: SymbolicAnalysisExample
 java_method_desc ::: writeValueForIdToFile(I)V

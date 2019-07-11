@@ -188,7 +188,7 @@ When handling a particular method of the framework (e.g. the \Code{update}
 method of \Code{JdbcTemplate} class in Listing \Code{code:jdbcTemplate}),
 we needed to find a way how to say to the Symbolic analysis library that a plugin wants to
 analyse that callback method. For that purpose, we use
-field \Code{callbackMethodsToAnalyze} from interface. \TODO{referencia na interface}
+field \Code{callbackMethodsToAnalyze} from interface.
 All callbacks have the method that is called in execution
 and we just leave analysis library to analyse it and return
 its data flow. After that, we append the resulting flow of the callback
@@ -287,8 +287,6 @@ First, the input integer argument, takes value of the \Code{id} key from the map
 Second, the output cursor argument, is created by MyBatis and perform database procedure call.
 The cursor is then transformed to list of target object
 with result map \Code{resultMap} and stored to the same map under the key \Code{result}.
-
-\TODO{The resulting data flow than goes into }
 
 \InsertCode{h}{code/mybatis-output-arguments.tex}
 

@@ -1,5 +1,97 @@
 
-\chapter{Výsledky}
+\chapter{Evaluation \label{chapter:results}}
 
+In this chapter, we provide results of our \ToolName tool.
+The tool provides implementation of plugins for three frameworks
+that are used for manipulatin data - Spring JDBC, MyBatis and Kafka.
+It also provide implementation for the identification of many types of databases
+through \Code{DataSource} interface.
+
+The \ToolName tool can also visualize data flow of JDBC and I/O API that was
+implemented in Symbolic analysis library and is not part of our work.
+
+In next sections, we evaluate results of our \ToolName tool for each of the selected frameworks.
+In the end, we discuss limitations of the current solution and discuss
+the requirements from \ref{frameworks:requirements}, whether they were
+fullfilled by our \ToolName tool.
+
+
+
+
+\section{Data Flow Graph Visualizations for Frameworks}
+
+In this section we present some data flow visualizations
+for example programs that were presented in previous sections.
+
+\TODO{Vlozit a popisat obrazky}
+
+
+
+\section{Limitations of the \ToolName Tool \label{chapter:results:limits}}
+
+There are few negative aspects in our \ToolName tool implementation.
+We try to point them out in next list:
+\begin{enumerate}
+  \item \textbf{Slow data lineage computation.} \\
+    The data lineage computation tests in our project last from
+    a few tens of second to a few minutes. It depends on the
+    number of used libraries, their complexity and also from complexity
+    of analysed application.
+  \item \textbf{There can be many algorithm iterations until fixpoint is reached.} \\
+    The Symbolic analysis library computes method summaries iteratively until
+    fixpoint is reached - when there are no changes in the method summaries.
+    The number of iterations also depends on the number of methods in the analysed program.
+  \item \textbf{Some inaccuracies can occur based on used over-approximation algorithm.} \\
+    The Symbolic analysis library computes over-approximation (e.g. when accessing
+    an element of an array or collection, all elements are considered as output).
+  \item \textbf{Disadvantages of static analysis.} \\
+    Many disadvantages comes with the usage of static analysis,
+    when values are computed dynamically based on the external inputs.
+\end{enumerate}
+
+
+
+\section{Fulfillment of the Assignment}
+
+\TODO{Alebo nazvat diskusia nad splnenim zadania?}
+
+In the Section \ref{frameworks:requirements} we pointed out the requirements
+on the library to be able to successfully compute the data lineage of
+applications that use frameworks for accessing the data.
+
+In the next list we try to explain how the requirement is fullfilled (or not)
+by the \ToolName tool:
+\begin{enumerate}
+  \item \textbf{Analysis of whole Java application.} \\
+    Our tool analyse both application and its dependencies
+    to distinguish all the data flows. The used WALA framework
+    needs all dependencies to create correct call graph.
+  \item \textbf{Identifying the sources and sinks.} \\
+    The plugins for Symbolic analysis library identify the sources and sinks
+    of an analysed application when the corresponding frameworks are used.
+  \item \textbf{Correctness, accuracy and efficiency of computing data lineage.} \\
+    We explained some limitations of our \ToolName tool in the Section \ref{chapter:results:limits}.
+    The data lineage computation can take quite long time, depending on the complexity of an analysed
+    application and the number of used libraries.
+    However, it is expected, that analysis of a huge program with many library dependencies
+    will run slower than the analysis of other small Java application.
+    As the tests in the \ToolName tool show, the data lineage is computed
+    in few minutes, therefore the tool is usable in practice.
+  \item \textbf{Work with external files.} \\
+    The external configuration files are often handled by our plugins for the Symbolic analysis library.
+  \item \textbf{Use concrete values.} \\
+    The Symbolic analysis library always tries to resolve actual values of Java primitives and
+    \Code{String}s. However, even if in many cases the concrete values cannot be determinated,
+    the data flow between sources and sinks are preserved.
+    As the frameworks often use external files for storing its data, that files can be often read
+    by the \ToolName tool to evaluate the data sources and sinks identifiers.
+  \item \textbf{Handle callbacks.} \\
+    The Symbolic analysis library supports also computing the data flow in callbacks.
+  \item \textbf{Easy extendability.} \\
+    We proposed the pluggable architecture for the Symbolic analysis library.
+    We demonstrated the possibilities that result from the changed architecture
+    on several library plugins. Plugins identify the data sources and sinks
+    of used data processing frameworks.
+\end{enumerate}
 
 
