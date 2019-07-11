@@ -1,0 +1,41 @@
+title Communication between Symbolic analysis and plugins
+
+Symbolic analysis library->+Plugin: 1. initialize(class hierarchy, call graph)
+Plugin-->-Symbolic analysis library:
+
+Symbolic analysis library->+Plugin: 2. analyseProgram()
+Plugin-->-Symbolic analysis library:
+
+Symbolic analysis library->+Plugin: 3. getAdditionalMethodsRequiredForAnalysis()
+Plugin-->-Symbolic analysis library: Set<Method>
+
+note over Symbolic analysis library,Plugin
+The initialization and all precomputations are completed.
+Now compute data flow information for analysed program
+end note
+
+loop Until fixpoint is reached do for each method
+    Symbolic analysis library->+Plugin: 4. canHandle(method)
+    
+    alt Plugin can handle a method
+        Plugin-->-Symbolic analysis library: True
+        
+        Symbolic analysis library->Plugin: 5. processMethodCall(MethodCallDescription)
+        Plugin->Symbolic analysis library: MethodEffectsDescription
+        
+        note right of Symbolic analysis library:
+            Update method summary
+            based on results from plugin.
+        end note
+    else Plugin cannot handle a method
+        Plugin-->-Symbolic analysis library: False
+        
+        note right of Symbolic analysis library:
+            Update method summary based
+            on symbolic interpretation
+            in Symbolic analysis library.
+        end note
+    end
+    
+    Symbolic analysis library->Symbolic analysis library: Update method summary
+end
