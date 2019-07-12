@@ -409,7 +409,7 @@ where such frameworks are used for accessing the data.
 \begin{enumerate}
   \item \textbf{Analysis of whole Java application.} \\
     The analysis should process whole application with all its dependencies.
-  \item \textbf{Identifying the sources and sinks.} \\
+  \item \textbf{Identifying the data sources and sinks.} \\
     The analysis should identify the places in application, where the data
     are read or written.
   \item \textbf{Correctness, accuracy and efficiency of computing data lineage.} \\
@@ -418,7 +418,7 @@ where such frameworks are used for accessing the data.
     The analysis should be able to handle not only Java classes,
     but also external files as many frameworks store their configuration
     outside of the code.
-  \item \textbf{Use concrete values.} \\
+  \item \textbf{Use of concrete values.} \\
     The analysis should know the concrete values of Java primitives and \Code{String}s.
     This is necessary for identifying sources and sinks of data,
     such as files, database tables, etc.

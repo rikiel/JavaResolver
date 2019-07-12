@@ -2,7 +2,9 @@
 \begin{lstlisting}[language=Java, caption={Example of publishing data using Kafka Producer}, label={code:kafka:producer}]
 public void sendData(String data) {
   Properties configuration = new Properties();
-  configuration.setProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+  configuration.setProperty( /*
+    \smallskip \newline */ CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, /*
+    \smallskip \newline */ "localhost:9092");
   try (Producer<String, String> producer = new KafkaProducer<>(configuration)) {
     producer.send(new ProducerRecord<>("Topic", data));
   }

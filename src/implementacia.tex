@@ -17,15 +17,16 @@ The analysis library should:
 \end{itemize}
 
 In Section \ref{chapter:analysis:symbolicAnalysisLibrary} we described the
-static program analysis approach on existing library for creating data lineage of plain Java programs.
+static program analysis approach used by the existing library
+for creating data lineage of plain Java programs.
 Using that library, data lineage can be created for Java I/O and JDBC API.
 
 In this chapter, we will present our solution of data lineage analysis
 for database frameworks - the \ToolName tool.
-The \ToolName tool use the Symbolic analysis library, which takes
+The \ToolName tool uses the Symbolic analysis library, which takes
 care of the data flow propagation between sources and sinks.
 The \ToolName tool implements features for identifying the sources
-and sinks of data inside frameworks as plugins to Symbolic analysis library.
+and sinks of data inside frameworks as plugins to the Symbolic analysis library.
 
 We will discuss the design of the \ToolName tool and some technical details
 of implemented Symbolic analysis library plugins.
@@ -38,17 +39,17 @@ of implemented Symbolic analysis library plugins.
 In this section we describe the main ideas about plugin approach of our \ToolName tool.
 
 When the Symbolic analysis library performs the program analysis,
-the plugin handles the selected method calls and provides
+the plugin handles the selected method calls on frameworks and provides
 information about the data sources and data sinks to the library.
 
 An input of a plugin is computed data flow information
-about the receiver (\Code{this} object) and the method arguments.
+about the receiver (\Code{this} object) and the method call arguments.
 The Section \ref{chapter:analysis:algorithm} describes the Symbolic analysis algorithm
-as iterative updating method summaries until a fixpoint is reached.
+as iterative updating of method summaries until a fixpoint is reached.
 
 The same approach applies for the plugins. At each iteration, the flow information
 about the plugin inputs are computed by the library and based on their values,
-plugin provide an information about the data sources and sinks of a framework.
+plugin provides information about the data sources and sinks of a framework method call.
 
 
 
@@ -56,7 +57,7 @@ plugin provide an information about the data sources and sinks of a framework.
 \section{Interface to Symbolic Analysis \label{chapter:implementation:interface}}
 
 We proposed the general interface between Symbolic analysis library and its plugins.
-Communication between the library and plugins is described in the
+Communication between the library and plugins is described in
 Figure \ref{implementation:analysis-plugins-communication}.
 
 \begin{figure}[p]
@@ -81,13 +82,17 @@ Here we describe their usage:
     and precompute some information from the provided call graph and class hierarchy
     of an analysed program.
   \item \Code{getAdditionalMethodsRequiredForAnalysis} specify framework methods that should
-    be also analysed by Symbolic analysis library.
+    be also analysed by the Symbolic analysis library, as the library does not
+    analyse methods out of defined application package because of optimizations.
+    Sometime it is useful to analyse other framework methods
+    (e.g. when there are many overloading methods that forward their calls to one method
+    that can be handled by a plugin).
   \item \Code{canHandleMethod} and \Code{processMethodCall} query plugin whether method can be
     handled by the plugin and to compute flow information for such method.
   \item \Code{canProvideArgument} and \Code{getArgumentFlowInformation} provide flow information for
     an argument of a callback method.
   \item \Code{destroy} closes all plugin resources. The method is used at the end of analysis,
-    when fixpoint is reached.
+    when the fixpoint is reached.
 \end{itemize}
 
 
@@ -95,47 +100,47 @@ Here we describe their usage:
 
 \subsection{MethodCallDescription}
 
-Class \Code{MethodCallDescription} serves as a data flow information input for a plugin
+The class \Code{MethodCallDescription} serves as data flow information input for a plugin query
 (the \Code{processMethodCall} method).
 It holds the attributes for all method inputs
 (for receiver (\Code{this} object) and all the method arguments)
-and also flow information about the previously computed callbacks.
+and also flow information about the previously analysed callbacks.
 
 
 
 
 \subsection{MethodEffectsDescription}
 
-Class \Code{MethodEffectsDescription} serves as an output of a
+The class \Code{MethodEffectsDescription} serves as output of the
 \Code{processMethodCall} method. It holds the output data flow information
-and also callbacks to be computed by the Symbolic analysis library.
+and also identifies callbacks to be computed by the Symbolic analysis library.
 
-Flow information are stored in the \Code{DataEndpointFlowInfo} that
+Flow information are stored in the \Code{DataEndpointFlowInfo} object that
 is described in the next section.
 
 
 
 \subsection{DataEndpointFlowInfo}
 
-Class \Code{DataEndpointFlowInfo} holds data flow information results
+The class \Code{DataEndpointFlowInfo} holds data flow information results
 for an analysed method, such as:
 \begin{itemize}
   \item Identification of the data source or sink.
-  \item Mapping of the resulted objects. \\
+  \item Mapping of fields in the resulting objects to data source or sink information (e.g. database column name)
     The results can be returned by a method and also stored into a method attribute.
   \item Attributes for:
     \begin{itemize}
       \item Data source or sink
       \item Returned object
       \item Receiver (\Code{this})
-      \item Arguments
+      \item Method call arguments
     \end{itemize}
 \end{itemize}
 
 The data source and sink identification can be the SQL statement in case of database frameworks,
 or the server identification or other information.
 
-Plugin can define its own attributes, that can be used to identify any valuable information.
+Plugin can define its own attributes that can be used to identify any valuable information.
 All of the attributes are then propagated using the Symbolic analysis library.
 
 

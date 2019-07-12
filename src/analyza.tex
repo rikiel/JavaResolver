@@ -136,8 +136,8 @@ that was described in Section \ref{chapter:analysis:wala}.
 Bytecode interpreter performs linear traversal of the method bytecode instructions
 and computes various information for symbolic variables and constant expressions.
 
-The Symbolic analysis library creates method summaries that for each
-local variable (fields, arrays or complex expression) contains
+The Symbolic analysis library computes method summaries that for each
+variable (local varibles, fields, arrays or complex expression) contain
 data sources and the concrete values (for \Code{String}s and numbers).
 
 
@@ -146,7 +146,8 @@ data sources and the concrete values (for \Code{String}s and numbers).
 
 The symbolic analysis algorithm for computing static method summaries use:
 \begin{enumerate}
-  \item A \textbf{fixpoint worklist algorithm} over the list of all reachable methods.
+  \item A \textbf{fixpoint worklist algorithm} over the list of all methods
+    reachable in the call graph.
   \item A \textbf{linear symbolic interpretation} of the bytecode of methods.
 \end{enumerate}
 
@@ -163,7 +164,7 @@ The algorithm terminates when the summary of each method captures all its result
 
 \subsection{Flow Propagation}
 
-In the previous section we described general algorithm for Symbolic analysis.
+In the previous section we described general algorithm for symbolic analysis.
 However, we did not specify, how the flow information is used in practice.
 
 Now we describe selected important aspects and features of the Symbolic analysis library
@@ -227,9 +228,6 @@ from a collection.
 
 Also, when using \Code{java.util.Map} and \Code{java.util.Properties} instances,
 analysis does distinguish the keys and corresponding values.
-and 
-analysis does not distinguish between used keys and corresponding values
-and maintains just a single set of flow for the whole class.
 
 In case of collections of \Code{String}s or numeric values, library provides
 the information about concrete values stored in collections whenever possible.
@@ -286,42 +284,42 @@ therefore \Code{javax.sql} API is not supported.
 \subsubsection{Extendability}
 
 The symbolic analysis library can be extended to support other types
-of data sources and sinks. We will describe this feature in the section \ref{chapter:implementation:interface}.
+of data sources and sinks. We will describe this feature in the Section \ref{chapter:implementation:interface}.
 
 
 
 \subsection{Data Lineage Visualization \label{chapter:analysis:visualization}}
 
-The data flow graph is created based on the results of symbolic analysis - based on
+The data flow graph is created based on the results of symbolic analysis, based on
 the computed method summaries.
 
-The graph nodes consist of a set of identified sources and sinks for the data
+The graph nodes consist of a set of identified sources and sinks for the data,
 and its oriented edges are between pair of nodes between which the data flows.
 
 The graph visualization is then created using \citet{Graphviz} tool in resulted PDF file.
-The structure of the graph is described in more detail in section \ref{chapter:program:graphs}.
+The structure of the graph is described in more detail in Section \ref{chapter:program:graphs}.
 
 There are several types of graph nodes, from which the most important are:
 \begin{itemize}
   \item \Code{Connection} - defines JDBC connection to database.
   \item \Code{SQLCommand} - defines standard JDBC SQL query.
-  \item \Code{ParamIndex} - defines index of parameter for query.
+  \item \Code{ParamIndex} - defines index of parameter for query or command.
   \item \Code{ResultColumn} - defines column index or name from an SQL query result.
   \item \Code{StreamAction} - defines action on stream I/O (files I/O, standard I/O).
   \item \Code{EntryArgument} and \Code{EntryArgumentData} - defines data flow from entry point method arguments.
   \item \Code{EntryReturnVal} and \Code{EntryReturnValData} - defines data flow to entry point method result.
 \end{itemize}
 
-Each node contains few attributes describe the location in analysed code, where an operation was performed
+Each node contains few attributes that describe the location in analysed code, where an operation was performed
 (\Code{java\_class\_desc} and \Code{java\_method\_desc} identifies the Java class and method)
 and more information about the data lineage for such operation.
 For example, \Code{Connection} node contains the connection url in the \Code{db\_connection\_desc}
 attribute and the user used to connect to the database is in the \Code{db\_connection\_user\_desc} attribute.
-Other example can be the \Code{SQLCommand} node with the SQL statement in the attribute \Code{db\_statement\_desc},
-or \Code{stream\_location\_desc} identifies the name of used file in \Code{StreamAction} node,
+Another example can be the \Code{SQLCommand} node with the SQL statement in the attribute \Code{db\_statement\_desc},
+or \Code{stream\_location\_desc} that identifies the name of used file in \Code{StreamAction} node,
 or standard I/O (e.g. \Code{System.in}, etc.).
 
-The entry nodes (\Code{EntryArgument}, \Code{EntryReturnVal}, etc.) show that data can flow
+The entry point nodes (\Code{EntryArgument}, \Code{EntryReturnVal}, etc.) show that data can flow
 into the entry method as its argument, or flow out from such method as its result.
 
 Listing \ref{code:dbio} show more complex example, where both database and file
@@ -340,16 +338,16 @@ We just omit some unessential information from nodes.
 
 The visualization contains following nodes:
 \begin{enumerate}
-  \item \Code{EntryArgument0} and \Code{EntryArgumentData0} nodes for identification of \Code{id} argument.
+  \item \Code{EntryArgument0} and \Code{EntryArgumentData0} nodes for identification of the \Code{id} argument.
   \item \Code{Connection} node for identification of database connection - url and user.
-  \item \Code{ParamIndex} and \Code{SQLCommand} nodes for identification of database query.
-  \item \Code{ResultColumn} node for loading value from a query.
-  \item \Code{StreamAction} nodes for identification of output file.
+  \item \Code{ParamIndex} and \Code{SQLCommand} nodes for identification of a database query.
+  \item \Code{ResultColumn} node for loading value from the query.
+  \item \Code{StreamAction} nodes for identification of the output file.
 \end{enumerate}
 
-Besides the main flow in the graph from database query to output file, we can
-notice that correct file name (\Code{outputFile.txt}) is computed by the library.
-Notice also flow from \Code{id} argument into SQL statement as its parameter.
+Besides the main flow in the graph from the database query to the output file, we can
+notice that the correct file name (\Code{outputFile.txt}) is computed by the library.
+Notice also flow from the \Code{id} argument into SQL statement as its parameter.
 
 In the visualization we can also notice two \Code{StreamAction} nodes but with different
 tags - \textit{Open} and \textit{Write}.

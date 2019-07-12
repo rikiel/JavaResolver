@@ -2,7 +2,9 @@
 \begin{lstlisting}[language=Java, caption={Example of reading data using Kafka Consumer}, label={code:kafka:consumer}]
 public void readData() {
   Properties configuration = new Properties();
-  configuration.setProperty(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); /* \label{code:kafka:consumer:properties} */
+  configuration.setProperty( /*
+    \smallskip \newline */ CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, /*
+    \smallskip \newline */ "localhost:9092");
   try (Consumer<String, String> consumer = new KafkaConsumer<>(configuration)) {
     consumer.subscribe(Collections.singletonList("Topic")); /* \label{code:kafka:consumer:subscribe} */
     ConsumerRecords<String, String> data = consumer.poll(Duration.ofSeconds(1)); /* \label{code:kafka:consumer:poll} */
