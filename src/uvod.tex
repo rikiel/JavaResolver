@@ -1,10 +1,8 @@
 
 \chapter{Introduction}
 
-
-
-\section{Motivation}
-
+For modern data processing applications, an important aspect
+is a data lineage.
 Data lineage, or provenance, describes where data came from,
 how it was derived and where the results are stored.
 
@@ -14,91 +12,82 @@ can use lineage to verify the copied data by tracking the original
 sources as was demonstrated by \citet{DataLineageInBioInformatics}.
 Probabilistic databases can exploit lineage for confidence
 computation as was stated by \citet{DataLineageInProbabilisticDatabases}.
-Data lineage is also important in BI when achieving full regulatory compliance
-and improving data governance.
+The important usage of the data lineage is also in machine learning,
+where for the purpose of a verification and validation can be important
+to know data sources of used data sets.
+Data lineage is also important in Business Intelligence (BI)
+when achieving full regulatory compliance and improving data governance.
 
-In all these areas, Java applications are often used to work
-with such a data.
-Until now, there exist no tool for creating data lineage of
-Java applications and the fact, that there exist many frameworks
-to simplify and abstract access to that data,
-makes the task of creating data lineage even harder.
+In all these areas, Java applications together with data manipulation frameworks
+are often used to access data in databases, files or in network storages.
+The tool that is able to identify the sources and sinks of a data
+and create data lineage of an application can be very useful.
 
-When talking about databases, useful information can be the 
-name of a database that application access or SQL statement that application execute.
-Application can also use external files as data storage, where their names
-are very valuable information for data lineage.
-Data can be also accessed through network using messaging system
-where server name or message identification can be also useful.
-
-Resulted data lineage can be viewed as a graph, where nodes
-contains sources and sinks of data and directed edges
-between them are corresponding data flows.
-
+Up to now, we are aware of the only tool for creating data lineage of
+Java applications - the Symbolic analysis library
+presented in \citet{ParizekHybridAnalysis}.
+The library can create data lineage of an analysed application when only
+Java I/O and JDBC APIs are used in addition to the core
+Java libraries (collections, etc.).
 
 
 
 \section{MANTA Flow}
 
-\citet{MantaFlow} is a tool that helps enterprises to get end-to-end
+An example of a data lineage analysis tool is the \citet{MantaFlow}.
+The MANTA Flow helps enterprises to get end-to-end
 data lineage including custom SQL code. That allows customers to fulfill
 compliance regulations or improve data governance.
 
 It extracts and analyses metadata from report definitions,
-custom SQL code, and ETL workflows, to create data flows
+custom SQL code, and extract-transform-load (ETL) workflows, to create data flow graphs
 which span multiple systems and a range of technologies.
-Lineages are analyzed based on actual code.
-All entities detected by MANTA Flow, such as columns or procedures,
+Lineages are computed based on analysis of actual code.
+All entities detected by MANTA Flow, such as database tables, columns or procedures,
 are visualized to help users utilize this information.
 
 Systems, for which MANTA Flow is used to analyse their data lineage,
-often use Java applications to work with data. Adding support
-for data lineage of such programs would be valuable,
-as presented data lineage result can cover whole system,
-not only its database parts.
+often use Java applications and data processing frameworks to work with data.
+MANTA Flow integrates the Symbolic analysis library to create data lineage of
+Java applications to cover whole system, not only its database parts.
+However, the support for computing data lineage of complex data processing frameworks
+is missing.
 
 
 
 
 \section{Goals}
 
-Many Java applications use other frameworks to access data
-in databases, files or in network storages.
-
-Up to now, there exists the Symbolic Analysis library
-that can create data lineage of an analysed application
-when only Java IO and JDBC APIs are used.
-
-In our work, we \textbf{propose architecture changes} in Symbolic Analysis library
-to be easily extensible by plugins, that can add support for new frameworks
+In our work, we \textit{propose architecture changes} to Symbolic analysis library
+to be easily extensible by plugins that can add support for new data processing frameworks
 to identify its data sources and sinks.
 
-We also \textbf{implement plugins for few selected frameworks}
-(\citet{MyBatis}, \citet{SpringJDBC} and \citet{Kafka}).
+We also \textit{implement Symbolic analysis library plugins} for few selected frameworks
+(MyBatis, Spring JDBC and Apache Kafka).
 Each framework has different approach for accessing the data.
 Thereby we want to demonstrate that such plugins can be used to
-add support for data flow analysis of other Java frameworks.
-The feature to easily extend the library to add support for a new frameworks
-is very important, as new and new frameworks are being developed today.
+add support for data lineage analysis of other Java frameworks.
+The feature to easily extend the Symbolic analysis library to add support for a new frameworks
+is very important, as new frameworks are being developed today.
 
 
 
 
 \section{Structure of the Work}
 
-In chapter \ref{chapter:frameworks} we give examples of popular Java frameworks
+The rest of the thesis has the following structure.
+
+In chapter \ref{chapter:frameworks} we give overview of popular Java frameworks
 for data processing.
 
 In chapter \ref{chapter:analysis} we introduce libraries that are used
-for static analysis to create data lineage.
+for static analysis of Java programs to create data lineage.
 
-In chapter \ref{chapter:implementation} we present design of the library for
-data lineage of frameworks.
+In chapter \ref{chapter:implementation} we present design of the \ToolName tool for
+data lineage of frameworks and selected implementation details.
 
-Chapter \ref{chapter:program} contains user documentation for the library.
+Chapter \ref{chapter:program} contains user documentation for the \ToolName tool.
 
 Chapter \ref{chapter:results} present our results for selected frameworks,
-constrains and future work.
-
-
+limitations of our solution and plans for the future work.
 
