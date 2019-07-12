@@ -1,0 +1,157 @@
+
+\chapter{User Documentation for the \ToolName Tool \label{chapter:program}}
+
+We created a set of plugins for Symbolic analysis library
+for extracting data lineage information from data processing frameworks used in Java applications.
+We also provide some test scenarios for frameworks we are handling.
+
+We created the \ToolName tool, which is composition of the
+Symbolic analysis library together with the plugins.
+
+Here we describe installation and usage of the \ToolName tool.
+We use standard Maven directory structure for source code.
+In \Code{src/main} directory, application source and resource files
+are located and in \Code{src/test} test sources and resources
+are located.
+
+
+
+\section{Software Requirements}
+
+To successfully install the \ToolName tool, following is required:
+
+\begin{itemize}
+  \item Java JDK 1.8 installed
+  \item Apache Maven installed and configured
+    \begin{itemize}
+      \item Recommended version is 3.3.9
+    \end{itemize}
+  \item Graphviz installed with tool \Code{dot} on PATH
+    \begin{itemize}
+      \item Recommended version is 2.40.1
+    \end{itemize}
+\end{itemize}
+
+We recommend to use such versions of the software,
+as these versions were used for testing and some compatibility
+issues can be encountered using different versions.
+
+
+
+\section{Installation}
+
+To compile the \ToolName tool and create runnable \Code{JAR} file, use the command:
+\begin{lstlisting}[language=shell]
+        # mvn clean compile assembly:single
+\end{lstlisting}
+
+We recommend also to run all tests after instalation by:
+\begin{lstlisting}[language=shell]
+        # mvn test
+\end{lstlisting}
+When tests ends, the flow graph visualizations are saved in the \Code{target/img} directory.
+
+As it could take a long time to run all tests (more than an hour), we provide TestNG
+suites for each framework. This can be useful to verify that requested plugin is working
+before trying to use it.
+
+The test suite files are located in subdirectories of \Code{test/resources/tests}
+and can be run using command:
+\begin{lstlisting}[language=shell]
+        # mvn test -DtestSuite=<suiteFile>
+\end{lstlisting}
+
+
+\section{Running the \ToolName Tool}
+
+After instalation is completed, the \ToolName tool is ready to be used for computing
+data lineage of target application using command line options:
+
+\TODO{nazov jarka; skontrolovat este raz argumenty a nazvy prepinacov, ci sa nezmenili}
+
+\begin{lstlisting}[language=shell]
+        # java -jar library.jar [OPTIONS]
+
+        OPTIONS:
+          [--application-jar <fileName>]
+          [--library-jar <fileName>]
+          [--application-package <package>]
+          [--entry <className> <methodSignature>]
+          [--output-directory <directoryName>]
+          [--help]
+\end{lstlisting}
+
+\begin{itemize}
+  \item \Code{-{}-aplication-jar} specifies the application JAR file
+    to be analysed by our \ToolName tool.
+  \item \Code{-{}-library-jar} specifies the library JAR file
+    to be known by our \ToolName tool.
+    All library dependencies should be added for analysis.
+  \item \Code{-{}-aplication-package} sets the root package of analysed application.
+    This is needed, because of optimizations, when our \ToolName tool
+    does not analyse classes that are outside of that package.
+  \item \Code{-{}-entry} specify an entry point for the analysis.
+    It can be some method, from which data lineage is computed.
+    Fully qualified name of class should be provided and only methods
+    without arguments and standard Java main method are supported.
+    \TODO{tiez WALA method signatura}
+  \item \Code{-{}-output-directory} specifies where the result files are stored.
+  \item \Code{-{}-help} display usage and exit.
+\end{itemize}
+
+
+
+
+\section{Result Graphs \label{chapter:program:graphs}}
+
+The data lineage of an input program is represented by a flow graph,
+where nodes are data sources and sinks and oriented edges are between
+pair of nodes between which the data flows.
+
+The graph can be visualized using Symbolic analysis library visualization tool
+described in Section \ref{chapter:analysis:visualization}.
+
+The \ToolName tool generates three types of files. First, the \Code{.dot} file contains graph definition
+from which the \Code{dot} tool creates \Code{.pdf} and \Code{.svg} files with visualized result graph.
+
+The result visualization was described in Section \ref{chapter:analysis:visualization}
+for JDBC and I/O APIs.
+Now we continue the list of node types from that section
+that are relevant to Symbolic analysis library plugins:
+\begin{itemize}
+  \item \Code{FrameworkDataSource} - defines source of data in framework (like SQL query statement).
+  \item \Code{FrameworkDataField} - defines resulting field from framework query.
+  \item \Code{FrameworkAction} - defines the data sink (like SQL insert statement).
+\end{itemize}
+
+Plugins define also own attributes for identification of some valuable information
+for data lineage.
+Such attribute can be \Code{KAFKA\_TOPIC} that is used for identification of used
+topic in Kafka Framework, or \Code{FILE\_NAME} that identifies a file name that was
+used as some input in program, like the configuration file in MyBatis.
+There are also much more attributes.
+
+
+
+
+\section{Implementing Support for new Framework}
+
+We implemented support for three data processing frameworks,
+but in general, any framework can be handled.
+It can be done by implementing a new plugin for Symbolic analysis library.
+
+In Section \ref{chapter:implementation:interface} we described interface between
+Symbolic analysis library and its plugins. Plugins should identify the data sources and sinks
+and the library take care of the data flow between them.
+
+We propose first to make familiar with already implemented plugins and other
+classes used in that plugins:
+\begin{itemize}
+  \item \Code{JdbcTemplateAnalysisPlugin} and \Code{JdbcTemplateHandler} can be inspiration for the approach of callbacks.
+  \item \Code{MyBatisAnalysisPlugin} can be inspiration, when plugin should work with external files or annotations.
+    \begin{itemize}
+      \item \Code{MyBatisAnnotationMapperSqlReader} - working with annotations
+      \item \Code{MyBatisXmlMapperSqlReader} - working with external XML files
+    \end{itemize}
+\end{itemize}
+
