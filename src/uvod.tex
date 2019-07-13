@@ -26,7 +26,8 @@ and create data lineage of an application can be very useful.
 Up to now, we are aware of the only tool for creating data lineage of
 Java applications - the Symbolic analysis library
 presented in \citet{ParizekHybridAnalysis}.
-The library can create data lineage of an analysed application when only
+The Symbolic analysis library performs a specific kind of static program analysis.
+It can create data lineage of an analysed application when only
 Java I/O and JDBC APIs are used in addition to the core
 Java libraries (collections, etc.).
 
@@ -84,7 +85,7 @@ In chapter \ref{chapter:analysis} we introduce libraries that are used
 for static analysis of Java programs to create data lineage.
 
 In chapter \ref{chapter:implementation} we present design of the \ToolName tool for
-data lineage of frameworks and selected implementation details.
+data lineage of frameworks. We also describe some selected implementation details of the tool.
 
 Chapter \ref{chapter:program} contains user documentation for the \ToolName tool.
 

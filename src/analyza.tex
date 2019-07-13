@@ -226,7 +226,7 @@ of a given array or collection are considered.
 Complete flow information is also used when creating \Code{java.util.Iterator}
 from a collection.
 
-Also, when using \Code{java.util.Map} and \Code{java.util.Properties} instances,
+Also, when using \Code{java.util.Map} and \Code{java.util.Properties} instances,\break
 analysis does distinguish the keys and corresponding values.
 
 In case of collections of \Code{String}s or numeric values, library provides
@@ -238,7 +238,7 @@ the information about concrete values stored in collections whenever possible.
 
 \subsection{Identifying the Sources and Sinks of a Data}
 
-Symbolic analysis algorithm that we describe in previous section is
+Symbolic analysis algorithm that we described in previous section is
 used to compute data flow in application.
 When such sources or sinks are identified, the algorithm would
 propagate such data flow.
@@ -276,8 +276,8 @@ The library can identify the connection url for the database
 that application is connecting to, SQL queries and the columns
 that are read from results in \Code{ResultSet}.
 
-The library focuses only on classes in the package \Code{java.sql}
-therefore \Code{javax.sql} API is not supported.
+The library focuses only on classes in the package \Code{java.sql}, therefore\break
+\Code{javax.sql} API is not supported.
 
 
 
@@ -297,7 +297,7 @@ The graph nodes consist of a set of identified sources and sinks for the data,
 and its oriented edges are between pair of nodes between which the data flows.
 
 The graph visualization is then created using \citet{Graphviz} tool in resulted PDF file.
-The structure of the graph is described in more detail in Section \ref{chapter:program:graphs}.
+More details about the structure of the graph can be found in Section \ref{chapter:program:graphs}.
 
 There are several types of graph nodes, from which the most important are:
 \begin{itemize}
@@ -332,8 +332,8 @@ column is loaded and on line \ref{code:dbio:writeFile} its value is written to t
 
 \InsertCode{h}{code/dbio.tex}
 
-Figure \ref{frameworks:dbio:graph} contains visualization of the data flow graph
-of the \Code{writeValue\-ForIdToFile} method from Listing \ref{code:dbio}.
+Figure \ref{frameworks:dbio:graph} contains visualization of the data flow graph of the\break
+\Code{writeValueForIdToFile} method from Listing \ref{code:dbio}.
 We just omit some unessential information from nodes.
 
 The visualization contains following nodes:

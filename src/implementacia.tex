@@ -12,7 +12,7 @@ The analysis library should:
   \item Create correct and accurate data lineage in reasonable time.
   \item Work with the concrete values for Java primitives and \Code{String}s.
   \item Work with external files.
-  \item Support for the callback objects.
+  \item Support the callback objects.
   \item Be easily extendible to support new frameworks.
 \end{itemize}
 
@@ -74,7 +74,8 @@ In next sections we will describe all the interfaces used between the library an
 
 \subsection{FrameworkAnalysisPlugin}
 
-The key interface for plugin to Symbolic analysis library is the \Code{Framework\-AnalysisPlugin}.
+The key interface for plugin to Symbolic analysis library is the\break
+\Code{FrameworkAnalysisPlugin}.
 The interface defines few methods that are used for communication between the library and plugins.
 Here we describe their usage:
 \begin{itemize}
@@ -84,7 +85,7 @@ Here we describe their usage:
   \item \Code{getAdditionalMethodsRequiredForAnalysis} specify framework methods that should
     be also analysed by the Symbolic analysis library, as the library does not
     analyse methods out of defined application package because of optimizations.
-    Sometime it is useful to analyse other framework methods
+    Sometimes it is useful to analyse other framework methods
     (e.g. when there are many overloading methods that forward their calls to one method
     that can be handled by a plugin).
   \item \Code{canHandleMethod} and \Code{processMethodCall} query plugin whether method can be
@@ -111,7 +112,7 @@ and also flow information about the previously analysed callbacks.
 
 \subsection{MethodEffectsDescription}
 
-The class \Code{MethodEffectsDescription} serves as output of the
+The class \Code{MethodEffectsDescription} serves as output of the\break
 \Code{processMethodCall} method. It holds the output data flow information
 and also identifies callbacks to be computed by the Symbolic analysis library.
 
@@ -126,8 +127,8 @@ The class \Code{DataEndpointFlowInfo} holds data flow information results
 for an analysed method, such as:
 \begin{itemize}
   \item Identification of the data source or sink.
-  \item Mapping of fields in the resulting objects to data source or sink information (e.g. database column name)
-    The results can be returned by a method and also stored into a method attribute.
+  \item Mapping of fields in the resulting objects to data source or sink information (e.g. database column name).
+    The results of a framework call can be returned by a method and also stored into a method attribute.
   \item Attributes for:
     \begin{itemize}
       \item Data source or sink
@@ -138,7 +139,7 @@ for an analysed method, such as:
 \end{itemize}
 
 The data source and sink identification can be the SQL statement in case of database frameworks,
-or the server identification or other information.
+or the server identification, or other important information for data lineage.
 
 Plugin can define its own attributes that can be used to identify any valuable information.
 All of the attributes are then propagated using the Symbolic analysis library.
@@ -187,13 +188,13 @@ All the other methods only use them when executing queries.
 
 As we said, callbacks are used just to wrap application logic and
 separate it from the code for opening/closing connections, etc,
-as was shown by previous example \ref{code:jdbcTemplate}.
+as was shown by previous example in Listing \ref{code:jdbcTemplate}.
 
 When handling a particular method of the framework (e.g. the \Code{update}
-method of \Code{JdbcTemplate} class in Listing \Code{code:jdbcTemplate}),
+method of \Code{JdbcTemplate} class in Listing \ref{code:jdbcTemplate}),
 we needed to find a way how to say to the Symbolic analysis library that a plugin wants to
 analyse that callback method. For that purpose, we use
-field \Code{callbackMethodsToAnalyze} from interface.
+field \Code{callbackMethodsToAnalyze} of the class \Code{MethodEffectsDescription} from the interface.
 All callbacks have the method that is called in execution
 and we just leave analysis library to analyse it and return
 its data flow. After that, we append the resulting flow of the callback
@@ -201,7 +202,8 @@ to flow of our handled method.
 
 We will demonstrate it on simple example of the \Code{insert} method from Listing \ref{code:jdbcTemplate}.
 In the method, there is the call of the \Code{jdbcTemplate.update()} method
-with two arguments - the SQL statement and the instance of \Code{PreparedStatementSetter}.
+with two arguments - the SQL statement and the instance of the\break
+\Code{PreparedStatementSetter}.
 
 After data lineage analysis of the \Code{insert} method is done, we would like to know
 that the \Code{id} and \Code{value} attributes of the \Code{DatabaseValue} instance
@@ -214,7 +216,8 @@ Our solution is that when the plugin is handling
 that it wants to analyse that \Code{setValues} call.
 The next time the plugin already has all the information
 about data lineage in the \Code{setValues}
-and therefore it can propagate it to the result of the \Code{jdbcTemplate.update()} call.
+and therefore it can propagate it to the result of the\break
+\Code{jdbcTemplate.update()} call.
 
 
 
@@ -237,7 +240,7 @@ or interfaces for which XML mapper definition exists.
 
 \subsubsection{XML mapper files}
 
-XML mapper file definition has same name as the corresponding interface
+XML mapper file definition has the same name as the corresponding interface
 (but .xml extension is used instead of .java), and lays in same directory.
 
 We made a parser of such XML files that can get information about SQL statements
@@ -248,7 +251,7 @@ so it is easy to find correct one and include it into query.
 
 Parser also supports dynamic SQLs. As we do not know which conditions are valid
 at runtime, we made a simplification that we always use just first branch that
-was seen in code.
+was seen in the code.
 We also cannot determine the size of an input collection, so the parser provides no expansion.
 
 
@@ -290,12 +293,12 @@ The database call of \Code{DB\_PROCEDURE} has two arguments.
 
 First, the input integer argument, takes value of the \Code{id} key from the map.
 Second, the output cursor argument, is created by MyBatis and perform database procedure call.
-The cursor is then transformed to list of target object
+The cursor is then transformed to list of target objects
 with result map \Code{resultMap} and stored to the same map under the key \Code{result}.
 
 \InsertCode{h}{code/mybatis-output-arguments.tex}
 
-There also exist more advanced features of MyBatis when using annotations\footnote{
+There also exist more advanced features of MyBatis\footnote{
   Such as using provider classes to create SQL queries (\Code{@SelectProvider}, $\ldots$),
   generating IDs from sequence (\Code{@SelectKey}) and using them in queries,
   generating maps from objects (\Code{@MapKey}),
@@ -346,7 +349,7 @@ It can be callbacks to notify about performed operation result (like in case of 
 or to notify about some state changes.
 
 As in case of callbacks in Spring JDBC Framework, the plugin tells
-the Symbolic Analysis library to analyse the data flow in such callback method
+the Symbolic analysis library to analyse the data flow in such callback method
 and then plugin propagate computed data flow information 
 to the result of handled method.
 
@@ -368,7 +371,7 @@ When the \Code{Properties} values are set only using Java, the concrete
 values are resolved by Symbolic analysis library.
 
 However, the library does not support the external files for loading properties.
-It provides only the stream identification (file name, \uvodzovky{System.in}, etc.).
+It provides only the stream identification (name of used file, \uvodzovky{System.in}, etc.).
 
 If there exists a file with such identification, plugin loads its properties and
 tries to resolve what Kafka server was used in application.

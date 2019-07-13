@@ -45,10 +45,12 @@ To compile the \ToolName tool and create runnable \Code{JAR} file, use the comma
         # mvn clean compile assembly:single
 \end{lstlisting}
 
-We recommend also to run all tests after instalation by:
+The command creates the executable \Code{target/resolver.jar}.
+We recommend also to run all tests after instalation using:
 \begin{lstlisting}[language=shell]
         # mvn test
 \end{lstlisting}
+
 When tests ends, the flow graph visualizations are saved in the \Code{target/img} directory.
 
 As it could take a long time to run all tests (more than an hour), we provide TestNG
@@ -67,21 +69,23 @@ and can be run using command:
 After instalation is completed, the \ToolName tool is ready to be used for computing
 data lineage of target application using command line options:
 
-\TODO{nazov jarka; skontrolovat este raz argumenty a nazvy prepinacov, ci sa nezmenili}
-
 \begin{lstlisting}[language=shell]
-        # java -jar library.jar [OPTIONS]
+        # java -jar target/resolver.jar [OPTIONS]
 
         OPTIONS:
+          [--entry <className> <methodName>]
           [--application-jar <fileName>]
           [--library-jar <fileName>]
           [--application-package <package>]
-          [--entry <className> <methodSignature>]
           [--output-directory <directoryName>]
           [--help]
 \end{lstlisting}
 
 \begin{itemize}
+  \item \Code{-{}-entry} specify an entry point for the analysis.
+    It can be some method, from which data lineage is computed.
+    Fully qualified name of class should be provided and only methods
+    without arguments and standard Java main method are supported.
   \item \Code{-{}-aplication-jar} specifies the application JAR file
     to be analysed by our \ToolName tool.
   \item \Code{-{}-library-jar} specifies the library JAR file
@@ -90,11 +94,6 @@ data lineage of target application using command line options:
   \item \Code{-{}-aplication-package} sets the root package of analysed application.
     This is needed, because of optimizations, when our \ToolName tool
     does not analyse classes that are outside of that package.
-  \item \Code{-{}-entry} specify an entry point for the analysis.
-    It can be some method, from which data lineage is computed.
-    Fully qualified name of class should be provided and only methods
-    without arguments and standard Java main method are supported.
-    \TODO{tiez WALA method signatura}
   \item \Code{-{}-output-directory} specifies where the result files are stored.
   \item \Code{-{}-help} display usage and exit.
 \end{itemize}
@@ -144,8 +143,8 @@ In Section \ref{chapter:implementation:interface} we described interface between
 Symbolic analysis library and its plugins. Plugins should identify the data sources and sinks
 and the library take care of the data flow between them.
 
-We propose first to make familiar with already implemented plugins and other
-classes used in that plugins:
+Before the implementation of new plugin we strongly recomend to make familiar
+with already implemented plugins and other classes used in that plugins:
 \begin{itemize}
   \item \Code{JdbcTemplateAnalysisPlugin} and \Code{JdbcTemplateHandler} can be inspiration for the approach of callbacks.
   \item \Code{MyBatisAnalysisPlugin} can be inspiration, when plugin should work with external files or annotations.

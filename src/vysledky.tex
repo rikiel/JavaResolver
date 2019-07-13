@@ -7,6 +7,10 @@ that are used for manipulating data - Spring JDBC, MyBatis and Kafka.
 It also provides implementation for the identification of many types of databases
 through the \Code{DataSource} interface.
 
+For the \ToolName tool we created a comprehensive set of tests.
+They tests major part of the features of the tool and show
+that our tool is in a good condition.
+
 The \ToolName tool can also visualize data flow of JDBC and I/O API that was
 implemented in the Symbolic analysis library and is not part of our work.
 
@@ -20,10 +24,9 @@ the requirements from Section \ref{frameworks:requirements}.
 \section{Data Flow Graph Visualizations for Frameworks}
 
 In this section we present some data flow visualizations
-for example programs that were presented in previous sections.
+for example programs that are presented in tests for the \ToolName tool.
 
-\TODO{Popisat este vytvorene testy, ze pokryvaju rozne feature toolu..}
-\TODO{Vlozit a popisat obrazky}
+\TODO{Obrazky z testov}
 
 
 
@@ -41,7 +44,7 @@ We point them out in the following list:
     The Symbolic analysis library computes method summaries iteratively until
     fixpoint is reached - when there are no changes in the method summaries.
     The number of iterations also depends on the number of methods in the analysed program.
-  \item \textbf{Some inaccuracies can occur based on the used over-approximation algorithm.} \\
+  \item \textbf{Some inaccuracies can occur based on the used\break over-approximation algorithm.} \\
     The Symbolic analysis library computes over-approximate data lineage information (e.g. when accessing
     an element of an array or collection, all elements are considered as output).
   \item \textbf{Disadvantages of static analysis.} \\
@@ -92,5 +95,4 @@ by the \ToolName tool:
     on several library plugins. The plugins identify the data sources and sinks
     of used data processing frameworks.
 \end{enumerate}
-
 

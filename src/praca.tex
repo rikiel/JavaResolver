@@ -37,16 +37,31 @@
 \def\StudijniObor{Artificial Inteligence}
 % Nepovinné poděkování (vedoucímu práce, konzultantovi, tomu, kdo
 % zapůjčil software, literaturu apod.)
-\def\Podekovani{%
-  TODO Podakovanie
+\def\Podakovanie{%
+  I would like to thank my brothers Marek and Erik,
+  my mother and my father and all those who
+  have always supported and moved me forward during my studies.
+
+  I dedicate this thesis to my beautiful wife Anička,
+  without the help of which I would not be able to
+  master my studies.
 }
 % Abstrakt (doporučený rozsah cca 80-200 slov; nejedná se o zadání práce)
 \def\Abstrakt{%
-  TODO Abstrakt
+  Large information systems are typically implemented using frameworks and libraries.
+  An important property of such systems is data lineage - the flow of data loaded
+  from one system (e.g. database), through the program code, and back to another system.
+  The Symbolic analysis library is a library for computing data lineage of
+  simple Java applications. Library supports only JDBC and I/O APIs to identify
+  the sources and sinks of a data. We proposed some architecture changes
+  to the library to be easily extensible by plugins that can add support for
+  new data processing frameworks. We implemented such plugins for few
+  frameworks with different approach for accessing the data.
+  Our tests show that this approach works and can be usable in practice.
 }
 % 3 až 5 klíčových slov (doporučeno), každé uzavřeno ve složených závorkách
 \def\KlicovaSlova{%
-  TODO Klucove slova
+  data lineage, data flow visualization, static program analysis, Java frameworks
 }
 
 
@@ -133,7 +148,6 @@
 \include{zaver}
 
 %%% Seznam použité literatury
-\TODO{Skontrolovat linky na literaturu}
 \include{literatura}
 
 %%% Obrázky v bakalářské práci

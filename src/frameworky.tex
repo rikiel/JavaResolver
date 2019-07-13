@@ -10,8 +10,8 @@ We show data lineage basic examples of how data can be loaded or stored by Java 
 and how sources and sinks are identified, as this is the main topic of our work.
 
 All frameworks that are using database, would work with the example
-of loading objects of the class \Code{DatabaseValue} in the Listing \ref{code:model}
-from database structured as in \ref{code:db}.
+of storing and loading objects of the class \Code{DatabaseValue} in the Listing \ref{code:model}
+from database structured as in Table \ref{code:db}.
 
 \InsertCode{h}{code/model}
 \input{code/db}
@@ -43,11 +43,11 @@ database queries can be executed using any of \Code{Statement} calls.
 When data are returned to application from statement, it is done through \Code{ResultSet}.
 
 Getting connection to database is through \Code{DriverManager}, or since JDBC 2.0
-it can be done using \Code{DataSource} in \Code{javax.sql} package.
+it can be done using \Code{DataSource} in \Code{javax.sql} \citep{javax.sql} package.
 Using \Code{DataSource} is now the preferred way of connecting to database,
-but many applications continue to use old-fashioned \Code{DriverManager}.
+but many applications still continue to use old-fashioned \Code{DriverManager}.
 
-Listing \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database.
+Listing \ref{code:datasource} shows how \Code{DataSource} can be created for Oracle database.\break
 Database is listening on url \Code{jdbc:oracle:thin:@//192.168.0.16:1521/orcl}
 and \Code{User} user and \Code{Password} password is used when connecting to it.
 
@@ -104,7 +104,8 @@ to wrap application logic that can be used by framework in later execution.
 
 The Listing \ref{code:jdbcTemplate} illustrates that principe.
 The \Code{RowMapper} defined on line \ref{code:jdbcTemplate:mapper} defines transformation
-logic (how result row should be transformed to \Code{DatabaseValue} object)
+logic (how result row should be transformed to\break
+\Code{DatabaseValue} object)
 and the \Code{PreparedStatementSetter} on line \ref{code:jdbcTemplate:preparedStatementSetter},
 which is used to set up parameters for database call.
 
@@ -272,7 +273,7 @@ correct transformation of used Java object to (or from) byte array using
 \Code{Serializer} (or \Code{Deserializer}) objects.
 However, this feature is not very important considering data lineage problem\footnote{
   We cannot distinguish values that belong to the same attribute, as in the case
-  of databases, where rows are divided into columns and we could make
+  of databases, where rows are divided into columns and we could create
   lineage on the attribute/column level.
 }.
 
@@ -297,7 +298,8 @@ illustrates usage of four Kafka core client APIs:
   \item The \textbf{Streams API} (see Section \ref{frameworks:kafka:streams}) allows an application to act as a stream processor,
     consuming an input stream from topics and producing an output stream to output topics,
     effectively transforming the input streams to output streams.
-  \item The \textbf{Connector API} (see Section \ref{frameworks:kafka:connector}) allows building and running reusable producers or consumers
+  \item The \textbf{Connector API} (see Section \ref{frameworks:kafka:connector}) allows building and running\break
+    reusable producers or consumers
     that connect Kafka topics to existing applications or data systems.
     For example, a connector to a relational database might capture every change to a table. 
 \end{itemize}
@@ -419,7 +421,8 @@ where such frameworks are used for accessing the data.
     but also external files as many frameworks store their configuration
     outside of the code.
   \item \textbf{Use of concrete values.} \\
-    The analysis should know the concrete values of Java primitives and \Code{String}s.
+    The analysis should know the concrete values of Java primitives and\break
+    \Code{String}s.
     This is necessary for identifying sources and sinks of data,
     such as files, database tables, etc.
   \item \textbf{Handle callbacks.} \\
