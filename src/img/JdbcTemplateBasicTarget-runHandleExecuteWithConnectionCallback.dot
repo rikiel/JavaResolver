@@ -1,0 +1,101 @@
+digraph "DirectedGraph" {
+graph [concentrate = true,label = "Graph", labelloc=t];center=true;fontsize=6;node [ color=black,shape="box"fontsize=6,fontcolor=black,fontname=Arial];edge [ color=black,fontsize=6,fontcolor=black,fontname=Arial]; 
+   "Connection:(jdbc:oracle:thin:@192.168.0.16:1521:orcl):(JavaUser)
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+" [ ]
+   "ParamIndex:INSERT_INTO_OUTPUT_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):1
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO OUTPUT_TABLE (i_c1, i_c2) VALUES (?, ?)
+db_statement_param_desc ::: 1
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+" [ ]
+   "Connection:(jdbc:oracle:thin:@//192.168.0.16:1521/orcl):(User)
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: User
+java_class_desc ::: JdbcTemplateBasicTarget
+java_method_desc ::: runHandleExecuteWithConnectionCallback()V
+" [ ]
+   "FrameworkDataSource:SELECT_TABLE_ID,_TABLE_VALUE_FROM_TABLE_NAME
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT TABLE_ID, TABLE_VALUE FROM TABLE_NAME
+java_class_desc ::: JdbcTemplateBasicTarget
+java_method_desc ::: runHandleExecuteWithConnectionCallback()V
+" [ ]
+   "FrameworkDataField:value
+java_class_desc ::: JdbcTemplateModel
+java_method_desc ::: getValue()Ljava/lang/String;
+mapping_field_desc ::: value" [ ]
+   "SQLCommand:INSERT_INTO_OUTPUT_TABLE_(i_c1,_i_c2)_VALUES_(?,_?)
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO OUTPUT_TABLE (i_c1, i_c2) VALUES (?, ?)
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+" [ ]
+ "Connection:(jdbc:oracle:thin:@192.168.0.16:1521:orcl):(JavaUser)
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+" -> "SQLCommand:INSERT_INTO_OUTPUT_TABLE_(i_c1,_i_c2)_VALUES_(?,_?)
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO OUTPUT_TABLE (i_c1, i_c2) VALUES (?, ?)
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+"[style=solid] 
+ "ParamIndex:INSERT_INTO_OUTPUT_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):1
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO OUTPUT_TABLE (i_c1, i_c2) VALUES (?, ?)
+db_statement_param_desc ::: 1
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+" -> "SQLCommand:INSERT_INTO_OUTPUT_TABLE_(i_c1,_i_c2)_VALUES_(?,_?)
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO OUTPUT_TABLE (i_c1, i_c2) VALUES (?, ?)
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+"[style=solid] 
+ "Connection:(jdbc:oracle:thin:@//192.168.0.16:1521/orcl):(User)
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: User
+java_class_desc ::: JdbcTemplateBasicTarget
+java_method_desc ::: runHandleExecuteWithConnectionCallback()V
+" -> "FrameworkDataSource:SELECT_TABLE_ID,_TABLE_VALUE_FROM_TABLE_NAME
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT TABLE_ID, TABLE_VALUE FROM TABLE_NAME
+java_class_desc ::: JdbcTemplateBasicTarget
+java_method_desc ::: runHandleExecuteWithConnectionCallback()V
+"[style=solid] 
+ "FrameworkDataSource:SELECT_TABLE_ID,_TABLE_VALUE_FROM_TABLE_NAME
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: User
+db_statement_desc ::: SELECT TABLE_ID, TABLE_VALUE FROM TABLE_NAME
+java_class_desc ::: JdbcTemplateBasicTarget
+java_method_desc ::: runHandleExecuteWithConnectionCallback()V
+" -> "FrameworkDataField:value
+java_class_desc ::: JdbcTemplateModel
+java_method_desc ::: getValue()Ljava/lang/String;
+mapping_field_desc ::: value"[style=solid] 
+ "FrameworkDataField:value
+java_class_desc ::: JdbcTemplateModel
+java_method_desc ::: getValue()Ljava/lang/String;
+mapping_field_desc ::: value" -> "ParamIndex:INSERT_INTO_OUTPUT_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):1
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO OUTPUT_TABLE (i_c1, i_c2) VALUES (?, ?)
+db_statement_param_desc ::: 1
+java_class_desc ::: TestWrapper
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+"[style=solid] 
+
+}
