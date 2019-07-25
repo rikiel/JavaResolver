@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="DataSource unit tests suite" verbose="1">
+    <test name="DataSource unit tests">
+        <packages>
+            <package name="eu.profinit.manta.connector.java.analysis.datasource.handler.*"/>
+        </packages>
+    </test>
+</suite>

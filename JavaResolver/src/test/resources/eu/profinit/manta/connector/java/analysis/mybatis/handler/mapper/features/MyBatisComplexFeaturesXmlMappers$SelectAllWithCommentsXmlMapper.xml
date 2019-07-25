@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.features.MyBatisComplexFeaturesXmlMappers$SelectAllWithCommentsXmlMapper">
+    <resultMap id="resultMap" type="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdTestModel">
+        <!-- some comment -->
+        <result property="id" column="TABLE_ID"/>
+        <!-- some comment -->
+        <result property="value" column="TABLE_VALUE"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="resultMap">
+        <!-- some comment -->
+        SELECT TABLE_ID, TABLE_VALUE
+        <!-- some comment -->
+        FROM TABLE_NAME
+        <!-- some comment -->
+    </select>
+</mapper>

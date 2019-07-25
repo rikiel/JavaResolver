@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="JdbcTemplate integration tests suite" verbose="1">
+    <test name="JdbcTemplate integration tests">
+        <classes>
+            <class name="eu.profinit.manta.connector.java.analysis.jdbctemplate.target.JdbcTemplateBasicTargetTest"/>
+        </classes>
+    </test>
+</suite>

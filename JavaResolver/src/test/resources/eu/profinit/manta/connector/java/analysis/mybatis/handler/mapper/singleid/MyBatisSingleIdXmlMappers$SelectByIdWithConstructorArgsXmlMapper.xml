@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdXmlMappers$SelectByIdWithConstructorArgsXmlMapper">
+    <resultMap id="resultMap" type="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdTestModel">
+        <constructor>
+            <idArg column="TABLE_ID" javaType="java.lang.Integer"/>
+        </constructor>
+
+        <result property="value" column="TABLE_VALUE"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="resultMap" parameterType="int">
+        SELECT TABLE_ID, TABLE_VALUE
+        FROM TABLE_NAME
+        WHERE TABLE_ID = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="DataSource suite" verbose="1">
+    <suite-files>
+        <suite-file path="DataSource-unit-tests.xml"/>
+        <suite-file path="DataSource-integration-tests.xml"/>
+    </suite-files>
+</suite>

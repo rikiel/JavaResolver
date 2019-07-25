@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.features.MyBatisComplexFeaturesXmlMappers$UpdateWithSetXmlMapper">
+    <update id="updateAll">
+        UPDATE TABLE_NAME
+        <set>
+            <if test="some condition">
+                TABLE_VALUE = #{value},
+            </if>
+            <if test="other condition">
+                TABLE_ID = #{id},
+            </if>
+        </set>
+        WHERE TABLE_ID = #{id}
+    </update>
+</mapper>

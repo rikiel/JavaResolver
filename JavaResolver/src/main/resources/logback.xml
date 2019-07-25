@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- TODO Prenastavit priority do diplomky... -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT_WARN" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${java.io.tmpdir}/Analysis.log</file>
+        <append>false</append>
+        <immediateFlush>true</immediateFlush>
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="cz.cuni.mff.d3s.manta" level="TRACE">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="eu.profinit.manta.connector.java" level="TRACE">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework.jdbc" level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="eu.profinit.manta.connector.java.analysis.utils.XmlUtils" level="TRACE" additivity="false">
+        <!-- Need to specify all appenders as it does not inherit them from parent... -->
+        <appender-ref ref="STDOUT_WARN"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+    <logger name="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.XmlTagHandlers" level="TRACE" additivity="false">
+        <!-- Need to specify all appenders as it does not inherit them from parent... -->
+        <appender-ref ref="STDOUT_WARN"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="TRACE">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Kafka integration tests suite" verbose="1">
+    <test name="Kafka integration tests">
+        <packages>
+            <package name="eu.profinit.manta.connector.java.analysis.kafka.target.*"/>
+        </packages>
+    </test>
+</suite>

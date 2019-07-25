@@ -1,0 +1,13 @@
+<configuration>
+
+    <properties resource="org/mybatis/example/config.properties">
+        <property name="username" value="usernameValue"/>
+        <property name="password" value="passwordValue"/>
+        <property name="url" value="jdbc:postgresql:mydb"/>
+        <property name="driver" value="org.postgresql.Driver"/>
+    </properties>
+
+    <environments>
+        <!-- No environment tag -->
+    </environments>
+</configuration>

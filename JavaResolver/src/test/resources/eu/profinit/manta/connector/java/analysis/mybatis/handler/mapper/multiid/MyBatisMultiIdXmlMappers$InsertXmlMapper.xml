@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.multiid.MyBatisMultiIdXmlMappers$InsertXmlMapper">
+    <insert id="insert" parameterType="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.multiid.MyBatisMultiIdTestModel">
+        INSERT INTO TABLE_NAME_MULTI
+        (TABLE_ID_1, TABLE_ID_2, TABLE_VALUE)
+        VALUES (#{id1}, #{id2}, #{value})
+    </insert>
+</mapper>

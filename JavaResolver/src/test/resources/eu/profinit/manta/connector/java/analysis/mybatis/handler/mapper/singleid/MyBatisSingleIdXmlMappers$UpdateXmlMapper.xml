@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdXmlMappers$UpdateXmlMapper">
+    <update id="update" parameterType="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdTestModel">
+        UPDATE TABLE_NAME
+        SET TABLE_VALUE = #{value}, TABLE_ID = #{id}
+        WHERE TABLE_ID = #{id}
+    </update>
+</mapper>

@@ -9,3 +9,8 @@ output/
 *.bbl
 *.blg
 a0header.ps
+
+*.iml
+/target
+.idea
+

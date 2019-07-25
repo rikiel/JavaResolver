@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="All unit tests suite" verbose="1">
+    <suite-files>
+        <suite-file path="utils/Utils-unit-tests.xml"/>
+        <suite-file path="mybatis/MyBatis-unit-tests.xml"/>
+        <suite-file path="jdbctemplate/JdbcTemplate-unit-tests.xml"/>
+        <suite-file path="datasource/DataSource-unit-tests.xml"/>
+        <suite-file path="kafka/Kafka-unit-tests.xml"/>
+    </suite-files>
+</suite>

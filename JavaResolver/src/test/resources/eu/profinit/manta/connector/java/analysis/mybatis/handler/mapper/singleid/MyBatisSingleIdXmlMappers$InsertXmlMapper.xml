@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdXmlMappers$InsertXmlMapper">
+    <insert id="insert" parameterType="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdTestModel">
+        INSERT INTO TABLE_NAME
+        (TABLE_ID, TABLE_VALUE)
+        VALUES (#{id}, #{value})
+    </insert>
+</mapper>

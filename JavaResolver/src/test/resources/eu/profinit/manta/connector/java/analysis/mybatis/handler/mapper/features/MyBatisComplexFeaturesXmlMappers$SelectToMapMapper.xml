@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.features.MyBatisComplexFeaturesXmlMappers$SelectToMapMapper">
+    <resultMap id="resultMapForMap" type="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.singleid.MyBatisSingleIdTestModel">
+        <result property="id" column="TABLE_ID"/>
+        <result property="value" column="TABLE_VALUE"/>
+    </resultMap>
+
+    <select id="selectForMap" parameterType="java.util.Map" statementType="CALLABLE">
+        {
+        CALL selectForMap
+        (
+        <!-- id is stored in map with key=id -->
+        #{id,     mode=IN,  jdbcType=INTEGER, javaType=Integer},
+        <!-- output will be stored in map with key=result -->
+        #{result, mode=OUT, jdbcType=CURSOR,  javaType=ResultSet, resultMap=resultMapForMap}
+        )
+        }
+    </select>
+</mapper>

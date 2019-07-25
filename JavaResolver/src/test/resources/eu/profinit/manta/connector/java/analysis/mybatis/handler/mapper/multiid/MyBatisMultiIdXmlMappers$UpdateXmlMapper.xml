@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.multiid.MyBatisMultiIdXmlMappers$UpdateXmlMapper">
+    <update id="update" parameterType="eu.profinit.manta.connector.java.analysis.mybatis.handler.mapper.multiid.MyBatisMultiIdTestModel">
+        UPDATE TABLE_NAME_MULTI
+        SET TABLE_VALUE = #{value}
+        WHERE TABLE_ID_1 = #{id1} AND TABLE_ID_2 = #{id2}
+    </update>
+</mapper>

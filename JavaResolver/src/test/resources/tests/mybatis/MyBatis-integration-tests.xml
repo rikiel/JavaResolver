@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="MyBatis integration tests suite" verbose="1">
+    <test name="MyBatis integration tests">
+        <packages>
+            <package name="eu.profinit.manta.connector.java.analysis.mybatis.target.*"/>
+        </packages>
+    </test>
+</suite>

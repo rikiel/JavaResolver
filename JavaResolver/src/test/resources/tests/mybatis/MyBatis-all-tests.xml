@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="MyBatis suite" verbose="1">
+    <suite-files>
+        <suite-file path="MyBatis-unit-tests.xml"/>
+        <suite-file path="MyBatis-integration-tests.xml"/>
+    </suite-files>
+</suite>
