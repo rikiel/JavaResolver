@@ -23,10 +23,82 @@ the requirements from Section \ref{frameworks:requirements}.
 
 \section{Data Flow Graph Visualizations for Frameworks}
 
-In this section we present some data flow visualizations
-for example programs that are presented in tests for the \ToolName tool.
+In this section we present some data flow visualizations done by our \ToolName tool
+for each of the supported frameworks. The visualizations show only
+the important data lineage information from the computed data flow graphs.
 
-\TODO{Obrazky z testov}
+
+
+\subsubsection{Spring JDBC Framework}
+
+Figure \ref{results:jdbcTemplate} show created visualization for Spring JDBC Framework.
+The data flow graph was computed based on the analysis of the method\break
+\Code{JdbcTemplateBasicTarget\#runHandleExecuteWithConnectionCallback()}.
+
+We can see the query statement done on the database table \Code{TABLE\_NAME}
+from which the \Code{JdbcTemplateModel} is created and its
+property \Code{value} is then used as the first parameter of the insert statement
+into the database table \Code{OUTPUT\_TABLE}.
+
+
+
+\subsubsection{MyBatis Framework}
+
+Figure \ref{results:mybatis} show created visualization for MyBatis Framework.
+The data flow graph was computed based on the analysis of the method\break
+\Code{MyBatisMapperTarget\#runSelectAllAndDelete()}. 
+
+The visualization show data flow between database select and delete statements.
+We can notice that database connection was configured using
+configuration file (see \Code{FILE\_NAME} attribute).
+
+The mappers and their methods (\Code{SelectAllAnnotatedMapper\#selectAll()}\break
+and \Code{DeleteAnnotatedMapper\#delete()})
+that were used to execute the database calls are also identified by the \ToolName tool.
+
+
+
+
+\subsubsection{Kafka Framework}
+
+Figure \ref{results:kafka} show created visualization for Kafka Framework.
+The data flow graph was computed based on the analysis of the method\break
+\Code{KafkaMixedTarget\#runKafkaProducerAndConsumer()}.
+
+The visualization show identified Kafka server for both data source and sink.
+We can notice two parallel data flows.
+One identifies only the source part (the call of \Code{poll} method)
+and second identifies the sink part (the call of \Code{send} method).
+However, the data flow from the source to the sink is 
+not correctly identified by the Symbolic analysis library.
+
+We can notice the over-approximation done by the \ToolName tool.
+In the \Code{send} method call only topic \Code{ProducerTopic} is used.
+However, he tool cannot distinguish the correct topic that was used
+and therefore it identifies both of them (\Code{ConsumerTopic} and \Code{ProducerTopic}).
+
+
+
+\begin{figure}[b]
+  % trim - left lower right upper
+  \includegraphics[trim={1cm 1cm 1cm 1.8cm},clip,width=\textwidth]{img/JdbcTemplateBasicTarget-runHandleExecuteWithConnectionCallback.pdf}
+  \caption{Visualization of data lineage graph for Spring JDBC Framework}
+  \label{results:jdbcTemplate}
+\end{figure}
+
+\begin{figure}[h]
+  % trim - left lower right upper
+  \includegraphics[trim={1cm 1cm 1cm 1.8cm},clip,angle=-90,origin=c,max size={\textwidth}{\textheight}]{img/MyBatisMapperTarget-runSelectAllAndDelete.pdf}
+  \caption{Visualization of data lineage graph for MyBatis Framework}
+  \label{results:mybatis}
+\end{figure}
+
+\begin{figure}[h]
+  % trim - left lower right upper
+  \includegraphics[trim={1cm 1cm 1cm 1.8cm},clip,angle=-90,origin=c,max size={\textwidth}{\textheight}]{img/KafkaMixedTarget-runKafkaProducerAndConsumer.pdf}
+  \caption{Visualization of data lineage graph for Kafka Framework}
+  \label{results:kafka}
+\end{figure}
 
 
 

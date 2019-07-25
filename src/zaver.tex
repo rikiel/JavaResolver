@@ -1,38 +1,40 @@
 
 \chapter{Conclusion}
 
-In the thesis we presented the \ToolName tool able to compute
-data lineage information of Java applications that use data processing
+In the thesis we presented the \ToolName tool that is able to compute
+data lineage information for Java applications that use complex data processing
 frameworks to access data.
 
-Part of our work was to propose changes to the Symbolic analysis library
-to be able to easily add support for new frameworks as the library plugin
-and implement such plugins for selected frameworks - Spring JDBC, MyBatis and Kafka.
-This demonstrates that such plugins can be used to easily add
+A part of our work was to propose changes to the Symbolic analysis library
+such that it is possible to easily add support for new frameworks as the library plugins.
+Our main contribution is the implementation of such plugins
+for selected frameworks - Spring JDBC, MyBatis and Kafka.
+This demonstrates that such plugins can be used to provide
 support for data lineage analysis of other Java data processing frameworks
-with different approach for accessing the data.
+with different approaches for accessing the data.
 
-The Symbolic analysis plugin should identify the sources and sinks of
-data inside framework and then Symbolic analysis library takes care of
-creating data flow in an analysed application.
+Each plugin should identify the sources and sinks of
+data inside the corresponding framework and then the Symbolic analysis library takes care of
+computing data flow in an analysed application.
 
 We showed few limitations of our \ToolName tool. Many of them
-are related to static program analysis approach and used
+are related to the static program analysis approach and the used
 Symbolic analysis library.
 
 However, the tests of our \ToolName tool show that the data flow is
 computed in reasonable time and thereof can be used in practice.
 The tests also create data lineage visualizations.
-The visualizations contains the key information about
+The visualizations contain the key information about
 data sources and sinks and the flow between them.
 
-In our work we focus on the basic features of selected data processing frameworks.
+In our work we focused on the basic features of selected data processing frameworks.
 We avoid the advanced features, such as Kafka Streams or Kafka Connector.
 We also did not try to provide the implementation for the the whole Spring JDBC Framework,
 as it provides quite large possibilities for accessing the data in an SQL database.
 
-In the future development of the \ToolName tool we are planning to add support
-for all the mentioned features of the frameworks.
-We are also planning to add plugins for new data processing frameworks.
+In the future development of the \ToolName tool, we are planning to add support
+for all the mentioned advanced features of the frameworks.
+We will also develop plugins for new data processing frameworks
+such as Hibernate and Apache Spark.
 
 

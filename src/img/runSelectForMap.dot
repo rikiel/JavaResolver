@@ -1,0 +1,273 @@
+digraph "DirectedGraph" {
+graph [concentrate = true,label = "Graph title", labelloc=t];center=true;fontsize=6;node [ color=blue,shape="box"fontsize=6,fontcolor=black,fontname=Arial];edge [ color=black,fontsize=6,fontcolor=black,fontname=Arial]; 
+   "EntryArgument0:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_THIS__~eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_1" [ ]
+   "FrameworkAction:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+CONSTANT_VALUE ::: 1, id, config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+DATASOURCE_MAP_KEY ::: {result=[id, value]}
+FILE_NAME ::: config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+MAP_KEYS ::: [], [id]
+MAP_KEY_TO_VALUES ::: {}, {id=[1]}
+MAP_VALUES ::: [], [1]
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+db_statement_desc ::: { CALL selectForMap ( 1, ? ) }
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: 0, node_4" [ ]
+   "EntryArgumentData0:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_THIS__~eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_2" [ ]
+   "FrameworkDataSource:{_CALL_selectForMap_(_1,_?_)_}:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+CONSTANT_VALUE ::: 1, id, config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+DATASOURCE_MAP_KEY ::: {result=[id, value]}
+FILE_NAME ::: config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+MAP_KEYS ::: [], [id]
+MAP_KEY_TO_VALUES ::: {}, {id=[1]}
+MAP_VALUES ::: [], [1]
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+db_statement_desc ::: { CALL selectForMap ( 1, ? ) }
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: 0, node_1" [ ]
+   "Connection:(jdbc:oracle:thin:@192.168.0.16:1521:orcl):(JavaUser):eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=6,pos=12]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 6
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1" [ ]
+   "Connection:(jdbc:oracle:thin:@//192.168.0.16:1521/orcl):(java_martin):(oracle.jdbc.driver.OracleDriver):eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_3" [ ]
+   "SQLCommand:INSERT_INTO_UPDATE_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=26,pos=56]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO UPDATE_TABLE (i_c1, i_c2) VALUES (?, ?)
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 26
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1" [ ]
+   "FrameworkDataField:__UNDEFINED__:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_2
+mapping_field_desc ::: __UNDEFINED__" [ ]
+   "ParamIndex:INSERT_INTO_UPDATE_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):1:eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=24,pos=50]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO UPDATE_TABLE (i_c1, i_c2) VALUES (?, ?)
+db_statement_param_desc ::: 1
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 24
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1" [ ]
+ "EntryArgument0:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_THIS__~eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_1" -> "EntryArgumentData0:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=-1,pos=-1]
+entrypoint_desc ::: __ENTRYPOINT_THIS__~eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: -1
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_2"[style=solid] 
+ "FrameworkDataSource:{_CALL_selectForMap_(_1,_?_)_}:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+CONSTANT_VALUE ::: 1, id, config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+DATASOURCE_MAP_KEY ::: {result=[id, value]}
+FILE_NAME ::: config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+MAP_KEYS ::: [], [id]
+MAP_KEY_TO_VALUES ::: {}, {id=[1]}
+MAP_VALUES ::: [], [1]
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+db_statement_desc ::: { CALL selectForMap ( 1, ? ) }
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: 0, node_1" -> "FrameworkDataField:__UNDEFINED__:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_2
+mapping_field_desc ::: __UNDEFINED__"[style=solid] 
+ "Connection:(jdbc:oracle:thin:@192.168.0.16:1521:orcl):(JavaUser):eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=6,pos=12]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 6
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1" -> "SQLCommand:INSERT_INTO_UPDATE_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=26,pos=56]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO UPDATE_TABLE (i_c1, i_c2) VALUES (?, ?)
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 26
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1"[style=solid] 
+ "Connection:(jdbc:oracle:thin:@//192.168.0.16:1521/orcl):(java_martin):(oracle.jdbc.driver.OracleDriver):eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_3" -> "FrameworkAction:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+CONSTANT_VALUE ::: 1, id, config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+DATASOURCE_MAP_KEY ::: {result=[id, value]}
+FILE_NAME ::: config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+MAP_KEYS ::: [], [id]
+MAP_KEY_TO_VALUES ::: {}, {id=[1]}
+MAP_VALUES ::: [], [1]
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+db_statement_desc ::: { CALL selectForMap ( 1, ? ) }
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: 0, node_4"[style=solid] 
+ "Connection:(jdbc:oracle:thin:@//192.168.0.16:1521/orcl):(java_martin):(oracle.jdbc.driver.OracleDriver):eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_3" -> "FrameworkDataSource:{_CALL_selectForMap_(_1,_?_)_}:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+CONSTANT_VALUE ::: 1, id, config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+DATASOURCE_MAP_KEY ::: {result=[id, value]}
+FILE_NAME ::: config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+MAP_KEYS ::: [], [id]
+MAP_KEY_TO_VALUES ::: {}, {id=[1]}
+MAP_VALUES ::: [], [1]
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+db_statement_desc ::: { CALL selectForMap ( 1, ? ) }
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: 0, node_1"[style=solid] 
+ "FrameworkDataField:__UNDEFINED__:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_2
+mapping_field_desc ::: __UNDEFINED__" -> "FrameworkAction:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+CONNECTION_TYPE ::: oracle.jdbc.driver.OracleDriver
+CONSTANT_VALUE ::: 1, id, config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+DATASOURCE_MAP_KEY ::: {result=[id, value]}
+FILE_NAME ::: config/MyBatisMapperTargetTest/MyBatisConfiguration.xml
+MAP_KEYS ::: [], [id]
+MAP_KEY_TO_VALUES ::: {}, {id=[1]}
+MAP_VALUES ::: [], [1]
+db_connection_desc ::: jdbc:oracle:thin:@//192.168.0.16:1521/orcl
+db_connection_user_desc ::: java_martin
+db_statement_desc ::: { CALL selectForMap ( 1, ? ) }
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: 0, node_4"[style=solid] 
+ "FrameworkDataField:__UNDEFINED__:eu.profinit.manta.connector.java.testtargets.mybatis.target.MyBatisMapperTarget.runSelectForMap()V:[idx=20,pos=40]
+java_class_desc ::: MyBatisMapperTarget
+java_instruction_desc ::: 20
+java_method_call_id_desc ::: -1821685074, -1593846781
+java_method_desc ::: runSelectForMap()V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.mybatis.target
+java_var_id_desc ::: node_2
+mapping_field_desc ::: __UNDEFINED__" -> "ParamIndex:INSERT_INTO_UPDATE_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):1:eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=24,pos=50]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO UPDATE_TABLE (i_c1, i_c2) VALUES (?, ?)
+db_statement_param_desc ::: 1
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 24
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1"[style=solid] 
+ "ParamIndex:INSERT_INTO_UPDATE_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):1:eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=24,pos=50]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO UPDATE_TABLE (i_c1, i_c2) VALUES (?, ?)
+db_statement_param_desc ::: 1
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 24
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1" -> "SQLCommand:INSERT_INTO_UPDATE_TABLE_(i_c1,_i_c2)_VALUES_(?,_?):eu.profinit.manta.connector.java.testtargets.common.TestWrapper.storeValString(Ljava/lang/String;Ljava/lang/String;)V:[idx=26,pos=56]
+db_connection_desc ::: jdbc:oracle:thin:@192.168.0.16:1521:orcl
+db_connection_user_desc ::: JavaUser
+db_statement_desc ::: INSERT INTO UPDATE_TABLE (i_c1, i_c2) VALUES (?, ?)
+java_class_desc ::: TestWrapper
+java_instruction_desc ::: 26
+java_method_call_id_desc ::: -1593846781
+java_method_desc ::: storeValString(Ljava/lang/String;Ljava/lang/String;)V
+java_package_desc ::: eu.profinit.manta.connector.java.testtargets.common
+java_var_id_desc ::: node_1"[style=solid] 
+
+}

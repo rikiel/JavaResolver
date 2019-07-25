@@ -12,9 +12,9 @@ run: build
 ${BUILDDIR}/${TARGET}.pdf: *.tex *.bib */*.tex Makefile
 	mkdir -p ${BUILDDIR}
 	${LATEX_CMD}
-	#${BIBTEX_CMD}
-	#${LATEX_CMD}
-	#${LATEX_CMD}
+	${BIBTEX_CMD}
+	${LATEX_CMD}
+	${LATEX_CMD}
 
 clean:
 	rm -rf ${BUILDDIR}

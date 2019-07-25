@@ -16,6 +16,7 @@
 
 
 %%% Údaje o práci
+\def\ToolName{Java Resolver }
 
 % Název práce v jazyce práce (přesně podle zadání)
 \def\NazevPrace{Analyzing Data Lineage in Database Frameworks}
@@ -51,13 +52,31 @@
   Large information systems are typically implemented using frameworks and libraries.
   An important property of such systems is data lineage - the flow of data loaded
   from one system (e.g. database), through the program code, and back to another system.
-  The Symbolic analysis library is a library for computing data lineage of
-  simple Java applications. Library supports only JDBC and I/O APIs to identify
-  the sources and sinks of a data. We proposed some architecture changes
-  to the library to be easily extensible by plugins that can add support for
+  We implemented the \ToolName tool for data lineage analysis of Java programs based on
+  the Symbolic analysis library for computing data lineage of
+  simple Java applications. The library supports only JDBC and I/O APIs to identify
+  the sources and sinks of data flow. We proposed some architecture changes
+  to the library to make easily extensible by plugins that can add support for
   new data processing frameworks. We implemented such plugins for few
-  frameworks with different approach for accessing the data.
+  frameworks with different approach for accessing the data,
+  including Spring JDBC, MyBatis and Kafka.
   Our tests show that this approach works and can be usable in practice.
+}
+\def\AbstraktSK{%
+  Informačné systémy často vo svojej implementácií využívajú už existujúce
+  frameworky a knižnice. Dôležitou vlastnosťou takýchto systémov sú ich dátové toky.
+  Dáta sú načítané zo zdrojového systému (napríklad databáze), pokračujú
+  cez aplikačný kód a zapísané sú do ďalšieho, cieľového systému.
+  Ako súčasť práce sme implementovali nástroj \ToolName schopný získavať
+  dátové toky Java aplikácií. Program využíva existujúcu knižnicu
+  Symbolic analysis library, ktorá je shopná počítať dátové toky jednoduchých
+  Java aplikácií. Ako zdrojové a cieľové systémy však knižnica rozpoznáva
+  iba JDBC a I/O API.
+  V našom riešení sme navrhli zmenu architektúry knižnice, aby bola jednoducho
+  rozšíriteľná pomocou pluginov, ktoré môžu pridať podporu pre nové frameworky.
+  Tieto pluginy sme implementovali pre niekoľko frameworkov
+  (Spring JDBC, MyBatis a Kafka). Naše testy ukazujú, že tento prístup
+  môže byť v praxi využiteľný.
 }
 % 3 až 5 klíčových slov (doporučeno), každé uzavřeno ve složených závorkách
 \def\KlicovaSlova{%
@@ -114,6 +133,7 @@
 
 \usepackage[percent]{overpic}
 
+\usepackage[export]{adjustbox}
 \usepackage{listings}
 \renewcommand\lstlistingname{Listing}
 \renewcommand\lstlistlistingname{List of Listings}
